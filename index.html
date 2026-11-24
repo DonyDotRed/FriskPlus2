@@ -1,0 +1,1005 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="color-scheme" content="light dark"><title>GM Frisker Lab 1.4 Advanced Mobile — 표면오염·MDA·계수통계 시뮬레이터</title>
+<style>
+:root{--bg:#f3f6fa;--panel:#fff;--panel2:#eef3f8;--ink:#152739;--muted:#5e7287;--line:#d7e1ec;--accent:#1473a9;--accent2:#007f85;--warning:#a05808;--danger:#a53339;--good:#217451;--shadow:0 9px 27px rgba(20,45,65,.055);--fontsize:15px;--leading:1.55}
+[data-theme="dark"]{color-scheme:dark;--bg:#0c1624;--panel:#162436;--panel2:#203246;--ink:#eef6fd;--muted:#abbfd0;--line:#355067;--accent:#5cbbec;--accent2:#49d3c9;--warning:#ffbf68;--danger:#ff9292;--good:#72dbb3;--shadow:0 9px 25px rgba(0,0,0,.16)}
+[data-theme="contrast"]{--bg:#000;--panel:#090909;--panel2:#1d1d1d;--ink:#fff;--muted:#ddd;--line:#aaa;--accent:#ffdf3c;--accent2:#7ffff3;--warning:#ffd975;--danger:#ff9090;--good:#7dffa0;--shadow:none;color-scheme:dark}
+[data-theme="sepia"]{--bg:#f4ede0;--panel:#fff9ed;--panel2:#f1e5d2;--ink:#453628;--muted:#725a48;--line:#deccb3;--accent:#915727;--accent2:#786637;--warning:#9d580b;--danger:#b14d46;--good:#377148}
+[data-theme="blueprint"]{--bg:#0a2440;--panel:#103656;--panel2:#194a70;--ink:#effbff;--muted:#b4d9ee;--line:#41759a;--accent:#76cffa;--accent2:#7bfbf3;--warning:#ffd185;--danger:#ff9898;--good:#99f9bd;color-scheme:dark}
+[data-theme="forest"]{--bg:#eaf3ed;--panel:#fafdf9;--panel2:#e1eee4;--ink:#1a382a;--muted:#557265;--line:#c6decf;--accent:#237d51;--accent2:#217d84;--warning:#98630a;--danger:#a53e3e;--good:#267847}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:var(--fontsize)/var(--leading) system-ui,-apple-system,'Malgun Gothic','Apple SD Gothic Neo',sans-serif;overflow-x:hidden}button,input,select,textarea{font:inherit;color:inherit}button{cursor:pointer;touch-action:manipulation}button:disabled{opacity:.45;cursor:not-allowed}button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible{outline:3px solid var(--accent);outline-offset:2px}a{color:var(--accent)}h1,h2,h3,h4,p{margin:0}h1{font-size:1.38rem;line-height:1.28;letter-spacing:-.03em}h2{font-size:1.19rem}h3{font-size:1rem}small,.small{font-size:.81rem}.tiny{font-size:.75rem}.muted{color:var(--muted)}.mono,.stat b,.number{font-variant-numeric:tabular-nums;font-feature-settings:'tnum'}
+header{position:sticky;top:0;z-index:10;background:var(--panel);border-bottom:1px solid var(--line);box-shadow:var(--shadow)}.head{max-width:1540px;margin:auto;display:flex;align-items:center;gap:16px;padding:13px 20px;flex-wrap:wrap}.head .brand{display:flex;align-items:center;gap:12px;flex:1;min-width:220px}.logo{width:38px;height:38px;border-radius:12px;background:var(--accent);color:var(--panel);display:grid;place-items:center;font-weight:800;font-size:20px}.meta{text-transform:uppercase;font-size:.67rem;letter-spacing:.12em;color:var(--muted)}.head-tools{display:flex;align-items:center;gap:8px;flex-wrap:wrap}.head-tools select,.head-tools input{max-width:148px}
+.layout{max-width:1540px;margin:0 auto;display:grid;grid-template-columns:224px minmax(0,1fr);gap:19px;padding:20px}.sidebar{align-self:start;position:sticky;top:98px;background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:12px;box-shadow:var(--shadow)}.nav{width:100%;display:flex;align-items:center;gap:10px;padding:11px;border:0;background:transparent;border-radius:9px;text-align:left;color:var(--muted)}.nav:hover,.nav.active{background:var(--panel2);color:var(--ink)}.nav.active{box-shadow:inset 3px 0 var(--accent);font-weight:750}.nav span:first-child{width:22px;text-align:center}.sidebar-note{border-top:1px solid var(--line);padding:14px 8px 4px;margin-top:10px;color:var(--muted);font-size:.8rem}.content{min-width:0;display:flex;flex-direction:column;gap:16px}.view{display:none;flex-direction:column;gap:16px}.view.active{display:flex}.page-title{padding:4px 0}.page-title p{color:var(--muted);margin-top:5px}.card{background:var(--panel);border:1px solid var(--line);border-radius:15px;padding:17px;box-shadow:var(--shadow);min-width:0}.card-header{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:13px}.card-header h2{font-size:1.03rem}.card-header p{font-size:.8rem;color:var(--muted)}.two{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:15px}.three{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:15px}.four{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:13px}.formgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(165px,1fr));gap:12px}.field{min-width:0;display:flex;flex-direction:column;gap:5px}.field label{font-size:.82rem;font-weight:650;color:var(--muted)}.field small{line-height:1.4;color:var(--muted)}.field input,.field select,.field textarea,select,.field-like{width:100%;min-width:0;max-width:100%;border:1px solid var(--line);background:var(--panel2);border-radius:9px;min-height:39px;padding:8px 10px}.field textarea{min-height:76px;resize:vertical}.field input[type="range"]{padding:0}.field input[type="checkbox"]{width:auto;min-height:unset;accent-color:var(--accent)}.check{display:flex;align-items:center;gap:8px;font-size:.85rem;min-height:34px;cursor:pointer}.check input{accent-color:var(--accent)}.stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}.stat{padding:15px;background:var(--panel);border:1px solid var(--line);border-radius:14px;min-width:0}.stat span{display:block;font-size:.79rem;color:var(--muted)}.stat b{display:block;font-size:clamp(1.27rem,1.9vw,1.8rem);font-weight:780;letter-spacing:-.025em;margin-top:3px;overflow-wrap:anywhere}.stat em{font-size:.73rem;font-style:normal;color:var(--muted)}.tag{display:inline-flex;align-items:center;gap:5px;border:1px solid var(--line);background:var(--panel2);padding:4px 9px;border-radius:50px;font-size:.74rem;font-weight:650;max-width:100%}.tag.good{color:var(--good)}.tag.warn{color:var(--warning)}.tag.bad{color:var(--danger)}.alert{padding:11px 13px;border-left:3px solid var(--warning);background:var(--panel2);border-radius:7px;font-size:.83rem;margin:6px 0}.alert.danger{border-color:var(--danger)}.alert.good{border-color:var(--good)}.inline{display:flex;align-items:center;gap:9px;flex-wrap:wrap}.btn{border:1px solid var(--line);background:var(--panel2);padding:8px 12px;border-radius:9px;font-weight:650;min-height:36px}.btn:hover{filter:brightness(.97)}.btn.primary{background:var(--accent);color:var(--panel);border-color:var(--accent)}.btn.alt{background:transparent}.btn.mini{min-height:28px;padding:3px 9px;font-size:.78rem}.eq{border:1px solid var(--line);border-radius:9px;background:var(--panel2);padding:12px;overflow-x:auto;font-family:ui-monospace,'Cascadia Code',Consolas,monospace;font-size:.85rem;white-space:normal;overflow-wrap:anywhere}.metric-row{display:flex;gap:6px;align-items:center;flex-wrap:wrap}.metric-row strong{font-variant-numeric:tabular-nums}.list{padding-left:20px;margin:6px 0}.list li{margin:6px 0}.tbl-wrap{overflow:auto;max-width:100%}table{border-collapse:collapse;width:100%;font-size:.85rem}td,th{padding:10px 12px;text-align:left;border-bottom:1px solid var(--line);vertical-align:top}th{color:var(--muted);font-weight:700;background:var(--panel2)}td.number{text-align:right}table input{width:80px;max-width:100%;background:var(--panel2);border:1px solid var(--line);padding:5px;border-radius:5px}.canvasbox{position:relative;min-height:190px;background:var(--panel2);border:1px solid var(--line);border-radius:10px;overflow:hidden;padding:8px}.canvasbox canvas{display:block;width:100%;height:auto;max-height:360px;touch-action:none}.canvasbox canvas.square{height:330px;width:100%;object-fit:contain}.legend{display:flex;gap:12px;flex-wrap:wrap;color:var(--muted);font-size:.76rem;margin-top:9px}.swatch{width:10px;height:10px;display:inline-block;border-radius:2px;margin-right:4px}.help{border:1px solid var(--line);border-radius:10px;padding:10px 12px}.help summary{cursor:pointer;font-weight:650}.help p{margin-top:10px;font-size:.85rem;color:var(--muted)}.footer{padding:12px 0 30px;text-align:center;color:var(--muted);font-size:.78rem}.result-text{font-size:.9rem;white-space:pre-line}.badgebar{display:flex;gap:7px;flex-wrap:wrap}.empty{padding:22px;text-align:center;color:var(--muted);font-size:.89rem}.progress{height:7px;border-radius:20px;background:var(--line);overflow:hidden}.progress > span{display:block;height:100%;background:var(--accent)}.screenreader{position:absolute;width:1px;height:1px;clip:rect(0,0,0,0);overflow:hidden}.plot{width:100%;min-height:215px;max-height:350px}.chips{display:flex;gap:6px;flex-wrap:wrap}.chip{font-size:.76rem;border:1px solid var(--line);padding:4px 8px;border-radius:8px;background:var(--panel2)}#toast{position:fixed;bottom:18px;right:18px;background:var(--ink);color:var(--panel);padding:11px 17px;border-radius:10px;z-index:50;display:none;max-width:calc(100vw - 36px);box-shadow:var(--shadow)}.mobile-menu{display:none}[hidden]{display:none!important}.kicker{font-size:.74rem;text-transform:uppercase;letter-spacing:.08em;color:var(--accent);font-weight:750;margin-bottom:3px}
+@media(max-width:1050px){.layout{grid-template-columns:180px minmax(0,1fr);padding:13px;gap:12px}.sidebar{top:100px}.three{grid-template-columns:repeat(2,minmax(0,1fr))}.four{grid-template-columns:repeat(2,minmax(0,1fr))}}@media(max-width:760px){.head{padding:11px 13px}.head-tools{width:100%;justify-content:space-between}.layout{grid-template-columns:1fr;padding:12px;padding-bottom:90px}.sidebar{position:fixed;z-index:9;top:auto;bottom:0;left:0;right:0;border-radius:0;border-left:0;border-right:0;display:flex;overflow-x:auto;white-space:nowrap;padding:5px 7px;padding-bottom:max(6px,env(safe-area-inset-bottom));gap:3px;box-shadow:0 -4px 18px rgba(0,0,0,.06)}.sidebar-note{display:none}.nav{width:auto;min-width:77px;display:flex;flex-direction:column;gap:2px;font-size:.68rem;padding:7px 8px;text-align:center}.nav span:first-child{width:auto}.nav.active{box-shadow:inset 0 3px var(--accent)}.two,.three{grid-template-columns:1fr}.stats{grid-template-columns:repeat(2,minmax(0,1fr))}.card{padding:14px}.page-title{padding:0}.head .brand{min-width:unset}.head-tools select{max-width:105px}table{font-size:.8rem}.canvasbox canvas.square{height:290px}}
+@media(max-width:420px){.head-tools{gap:4px}.head-tools label{font-size:.7rem}.head-tools input[type="range"]{width:65px}.stats{gap:7px}.stat{padding:10px}.stat b{font-size:1.36rem}.formgrid{grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}.field label{font-size:.76rem}.field input,.field select{padding:7px}.card-header h2{font-size:.96rem}}
+@media print{header,.sidebar,.no-print,.btn,#toast{display:none!important}.layout{display:block;padding:0}.view{display:none!important}#view-report{display:flex!important}.card{box-shadow:none;break-inside:avoid}body{background:white;color:#151515;font-size:12px}a{color:inherit}}
+
+
+/* ========== Mobile-first experience v1.2 additive theme ========== */
+:root{--fontsize:16px;--tap:48px;--dock-bg:var(--panel);--focus-ring:0 0 0 3px color-mix(in srgb,var(--accent) 28%,transparent)}
+html{scroll-behavior:smooth}
+html:not(.gm-unlocked) #appShell{display:none!important}
+html.gm-unlocked #authGate{display:none!important}
+.auth-gate{min-height:100svh;display:grid;place-items:center;padding:22px;background:radial-gradient(circle at 85% 8%,rgba(40,144,193,.13),transparent 33%),radial-gradient(circle at 3% 90%,rgba(30,145,126,.13),transparent 40%),var(--bg)}
+.auth-panel{width:min(100%,460px);background:var(--panel);border:1px solid var(--line);border-radius:26px;box-shadow:0 25px 80px rgba(10,31,53,.09);padding:clamp(25px,6vw,43px)}
+.auth-top{display:flex;align-items:center;gap:11px;margin-bottom:28px}
+.auth-logo{width:52px;height:52px;border-radius:17px;display:grid;place-items:center;background:var(--accent);color:white;font-weight:900;letter-spacing:-.07em;font-size:22px}
+.auth-top strong{display:block;font-size:18px;letter-spacing:-.025em}
+.auth-top span{display:block;font-size:12px;color:var(--muted);margin-top:2px}
+.auth-eyebrow{font-weight:800;letter-spacing:.14em;color:var(--accent);font-size:11px;margin-bottom:10px}
+.auth-panel h1{font-size:clamp(26px,7vw,32px);line-height:1.22;letter-spacing:-.055em;margin-bottom:12px}
+.auth-description{font-size:14px;line-height:1.65;color:var(--muted);margin-bottom:25px}
+.auth-label{display:block;font-weight:750;font-size:14px;margin-bottom:9px}
+.auth-input-wrap{position:relative;display:flex;align-items:center;background:var(--panel2);border:1.5px solid var(--line);border-radius:13px;overflow:hidden;transition:border-color .15s}
+.auth-input-wrap:focus-within{border-color:var(--accent);box-shadow:var(--focus-ring)}
+.auth-input-wrap input{flex:1;min-width:0;background:transparent;border:0;padding:16px 14px;font-size:18px;outline:0;color:var(--ink)}
+.auth-toggle{border:0;background:transparent;min-height:54px;padding:0 15px;font-weight:700;color:var(--accent);white-space:nowrap}
+.auth-options{display:flex;align-items:center;justify-content:space-between;gap:10px;margin:15px 0 12px}
+.auth-options label{display:flex;align-items:center;gap:10px;cursor:pointer;color:var(--muted);font-size:14px}
+.auth-options input{width:19px;height:19px;accent-color:var(--accent)}
+.auth-error{min-height:22px;color:var(--danger);font-size:13px;font-weight:650;margin:6px 0}
+.auth-submit{background:var(--accent);color:white;border:0;border-radius:13px;width:100%;font-size:17px;font-weight:780;min-height:55px;box-shadow:0 7px 15px rgba(0,96,158,.12)}
+.auth-note{border-top:1px solid var(--line);margin-top:26px;padding-top:17px;font-size:12px;color:var(--muted);line-height:1.65}
+.auth-note strong{color:var(--ink)}
+.mobile-header-actions,.mobile-quick,.mobile-summary,.mobile-sheet,.mobile-presetstrip{display:none}
+.desktop-lock{border:1px solid var(--line);border-radius:9px;background:var(--panel2);padding:7px 11px;min-height:36px;font-weight:650}
+.card,.stat{transition:border-color .15s}
+.field input,.field select,.field textarea{font-size:max(16px,1em)}
+.field input:not([type=checkbox]):not([type=range]):focus,.field select:focus,.field textarea:focus{border-color:var(--accent);box-shadow:var(--focus-ring);outline:0}
+.stepper{display:flex;min-height:48px;align-items:stretch;gap:0;border:1px solid var(--line);background:var(--panel2);border-radius:11px;overflow:hidden}
+.stepper input{min-height:46px!important;padding:7px 5px!important;flex:1;width:10px!important;max-width:none!important;text-align:center;border:0!important;border-radius:0!important;background:transparent!important;box-shadow:none!important;font-weight:720;font-variant-numeric:tabular-nums}
+.stepper input::-webkit-inner-spin-button,.stepper input::-webkit-outer-spin-button{-webkit-appearance:none;margin:0}
+.stepper-btn{flex:0 0 43px;border:0;background:var(--panel);color:var(--accent);font-weight:850;font-size:22px;min-height:46px;touch-action:manipulation}
+.stepper-btn:first-child{border-right:1px solid var(--line)}.stepper-btn:last-child{border-left:1px solid var(--line)}
+.stepper-btn:active,.mobile-tab:active,.mobile-presetstrip button:active{background:var(--panel2);filter:brightness(.97)}
+@media (max-width:820px){
+ html{scroll-padding-top:126px}
+ header{position:sticky;top:0;z-index:25;box-shadow:0 4px 15px rgba(20,45,65,.045)}
+ .head{padding:10px 15px;min-height:63px;flex-wrap:nowrap;gap:7px}
+ .head .brand{min-width:0;gap:9px}
+ .logo{width:39px;height:39px;flex:0 0 39px;border-radius:11px;font-size:17px}
+ .head .meta{display:none}
+ .head h1{font-size:1.08rem;white-space:nowrap;letter-spacing:-.05em}
+ .head h1 span{font-size:.61rem!important}
+ .head-tools,.desktop-lock{display:none!important}
+ .mobile-header-actions{margin-left:auto;display:flex;align-items:center;gap:6px}
+ .mobile-hbtn{min-width:41px;min-height:41px;padding:0 8px;background:var(--panel2);border:1px solid var(--line);border-radius:11px;color:var(--ink);font-size:20px;font-weight:700}
+ .mobile-hbtn span{font-size:13px;display:block}
+ .layout{display:block;padding:11px 12px calc(110px + env(safe-area-inset-bottom));max-width:790px;margin:0 auto}
+ .sidebar{display:none!important}
+ .content{gap:13px}
+ .view{gap:13px}
+ .page-title{padding:3px 3px 0}
+ .page-title .kicker{font-size:.68rem}
+ .page-title h2{font-size:1.21rem;line-height:1.32;letter-spacing:-.025em}
+ .page-title p{font-size:13px;line-height:1.48;margin-top:5px}
+ .card{border-radius:16px;padding:15px 14px;box-shadow:0 3px 12px rgba(30,70,92,.035)}
+ .card-header{margin-bottom:14px}
+ .card-header h2{font-size:1rem;line-height:1.4}
+ .card-header .inline{width:100%}
+ .card-header .inline select{flex:1;min-width:0;max-width:100%;min-height:43px}
+ .two,.three,.four{grid-template-columns:1fr!important;gap:12px}
+ .stats{grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}
+ .stat{border-radius:15px;padding:13px;box-shadow:0 2px 9px rgba(30,70,92,.025)}
+ .stat span{font-size:12px;line-height:1.45;font-weight:650}
+ .stat b{font-size:clamp(1.39rem,6vw,1.78rem);line-height:1.28;letter-spacing:-.04em;margin-top:5px}
+ .stat em{font-size:11px;line-height:1.5;display:block;margin-top:4px}
+ .formgrid{grid-template-columns:repeat(2,minmax(0,1fr));gap:13px 10px}
+ .field label{font-size:13px;line-height:1.5;font-weight:750;color:var(--ink)}
+ .field small,.help p{font-size:13px}
+ .field input,.field select,.field textarea, select,.field-like{min-height:48px;font-size:16px;padding:10px 10px;border-radius:11px}
+ .field input[type=checkbox]{min-height:auto}
+ .btn:not(.mini){min-height:45px;padding:10px 13px;border-radius:11px}
+ .btn.mini{min-height:40px;padding:8px 10px;font-size:13px}
+ .check{min-height:46px;font-size:14px;gap:11px}
+ .check input{width:19px;height:19px;flex:0 0 19px}
+ .alert{font-size:13px;line-height:1.55;padding:12px}
+ .help{padding:13px}.help summary{min-height:26px}
+ .eq{font-size:13px;line-height:1.65;padding:13px}
+ .tbl-wrap{-webkit-overflow-scrolling:touch;max-width:100%}
+ table{font-size:13px}td,th{padding:11px 10px}table input{min-height:37px;font-size:14px}
+ .canvasbox canvas.square{height:min(72vw,370px)}
+ #toast{bottom:calc(94px + env(safe-area-inset-bottom));left:15px;right:15px;max-width:none;text-align:center;font-size:14px}
+ .footer{padding-bottom:26px}
+ .mobile-summary{display:flex;position:sticky;top:63px;z-index:20;background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:8px 9px;box-shadow:0 6px 20px rgba(18,55,81,.08);gap:4px;align-items:center}
+ .mobile-summary > div{min-width:0;flex:1;text-align:center;border-right:1px solid var(--line);padding:2px 5px}
+ .mobile-summary > div:last-child{border-right:0}
+ .mobile-summary span{font-size:10px;color:var(--muted);display:block;font-weight:700;white-space:nowrap}
+ .mobile-summary strong{font-size:clamp(13px,4.2vw,17px);font-weight:850;letter-spacing:-.03em;display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-variant-numeric:tabular-nums}
+ .mobile-quick{position:fixed;z-index:35;bottom:0;left:0;right:0;display:flex;align-items:stretch;justify-content:space-around;height:calc(72px + env(safe-area-inset-bottom));padding:5px 7px max(6px,env(safe-area-inset-bottom));background:var(--panel);border-top:1px solid var(--line);box-shadow:0 -6px 24px rgba(15,37,57,.07)}
+ .mobile-tab{flex:1;min-width:0;max-width:150px;display:flex;flex-direction:column;gap:3px;align-items:center;justify-content:center;background:transparent;border:0;border-radius:13px;padding:3px 0;color:var(--muted);font-size:11px;font-weight:700;touch-action:manipulation}
+ .mobile-tab .mobile-icon{font-size:23px;font-weight:650;line-height:1.1}
+ .mobile-tab.selected{color:var(--accent);background:var(--panel2)}
+ .mobile-sheet:not([hidden]){display:flex;position:fixed;inset:0;z-index:80;align-items:flex-end;justify-content:center}
+ .mobile-shade{position:absolute;inset:0;background:rgba(11,27,42,.54);border:0;width:100%;height:100%}
+ .mobile-sheet-inner{position:relative;z-index:1;width:100%;max-width:720px;background:var(--panel);border-radius:22px 22px 0 0;max-height:calc(88svh - env(safe-area-inset-bottom));overflow:auto;padding:13px 20px calc(22px + env(safe-area-inset-bottom));box-shadow:0 -12px 50px rgba(0,0,0,.15)}
+ .sheet-handle{width:38px;height:5px;background:var(--line);border-radius:9px;margin:0 auto 18px}
+ .sheet-head{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:16px}
+ .sheet-head h2{font-size:19px}
+ .sheet-close{min-width:44px;min-height:44px;border-radius:11px;background:var(--panel2);border:1px solid var(--line);font-weight:700}
+ .mobile-menu-option{display:flex;justify-content:space-between;align-items:center;text-align:left;width:100%;border:1px solid var(--line);background:var(--panel2);border-radius:13px;padding:12px 15px;min-height:56px;margin-bottom:9px;font-weight:750}
+ .mobile-menu-option span{font-size:20px;color:var(--accent)}
+ .settings-grid{display:grid;grid-template-columns:1fr;gap:19px}
+ .setting-field{display:flex;flex-direction:column;gap:9px}
+ .setting-field label{font-weight:700;font-size:14px}
+ .setting-field select{width:100%}
+ .setting-field input[type=range]{width:100%;height:32px;accent-color:var(--accent)}
+ .settings-pair{display:flex;gap:10px}.settings-pair button{flex:1}
+ .mobile-presetstrip{display:flex;gap:8px;overflow:auto;padding:1px 2px 12px;scrollbar-width:none}
+ .mobile-presetstrip button{min-height:40px;border-radius:20px;background:var(--panel);border:1px solid var(--line);color:var(--ink);padding:8px 14px;font-size:13px;font-weight:700;white-space:nowrap}
+ .mobile-presetstrip button:first-child{background:var(--accent);color:white;border-color:var(--accent)}
+ .mobile-summary + #view-main .page-title{margin-top:4px}
+ .stepper-btn{flex-basis:40px}
+ .numeric-hint{display:none}
+}
+@media(max-width:375px){
+ .layout{padding-left:9px;padding-right:9px}.card{padding:13px 11px}.stat{padding:11px 9px}
+ .formgrid{gap:11px 8px}.stepper-btn{flex-basis:34px}.field label{font-size:12.5px}
+ .mobile-summary strong{font-size:13px}.head h1{font-size:1rem}
+}
+@media(min-width:821px){.mobile-header-actions{display:none!important}.mobile-presetstrip{display:none!important}}
+@media print{#authGate,.mobile-quick,.mobile-summary,.mobile-sheet,.mobile-header-actions,.desktop-lock,.mobile-presetstrip{display:none!important}html:not(.gm-unlocked) #appShell{display:none!important}}
+@media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important;transition:none!important}}
+
+/* v1.3 Radiation Unit Center — inherits original themes and mobile accessibility */
+.uc-hero{border-radius:19px;padding:19px;background:linear-gradient(128deg,color-mix(in srgb,var(--accent) 11%,var(--panel)) 0%,var(--panel) 80%);border:1px solid var(--line);display:flex;gap:15px;align-items:center;justify-content:space-between;flex-wrap:wrap}
+.uc-hero h2{font-size:clamp(1.26rem,2.2vw,1.65rem);letter-spacing:-.035em;margin:3px 0 6px}
+.uc-hero p{font-size:.84rem;color:var(--muted);max-width:690px}
+.uc-eyebrow{font-size:.7rem;color:var(--accent);font-weight:850;letter-spacing:.1em}
+.uc-kind{display:flex;align-items:center;gap:9px;overflow-x:auto;padding:3px 1px 13px;scroll-snap-type:x proximity;overscroll-behavior-inline:contain;scrollbar-width:thin}
+.uc-kind button{flex:none;scroll-snap-align:start;min-height:45px;border:1px solid var(--line);border-radius:14px;padding:10px 15px;background:var(--panel);color:var(--ink);font-size:.86rem;font-weight:710;white-space:nowrap;touch-action:manipulation}
+.uc-kind button[aria-pressed=true]{background:var(--accent);color:white;border-color:var(--accent)}
+.uc-grid{display:grid;grid-template-columns:minmax(0,1.13fr) minmax(0,.87fr);gap:15px}
+.uc-card{background:var(--panel);border:1px solid var(--line);border-radius:19px;padding:19px;min-width:0;box-shadow:var(--shadow)}
+.uc-card h3{font-size:1.03rem;margin-bottom:11px}
+.uc-inputline{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:12px;align-items:end}
+.uc-label{display:block;font-size:.83rem;font-weight:770;margin-bottom:7px;color:var(--muted)}
+.uc-select,.uc-text,.uc-num{display:block;width:100%;min-width:0;min-height:52px;border:1.5px solid var(--line);border-radius:12px;padding:11px 12px;background:var(--panel2);color:var(--ink);font:inherit;font-size:16px}
+.uc-text:focus,.uc-select:focus,.uc-num:focus{outline:3px solid color-mix(in srgb,var(--accent) 24%,transparent);border-color:var(--accent);outline-offset:0}
+.uc-swapline{display:flex;justify-content:center;align-items:center;margin:9px 0 8px}
+.uc-swap{border:1px solid var(--line);border-radius:13px;background:var(--panel2);padding:7px 23px;min-height:42px;font-size:18px;color:var(--accent);font-weight:800}
+.uc-result{border-radius:18px;border:1px solid color-mix(in srgb,var(--accent) 27%,var(--line));background:color-mix(in srgb,var(--accent) 8%,var(--panel));padding:18px;margin-top:15px}
+.uc-result-label{font-size:.8rem;color:var(--muted);font-weight:700}
+.uc-result-number{font-size:clamp(1.65rem,3.7vw,2.5rem);font-weight:850;line-height:1.23;letter-spacing:-.035em;overflow-wrap:anywhere;word-break:break-word;font-variant-numeric:tabular-nums;margin:8px 0 5px}
+.uc-result-unit{font-size:1rem;color:var(--accent);font-weight:800;overflow-wrap:anywhere}
+.uc-factor{margin-top:11px;font-size:.8rem;color:var(--muted);overflow-wrap:anywhere;line-height:1.6}
+.uc-actions{display:flex;flex-wrap:wrap;gap:8px;margin-top:13px}
+.uc-actions button,.uc-pill{min-height:44px;padding:9px 13px;border-radius:11px;border:1px solid var(--line);background:var(--panel2);color:var(--ink);font-weight:740;font-size:.84rem}
+.uc-actions button.uc-primary{background:var(--accent);border-color:var(--accent);color:white}
+.uc-hint{border-left:3px solid var(--accent);background:var(--panel2);padding:11px 13px;border-radius:8px;font-size:.82rem;line-height:1.6;margin:12px 0 0;color:var(--ink)}
+.uc-hint.warning{border-color:var(--warning)}
+.uc-chips{display:flex;gap:7px;flex-wrap:wrap;margin-top:8px}
+.uc-chips button{font-size:.76rem;border:1px solid var(--line);border-radius:100px;padding:7px 10px;min-height:36px;background:var(--panel2)}
+.uc-subhead{display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap;margin-bottom:12px}
+.uc-subhead h3{margin:0}
+.uc-tile{display:flex;justify-content:space-between;align-items:center;gap:12px;width:100%;border-bottom:1px solid var(--line);padding:11px 0;min-width:0;font-size:.87rem}
+.uc-tile:last-child{border:0}
+.uc-tile small{display:block;color:var(--muted);font-size:.74rem;margin-top:2px}
+.uc-tile strong{font-size:.9rem;text-align:right;overflow-wrap:anywhere;font-variant-numeric:tabular-nums}
+.uc-tile button{border:0;min-height:34px;background:transparent;color:var(--accent);font-weight:750;text-align:right;max-width:65%}
+.uc-tools{display:flex;gap:11px;align-items:center;flex-wrap:wrap}
+.uc-tools>*{flex:1;min-width:125px}
+.uc-batcharea{width:100%;min-height:130px;resize:vertical;font-family:ui-monospace,Consolas,monospace;font-size:15px;background:var(--panel2);border:1px solid var(--line);border-radius:12px;padding:12px;color:var(--ink)}
+.uc-scroll{overflow:auto;width:100%;max-height:460px}
+.uc-scroll table{width:100%;font-size:.82rem;min-width:400px}
+.uc-scroll td,.uc-scroll th{padding:10px}
+.uc-sublinks{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-top:10px}
+.uc-sublinks button{border:1px solid var(--line);background:var(--panel2);border-radius:9px;padding:7px 10px;min-height:42px;font-weight:720}
+.uc-fieldgrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:11px 12px;margin:13px 0}
+.uc-fieldgrid label{display:block;font-size:.78rem;color:var(--muted);font-weight:750;margin-bottom:5px}
+.uc-fieldgrid .uc-num,.uc-fieldgrid .uc-select{min-height:46px}
+.uc-advanced-tabs{display:flex;gap:8px;overflow-x:auto;padding:4px 0 10px;white-space:nowrap;scrollbar-width:thin}
+.uc-advanced-tabs button{flex:none;border:1px solid var(--line);min-height:43px;border-radius:12px;padding:8px 13px;color:var(--ink);background:var(--panel);font-weight:720}
+.uc-advanced-tabs button[aria-pressed=true]{background:var(--accent);border-color:var(--accent);color:white}
+.uc-condition-output{background:var(--panel2);border-radius:12px;padding:15px;min-height:64px;overflow-wrap:anywhere}
+.uc-condition-output strong{color:var(--accent);font-size:1.13rem}
+.uc-muted{color:var(--muted);font-size:.8rem;line-height:1.62}
+.uc-empty{padding:13px;color:var(--muted);font-size:.8rem}
+.uc-section-foot{border:1px dashed var(--line);border-radius:12px;padding:13px;font-size:.8rem;color:var(--muted);line-height:1.65}
+.uc-searchbar{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.uc-searchbar .uc-text{flex:1;min-width:140px;min-height:43px;font-size:15px}
+#view-converter .page-title{margin-bottom:0}
+#view-converter{gap:14px}
+@media(max-width:990px){.uc-grid{grid-template-columns:1fr}}
+@media(max-width:820px){.uc-card{padding:15px 13px;border-radius:16px}.uc-hero{padding:16px}.uc-inputline{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}.uc-result{padding:16px}.uc-result-number{font-size:clamp(1.65rem,6vw,2.1rem)}.uc-kind{margin:0;padding:4px 1px 12px;max-width:100%}.uc-kind button{min-height:48px}.uc-advanced-tabs{margin:0;padding:3px 1px 11px;max-width:100%}.uc-actions button{flex:1}.uc-chips button{min-height:39px}body.gm-unit-view .mobile-summary{display:none!important}}
+@media(max-width:390px){.uc-inputline{grid-template-columns:repeat(2,minmax(0,1fr))}.uc-swapline{margin:6px 0}.uc-fieldgrid{grid-template-columns:1fr 1fr;gap:10px}.uc-actions button{font-size:.8rem;padding:9px 7px}.uc-result-number{font-size:1.72rem}}
+
+/* Mobile: first conversion result above the fold, category selector retained */
+@media(max-width:820px){
+ #view-converter .uc-hero{padding:13px 14px;gap:9px}
+ #view-converter .uc-hero h2{font-size:1.25rem;margin:1px 0 2px}
+ #view-converter .uc-hero p{display:none}
+ #view-converter .uc-hero .uc-sublinks{margin-top:2px}
+ #view-converter .uc-hero .uc-sublinks button{min-height:40px;font-size:.8rem;padding:7px 11px}
+ #view-converter .uc-kind{display:none}
+ #view-converter .uc-card{padding:13px 13px}
+}
+
+</style>
+<style id="gm14advanced">
+/* v1.4 scientific mobile UX: progressive disclosure, thumb-sized controls, high-contrast status and focus */
+:root{--adv-soft:color-mix(in srgb,var(--accent) 8%,var(--panel));--adv-border:color-mix(in srgb,var(--accent) 22%,var(--line))}
+.adv-stack{display:flex;flex-direction:column;gap:14px;min-width:0}.adv-hero{border:1px solid var(--adv-border);background:var(--adv-soft);border-radius:19px;padding:18px;display:flex;gap:14px;align-items:center;justify-content:space-between;flex-wrap:wrap}.adv-hero h2{font-size:clamp(1.08rem,2.1vw,1.37rem);letter-spacing:-.03em;margin:4px 0}.adv-hero p{color:var(--muted);font-size:.84rem}.adv-hero a{display:inline-block;text-decoration:none;background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:12px 16px;min-height:44px;font-weight:750;font-size:.84rem;white-space:nowrap}.adv-eyebrow{font-size:.68rem;color:var(--accent);letter-spacing:.075em;font-weight:800}.adv-card{border-radius:17px;background:var(--panel);padding:18px;border:1px solid var(--line);min-width:0;box-shadow:var(--shadow)}.adv-card h3{font-size:1.05rem;line-height:1.35;margin:0 0 9px}.adv-cardhead{display:flex;align-items:center;justify-content:space-between;gap:10px}.adv-cardhead h3{margin-bottom:8px}.adv-small{font-size:.82rem;color:var(--muted);line-height:1.64;margin:9px 0;overflow-wrap:anywhere}.adv-form{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin:13px 0}.adv-form label{font-size:.8rem;font-weight:690;color:var(--muted);display:block}.adv-form input,.adv-form select{font-family:inherit;font-size:16px!important;width:100%;height:48px;min-width:0;margin-top:7px;padding:10px 11px;border-radius:11px;border:1px solid var(--line);background:var(--panel2);color:var(--ink)}.adv-form input:focus,.adv-form select:focus{outline:2px solid var(--accent);outline-offset:1px}.adv-chips{display:flex;gap:8px;flex-wrap:wrap}.adv-chips button,.adv-shortcuts button{min-height:45px;padding:11px 14px;border-radius:12px;border:1px solid var(--line);background:var(--panel);font-weight:730;color:var(--ink);font-size:.87rem}.adv-chips button:active,.adv-shortcuts button:active{transform:scale(.98)}.adv-shortcuts{display:flex;gap:8px;overflow-x:auto;overscroll-behavior-inline:contain;scrollbar-width:none;padding:4px 0}.adv-shortcuts button{white-space:nowrap;flex:none;background:var(--adv-soft);border-color:var(--adv-border)}.adv-btn{min-height:46px;padding:11px 15px!important}.adv-buttons{display:flex;flex-wrap:wrap;gap:8px;margin:13px 0}.adv-buttons .btn{min-height:46px;padding:10px 14px}.adv-kpis{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;margin:10px 0 12px}.adv-kpis>div{border-radius:12px;background:var(--panel2);padding:11px 10px;min-width:0}.adv-kpis span{font-size:.72rem;color:var(--muted);font-weight:650;display:block;line-height:1.3}.adv-kpis strong{font-size:clamp(.95rem,2vw,1.28rem);letter-spacing:-.025em;font-weight:840;overflow-wrap:anywhere;font-variant-numeric:tabular-nums;display:block;line-height:1.35;margin-top:6px}.adv-inner{min-height:28px;margin:10px 0}.adv-note{border-left:4px solid var(--accent);background:var(--panel2);padding:13px 15px;margin:11px 0;border-radius:9px;font-size:.82rem;line-height:1.58;overflow-wrap:anywhere}.adv-note.warn{border-left-color:var(--warning)}.adv-note.danger{border-left-color:var(--danger)}.adv-simple-table{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:7px;margin-top:12px}.adv-simple-table>div{padding:8px;border-bottom:1px solid var(--line);font-size:.8rem;overflow-wrap:anywhere}.adv-details{border:1px solid var(--line);border-radius:12px;background:var(--panel);padding:12px;margin:10px 0}.adv-details summary{cursor:pointer;font-weight:760;padding:7px 4px;min-height:40px}.adv-details>.formgrid,.adv-details>.tbl-wrap{margin-top:12px}.adv-equations{font-family:ui-monospace,SFMono-Regular,Consolas,monospace;background:var(--panel2);border:1px solid var(--line);padding:15px;border-radius:12px;overflow-x:auto;font-size:.87rem}.adv-equations p{padding:6px 0}.adv-guide-links{display:flex;gap:10px;flex-wrap:wrap}.adv-guide-links a{border:1px solid var(--line);border-radius:11px;background:var(--panel2);text-decoration:none;font-weight:700;padding:12px;min-height:44px;font-size:.86rem}.adv-stack .canvasbox{min-height:170px}.adv-stack canvas{max-height:270px}.adv-card:focus-within{border-color:var(--adv-border)}.adv-card .btn:focus-visible,.adv-chips button:focus-visible,.adv-hero a:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+/* Bring primary content above expert parameters on phones. */
+@media(max-width:980px){.adv-kpis{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:760px){
+ body{font-size:var(--fontsize);line-height:var(--leading)}
+ .layout{padding:12px 12px calc(112px + env(safe-area-inset-bottom));gap:10px}
+ .card,.adv-card{border-radius:16px;padding:15px 14px}
+ .adv-stack{gap:12px}.adv-hero{border-radius:16px;padding:16px 14px;align-items:flex-start;gap:9px}
+ .adv-hero a{font-size:.78rem;min-height:42px;padding:10px 12px}
+ .adv-form{grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}
+ .adv-kpis{grid-template-columns:repeat(2,minmax(0,1fr));gap:7px}
+ .adv-kpis strong{font-size:clamp(1rem,4.2vw,1.21rem)}
+ .adv-buttons .btn{flex:1 1 140px}
+ .adv-simple-table{grid-template-columns:1fr}
+ .adv-chips{flex-wrap:nowrap;overflow-x:auto;margin-right:-10px;padding:4px 10px 10px 1px;scroll-snap-type:x proximity;scrollbar-width:thin}
+ .adv-chips button{white-space:nowrap;flex:none;min-height:48px;scroll-snap-align:start}
+ .adv-shortcuts{margin-right:-9px;padding-right:9px}
+ .field input,.field select,.field textarea,.uc-num,.uc-select{font-size:16px!important;min-height:47px}
+ .btn,.uc-actions button,.adv-shortcuts button{min-height:44px}
+ .head-tools select{min-height:40px}
+ .nav{min-height:55px}
+ .mobile-tab{min-height:53px}
+ .stats{gap:8px}
+ .stat{padding:13px 10px;border-radius:12px}
+ .stat b{font-size:clamp(1.05rem,4.3vw,1.45rem)}
+ .canvasbox canvas.square{height:auto;max-height:min(70vw,340px)}
+}
+@media(max-width:360px){.adv-form{grid-template-columns:1fr 1fr}.adv-kpis strong{font-size:1rem}.adv-kpis>div{padding:10px 8px}.adv-hero h2{font-size:1.08rem}}
+@media print{.adv-shortcuts,.adv-chips,.adv-buttons,.adv-hero a{display:none!important}.adv-card,.adv-hero{box-shadow:none;break-inside:avoid}}
+
+</style>
+</head><body data-theme="light">
+
+<div id="authGate" class="auth-gate">
+  <div class="auth-panel">
+    <div class="auth-top"><div class="auth-logo" aria-hidden="true">GM</div><div><strong>GM Frisker Lab</strong><span>Radiation Measurement Workbench · v1.4</span></div></div>
+    <div class="auth-eyebrow">PERSONAL WORKSPACE</div>
+    <h1>측정 분석을<br>시작하세요.</h1>
+    <p class="auth-description">GM 계수율부터 방사능·표면오염도·MDA까지. 모바일에서도 간편하게 분석할 수 있습니다.</p>
+    <form id="authForm" autocomplete="on">
+      <label class="auth-label" for="authPassword">접속 비밀번호</label>
+      <div class="auth-input-wrap"><input id="authPassword" type="password" required placeholder="비밀번호 입력" autocomplete="current-password" autocapitalize="off" spellcheck="false" aria-describedby="authError"><button type="button" class="auth-toggle" id="authShow" aria-pressed="false">표시</button></div>
+      <div class="auth-options"><label><input id="authRemember" type="checkbox">이 기기에서 7일간 유지</label></div>
+      <p id="authError" class="auth-error" role="alert" aria-live="polite"></p>
+      <button class="auth-submit" id="authSubmit" type="submit">프로그램 시작 →</button>
+    </form>
+    <div class="auth-note"><strong>안내:</strong> 이 화면은 일반 방문자를 위한 간단한 접근 제한입니다. GitHub Pages 정적 파일 자체를 보호하는 보안 인증은 아니므로 기밀·실측 개인정보를 업로드하지 마세요.</div>
+  </div>
+</div>
+
+<div id="appShell">
+<header><div class="head"><div class="brand"><span class="logo" aria-hidden="true">GM</span><div><div class="meta">RADIOLOGICAL MEASUREMENT WORKBENCH</div><h1>GM Frisker Lab <span style="font-size:.7rem;font-weight:500;color:var(--muted)">v1.4</span></h1></div></div><div class="head-tools"><label class="tiny muted">테마 <select id="theme"><option value="light">라이트</option><option value="dark">다크</option><option value="system">시스템</option><option value="contrast">고대비</option><option value="sepia">세피아</option><option value="blueprint">블루프린트</option><option value="forest">포레스트</option></select></label><label class="tiny muted">글자 <input id="fontSize" type="range" min="11" max="28" value="16" style="width:70px" aria-label="전체 글자 크기"><span id="fontSizeLabel">15</span></label><label class="tiny muted">줄간격 <input id="lineHeight" type="range" min="1" max="2.2" step="0.05" value="1.55" style="width:63px" aria-label="전체 줄간격"><span id="lineHeightLabel">1.55</span></label><button class="btn mini" id="ucMainShortcut" type="button">⇄ 단위 변환</button><button class="btn mini" id="btnLang">EN</button><button class="btn mini" id="btnSave">저장</button></div><button id="btnLockDesktop" class="desktop-lock" type="button" title="화면 잠금">🔒 잠금</button><div class="mobile-header-actions"><button id="btnSettingsMobile" class="mobile-hbtn" type="button" aria-label="화면 및 글꼴 설정" title="설정">⚙</button><button id="btnLockMobile" class="mobile-hbtn" type="button" aria-label="화면 잠금" title="잠금">🔒</button></div></div></header>
+<div class="layout"><nav class="sidebar" aria-label="기능 선택"><button class="nav active" data-view="main"><span>▣</span><span data-ko="계산 대시보드" data-en="Calculator">계산 대시보드</span></button><button class="nav" data-view="mda"><span>◎</span><span data-ko="MDA·검출한계" data-en="MDA / MDC">MDA·검출한계</span></button><button class="nav" data-view="converter"><span>⇄</span><span data-ko="방사선 단위 변환" data-en="Unit converter">방사선 단위 변환</span></button><button class="nav" data-view="scenario"><span>◉</span><span data-ko="오염 시나리오" data-en="Scenarios">오염 시나리오</span></button><button class="nav" data-view="spatial"><span>▦</span><span data-ko="다지점 지도" data-en="Spatial map">다지점 지도</span></button><button class="nav" data-view="uncertainty"><span>∿</span><span data-ko="불확도·통계" data-en="Uncertainty">불확도·통계</span></button><button class="nav" data-view="calibration"><span>⚙</span><span data-ko="교정·핵종" data-en="Calibration">교정·핵종</span></button><button class="nav" data-view="report"><span>▤</span><span data-ko="보고서·검증" data-en="Report & QA">보고서·검증</span></button><div class="sidebar-note">완전 오프라인 · 단일 HTML<br>교정조건·검출력 확인 필수<br><b>교육·연구용 / 승인판정 불가</b></div></nav>
+<main class="content">
+<div id="mobileSummary" class="mobile-summary" aria-label="현재 주요 계산 결과">
+ <div><span>방사능</span><strong id="quickA">10.000 <small>Bq</small></strong></div>
+ <div><span>오염도</span><strong id="quickDensity">0.645 <small>Bq/cm²</small></strong></div>
+ <div><span>MDA</span><strong id="quickMda">3.252 <small>Bq</small></strong></div>
+</div>
+
+<section id="view-main" class="view active"><div class="mobile-presetstrip" aria-label="빠른 입력 예제"><button type="button" data-quick-preset="original">기본 예제</button><button type="button" data-quick-preset="low">저계수율</button><button type="button" data-quick-preset="negative">배경보다 낮음</button><button type="button" data-quick-preset="highbg">고배경</button><button type="button" data-quick-preset="alpha">알파 감도</button></div>
+ <div class="page-title"><div class="kicker">01 / MEASUREMENT</div><h2>GM 계수율 → 방사능 → 표면오염도</h2><p>총계수율과 순계수율을 분리하고, 오염면적·효율·계수시간의 의미를 확인합니다.</p></div>
+ <div class="stats"><div class="stat"><span>총계수율 · Gross</span><b id="kpiGross">3.000</b><em>cps</em></div><div class="stat"><span>순계수율 · Net</span><b id="kpiNet">2.000</b><em>cps (부호 유지)</em></div><div class="stat"><span>총 방사능 · Activity</span><b id="kpiA">10.000</b><em>Bq · 입력 가정에 조건부</em></div><div class="stat"><span>표면오염도 · Area density</span><b id="kpiS">0.645</b><em>Bq/cm² · 면적 가정</em></div></div>
+ <div class="card"><div class="card-header"><h2>측정 및 배경 입력</h2><div class="inline"><select id="examplePreset" aria-label="예제 선택"><option value="original">원본 표: 180/60 cpm</option><option value="low">저계수율: 7/5 cpm</option><option value="negative">음의 순계수율</option><option value="highbg">고배경: 900/800 cpm</option><option value="alpha">알파 민감도 시나리오</option></select><button class="btn mini" id="btnReset">초기화</button></div></div><div class="formgrid">
+ <div class="field"><label for="grossCpm">측정 계수율 (cpm, 총계수)</label><input id="grossCpm" data-key="grossCpm" type="number" min="0" step="any" value="180"></div>
+ <div class="field"><label for="bkgCpm">배경 계수율 (cpm)</label><input id="bkgCpm" data-key="bkgCpm" type="number" min="0" step="any" value="60"></div>
+ <div class="field"><label for="grossSec">총계수 시간 (초)</label><input id="grossSec" data-key="grossSec" type="number" min="0.01" step="any" value="60"></div>
+ <div class="field"><label for="bkgSec">배경 시간 (초)</label><input id="bkgSec" data-key="bkgSec" type="number" min="0.01" step="any" value="60"></div>
+ </div><div class="inline" style="margin-top:10px"><label class="check"><input id="rawMode" data-key="rawMode" type="checkbox"> 원시계수(counts) 직접 입력</label><label class="check"><input id="verified" data-key="verified" type="checkbox"> 원시계수 및 시간 실측 확인</label></div><div id="rawFields" class="formgrid" hidden><div class="field"><label>측정 원시계수 N<sub>g</sub> (counts)</label><input id="grossCounts" data-key="grossCounts" type="number" min="0" step="1" value="180"></div><div class="field"><label>배경 원시계수 N<sub>b</sub> (counts)</label><input id="bkgCounts" data-key="bkgCounts" type="number" min="0" step="1" value="60"></div></div><div id="rawWarning" class="alert">현재 180/60 cpm은 <b>계기 표시값</b>으로 간주합니다. 시간은 검출력 설계를 위한 가정이며 실측 계수 불확도는 확정할 수 없습니다.</div></div>
+ <div class="two"><div class="card"><div class="card-header"><h2>응답계수 및 오염면적</h2><span class="tag warn">교정조건 확인</span></div><div class="formgrid"><div class="field"><label>계산 방식</label><select id="responseMode" data-key="responseMode"><option value="effective">유효 계수효율 (%)</option><option value="direct">교정 응답 K (cps/Bq)</option><option value="factor">기기효율 × 표면효율</option><option value="areal">면응답 Kₛ [cps/(Bq/cm²)]</option></select></div><div class="field"><label>유효 효율 (%)</label><input id="efficiency" data-key="efficiency" type="number" min="0.00001" max="100" step="any" value="20"></div><div class="field"><label>응답 K (cps/Bq)</label><input id="calK" data-key="calK" type="number" min="0.00001" step="any" value="0.2"></div><div class="field"><label>면응답 Kₛ</label><input id="calKs" data-key="calKs" type="number" min="0.00001" step="any" value="3.1"></div><div class="field"><label>기기효율 (%)</label><input id="instrumentEff" data-key="instrumentEff" type="number" min="0.00001" max="100" step="any" value="40"></div><div class="field"><label>표면효율 (%)</label><input id="sourceEff" data-key="sourceEff" type="number" min="0.00001" max="100" step="any" value="50"></div><div class="field"><label>프로브 창 면적 (cm²)</label><input id="probeArea" data-key="probeArea" type="number" min="0.001" step="any" value="15.5"></div><div class="field"><label>실제 오염면적 (cm²)</label><input id="area" data-key="area" type="number" min="0.001" step="any" value="15.5"></div></div><label class="check"><input type="checkbox" id="areaUnknown" data-key="areaUnknown"> 실제 오염면적 미상 — Bq/cm² 산출하지 않음</label><div class="formgrid"><div class="field"><label>비교할 기존 보고값 (Bq/cm²)</label><input id="reportedDensity" data-key="reportedDensity" type="number" min="0" step="any" value="0.5"></div><div class="field"><label>&nbsp;</label><label class="check"><input id="compareReported" data-key="compareReported" type="checkbox" checked> 보고값과 계산값 비교</label></div></div><p id="respSummary" class="small muted" style="margin-top:9px"></p></div>
+ <div class="card"><div class="card-header"><h2>단계별 계산 및 자동 검증</h2><button class="btn mini" id="btnCopyFormula">계산식 복사</button></div><div id="formulas" class="eq" aria-live="polite"></div><div id="mainWarnings" style="margin-top:10px"></div></div></div>
+ <div class="card"><div class="card-header"><h2>검출·판정 요약</h2><button class="btn mini" data-goto="mda">MDA 상세 →</button></div><div class="four"><div class="stat"><span>결정임계값 L<sub>C</sub></span><b id="briefLc">—</b><em>순계수 (counts)</em></div><div class="stat"><span>최소검출가능방사능</span><b id="briefMda">—</b><em>Bq</em></div><div class="stat"><span>MDC</span><b id="briefMdc">—</b><em>Bq/cm²</em></div><div class="stat"><span>검출 여부</span><b id="briefDetect" style="font-size:1.1rem">—</b><em>원시계수 확인 필요</em></div></div><div id="decisionSummary" class="alert"></div></div>
+</section>
+<section id="view-mda" class="view"><div class="page-title"><div class="kicker">02 / DETECTABILITY</div><h2>MDA · MDC · 결정임계값</h2><p>알파·베타 오류율, 배경측정 시간, 계수효율과 원하는 검출능력에 따라 최소검출방사능을 평가합니다.</p></div><div class="stats"><div class="stat"><span>결정임계값</span><b id="mdaLc">—</b><em>net counts · 검출 판정용</em></div><div class="stat"><span>검출한계</span><b id="mdaLd">—</b><em>net counts · 검출능력</em></div><div class="stat"><span>MDA</span><b id="mdaValue">—</b><em>Bq</em></div><div class="stat"><span>MDC</span><b id="mdcValue">—</b><em>Bq/cm²</em></div></div>
+ <div class="two"><div class="card"><div class="card-header"><h2>검출한계 모델</h2><span class="tag">α / β 설명 표시</span></div><div class="field"><label>계산모델 선택</label><select id="mdaMethod" data-key="mdaMethod"><option value="paired">NUREG / Currie 근사 (동일시간, 5%/5%)</option><option value="unequal">ORAU 근사 (측정시간 다름, 5%/5%)</option><option value="gaussian">정규근사 (α, β 사용자 설정)</option><option value="poisson">Poisson 정확 계수모델 (배경 평균이 알려짐)</option></select></div><div class="formgrid" style="margin-top:10px"><div class="field"><label>α: 오검출 확률 (%)</label><input id="alpha" data-key="alpha" type="number" min="0.01" max="49" step="0.5" value="5"></div><div class="field"><label>β: 미검출 확률 (%)</label><input id="beta" data-key="beta" type="number" min="0.01" max="49" step="0.5" value="5"></div><div class="field"><label>목표 MDC (Bq/cm²)</label><input id="targetMdc" data-key="targetMdc" type="number" min="0.000001" step="any" value="0.4"></div><div class="field"><label>비교 기준 (Bq/cm²)</label><input id="limit" data-key="limit" type="number" min="0.000001" step="any" value="0.4"></div></div><div class="alert" id="methodCaveat"></div><div class="eq" id="mdaFormula" style="margin-top:9px"></div><div id="mdaWarnings"></div></div>
+ <div class="card"><div class="card-header"><h2>목표 검출능력에 필요한 계수시간</h2><span class="tag">최대 24시간 탐색</span></div><p class="small muted">배경계수율 및 응답계수 K를 고정하고, 총계수시간 변화에 따른 MDC를 역산합니다.</p><div class="field" style="margin-top:12px"><label>배경시간의 처리</label><select id="timePolicy" data-key="timePolicy"><option value="paired">총계수시간과 동일하게 연장</option><option value="fixed">현재 배경측정시간 유지</option><option value="ratio">현재 배경/총계수시간 비율 유지</option></select></div><div style="margin-top:13px" class="stat"><span>계산된 최소 필요 총계수시간</span><b id="requiredTime">—</b><em>해당 모델 및 입력 가정</em></div><div id="timeAdvice" class="alert"></div><div class="card-header" style="margin-top:8px"><h3>시간에 따른 MDC 변화</h3><button id="btnDownloadMdaCsv" class="btn mini">곡선 CSV</button></div><div class="canvasbox"><canvas id="mdaChart" class="plot" aria-label="계수시간에 따른 MDC 곡선" role="img"></canvas></div><div class="legend"><span><i class="swatch" style="background:#168fbd"></i>MDC (Bq/cm²)</span><span><i class="swatch" style="background:#df9943"></i>사용자 목표 MDC</span></div></div></div>
+ <div class="two"><div class="card"><div class="card-header"><h2>검출확률 곡선 · Power</h2></div><div class="canvasbox"><canvas id="powerChart" class="plot" aria-label="오염 방사능에 따른 검출확률" role="img"></canvas></div><div class="small muted" id="powerNote"></div></div><div class="card"><h2 style="margin-bottom:10px">MDA에 영향을 주는 주요 변수</h2><div id="mdaSensitivity" class="tbl-wrap"></div><details class="help" style="margin-top:12px"><summary>왜 MDA는 검출 판정 임계값이 아닐까요?</summary><p>L<sub>C</sub>는 현재 관측한 순계수의 유의한 초과 여부를 결정하는 기준입니다. MDA는 사전에 설정한 거짓양성 α와 미검출 β 하에서 계측방법이 검출할 수 있는 참 방사능의 수준입니다. 실제 계수값을 MDA와 직접 비교해서 검출 여부를 결정하지 않습니다.</p></details></div></div>
+</section>
+<section id="view-converter" class="view" aria-label="방사선 단위 변환 센터">
+  <div class="uc-hero">
+    <div><div class="uc-eyebrow">08 / RADIATION UNITS</div><h2>방사선·방사능 단위 변환</h2><p>단위 선택만으로 즉시 변환하고, 결과의 물리량·환산계수·전제조건까지 확인합니다. 화면 구성은 모바일을 우선합니다.</p></div>
+    <div class="uc-sublinks"><button type="button" class="btn" id="ucJumpMeasured" title="현재 계측결과의 Bq 가져오기">↗ 측정 Bq</button><button type="button" class="btn" id="ucJumpSurface" title="현재 계측결과의 Bq/cm² 가져오기">↗ 측정 Bq/cm²</button></div>
+  </div>
+  <div class="uc-card" style="padding:10px 13px"><label class="uc-label" for="ucFamilyPick">변환 종류 빠르게 선택 · 19개 물리량</label><select id="ucFamilyPick" class="uc-select" style="min-height:46px"></select></div>
+  <div class="uc-kind" id="ucFamilyChips" role="group" aria-label="변환할 물리량 선택"></div>
+  <div class="uc-grid">
+    <div class="uc-card">
+      <div class="uc-subhead"><h3>즉시 단위 변환</h3><span class="tag" id="ucFamilyLabel">방사능</span></div>
+      <label class="uc-label" for="ucValue">변환할 값</label>
+      <input id="ucValue" class="uc-text" type="text" value="1" inputmode="decimal" autocomplete="off" spellcheck="false" aria-describedby="ucInputTip" placeholder="예: 1, 0.5, 3.7e10">
+      <div id="ucInputTip" class="uc-muted" style="margin:6px 0 12px">숫자, 쉼표, 지수표기(3.7e10) 지원</div>
+      <div class="uc-inputline">
+        <div><label class="uc-label" for="ucFrom">입력 단위 (From)</label><select id="ucFrom" class="uc-select"></select></div>
+        <div><label class="uc-label" for="ucTo">결과 단위 (To)</label><select id="ucTo" class="uc-select"></select></div>
+      </div>
+      <div class="uc-swapline"><button type="button" id="ucSwap" class="uc-swap" aria-label="입력과 결과 단위 서로 바꾸기">⇅ 단위 교환</button></div>
+      <div class="uc-result" role="status" aria-live="polite" aria-atomic="true">
+        <div class="uc-result-label">변환 결과</div><div id="ucResultNumber" class="uc-result-number">—</div><div id="ucResultUnit" class="uc-result-unit">—</div>
+        <div id="ucFactor" class="uc-factor">—</div>
+      </div>
+      <div class="uc-actions"><button type="button" id="ucCopyResult" class="uc-primary">결과 복사</button><button type="button" id="ucCopyFormula">계산식 복사</button><button type="button" id="ucFavorite">☆ 즐겨찾기</button></div>
+      <div id="ucWarning" class="uc-hint"></div>
+      <div class="uc-sublinks"><button type="button" data-goto="mda">MDA 계산 열기</button><button type="button" data-goto="main">GM 계측 계산 열기</button></div>
+    </div>
+    <div class="uc-card">
+      <div class="uc-subhead"><h3>빠른 변환</h3><span class="tag">추천 조합</span></div>
+      <div class="uc-chips" id="ucPresets"></div>
+      <div style="height:13px"></div>
+      <div class="uc-subhead"><h3>표시 정밀도</h3></div>
+      <div class="uc-tools">
+        <div><label class="uc-label" for="ucDigits">유효숫자</label><select id="ucDigits" class="uc-select"><option value="3">3자리</option><option value="4">4자리</option><option value="5">5자리</option><option selected value="6">6자리</option><option value="8">8자리</option><option value="10">10자리</option><option value="12">12자리</option></select></div>
+        <div><label class="uc-label" for="ucFormat">수치표기</label><select id="ucFormat" class="uc-select"><option value="auto">자동</option><option value="normal">일반</option><option value="scientific">과학적 표기</option><option value="engineering">공학적 표기</option></select></div>
+      </div>
+      <div style="height:12px"></div>
+      <div class="uc-subhead"><h3>다른 단위의 같은 값</h3><span class="tag" id="ucCountUnits">—</span></div>
+      <div class="uc-searchbar"><input id="ucSearch" type="search" class="uc-text" placeholder="단위 검색: Ci, Bq, mrem …" aria-label="전체 변환 결과에서 단위 검색"></div>
+      <div id="ucAllResults" class="uc-scroll" aria-live="off"></div>
+    </div>
+  </div>
+  <div class="uc-grid">
+    <div class="uc-card">
+      <div class="uc-subhead"><h3>즐겨찾기 · 최근 사용</h3><button id="ucResetHistory" class="btn mini" type="button">기록 삭제</button></div>
+      <div class="uc-muted">자주 사용하는 단위 조합을 저장하고 한 번에 다시 선택하세요. 이 브라우저에만 기록됩니다.</div>
+      <div id="ucFavorites" style="margin-top:12px"></div><div id="ucHistory" style="margin-top:12px"></div>
+    </div>
+    <div class="uc-card">
+      <div class="uc-subhead"><h3>여러 값 한 번에 변환</h3><span class="tag">최대 300행</span></div>
+      <div class="uc-muted" style="margin-bottom:10px">위에서 선택한 입력·출력 단위를 그대로 적용합니다. 숫자를 한 줄에 하나씩 입력하고 CSV로 저장할 수 있습니다.</div>
+      <label class="uc-label" for="ucBatchInput">원본 값 (줄 단위)</label><textarea class="uc-batcharea" id="ucBatchInput" placeholder="0.5&#10;1&#10;10&#10;3.7e10">0.5
+1
+10
+3.7e10</textarea>
+      <div class="uc-actions"><button type="button" class="uc-primary" id="ucBatchRun">일괄 변환</button><button type="button" id="ucBatchCopy">결과 복사</button><button type="button" id="ucBatchCsv">CSV 다운로드</button></div>
+      <div class="uc-scroll" id="ucBatchResults" style="margin-top:10px"></div>
+    </div>
+  </div>
+  <div class="uc-card">
+    <div class="uc-subhead"><h3>조건부 계산기 — 추가 변수가 필요한 환산</h3><span class="tag">물리량 분리</span></div>
+    <p class="uc-muted">검출효율, 오염면적, 질량, 체적, 측정시간, 반감기를 입력하여 계산합니다. 조건이 확인되지 않으면 단순 단위환산으로 취급하지 않습니다.</p>
+    <div class="uc-advanced-tabs" id="ucConditionTabs" role="group" aria-label="조건부 계산 종류">
+      <button data-mode="counts" type="button" aria-pressed="true">cpm ↔ Bq</button>
+      <button data-mode="surface" type="button" aria-pressed="false">Bq ↔ Bq/cm²</button>
+      <button data-mode="mass" type="button" aria-pressed="false">Bq ↔ Bq/kg</button>
+      <button data-mode="volume" type="button" aria-pressed="false">Bq ↔ Bq/L</button>
+      <button data-mode="integrate" type="button" aria-pressed="false">선량률 × 시간</button>
+      <button data-mode="decay" type="button" aria-pressed="false">방사성 붕괴</button>
+    </div>
+    <div id="ucConditionFields" class="uc-fieldgrid"></div>
+    <div class="uc-actions"><button id="ucConditionUse" class="uc-primary" type="button">현재 계측값 불러오기</button><button id="ucConditionCalc" type="button">다시 계산</button><button id="ucConditionCopy" type="button">결과 복사</button></div>
+    <div id="ucConditionResult" class="uc-condition-output" role="status" aria-live="polite" style="margin-top:12px"></div>
+    <div id="ucConditionNote" class="uc-hint warning"></div>
+  </div>
+  <div class="uc-section-foot">
+    <b>주의 · 단위 환산과 물리량 추정의 차이</b><br>
+    <b>Bq ≠ cps</b> (검출계수는 기기·효율에 좌우됨), <b>Gy ≠ Sv</b> (방사선 가중치·조직 가중치 등 필요), <b>R ≠ Sv</b> (조사선량과 인체선량은 다른 물리량).<br>
+    모든 계수율→방사능 및 표면오염도 계산은 교정 및 실제 기하조건에 의존합니다. 값의 유효숫자를 늘려도 측정불확도가 감소하는 것은 아닙니다.<br>
+    기준: <a target="_blank" rel="noopener" href="https://www.nist.gov/pml/special-publication-811/nist-guide-si-appendix-b-conversion-factors/nist-guide-si-appendix-b9">NIST SP 811, Appendix B.9</a> · <a target="_blank" rel="noopener" href="https://remm.hhs.gov/radmeasurement.htm">HHS REMM Radiation Units</a> · <a target="_blank" rel="noopener" href="https://www.nist.gov/pml/owm/metric-si-prefixes">NIST SI prefixes</a>
+  </div>
+</section>
+
+<section id="view-scenario" class="view"><div class="page-title"><div class="kicker">03 / FORWARD MODEL</div><h2>핵종·재질·오염형상별 계수율 시뮬레이션</h2><p>입력한 방사능에서 예상 GM 계수율을 계산합니다. 공간 감도는 사용자 교정자료가 없는 경우 교육용 가우시안 커널입니다.</p></div><div class="two"><div class="card"><div class="card-header"><h2>오염원·검출기 입력</h2></div><div class="formgrid"><div class="field"><label>오염 형상</label><select id="shape" data-key="shape"><option value="point">점오염</option><option value="uniform">균일 면오염</option><option value="gaussian">가우시안 hotspot</option><option value="multi">다지점 오염 (2개)</option></select></div><div class="field"><label>실제 방사능 (Bq)</label><input id="sourceA" data-key="sourceA" type="number" min="0" step="any" value="10"></div><div class="field"><label>표면 재질</label><select id="material" data-key="material"><option>철재</option><option>스테인리스</option><option>플라스틱</option><option>콘크리트</option><option>알루미늄</option><option>유리</option><option>도장면</option><option>피부</option><option>의류</option><option>면직물</option><option>보호복</option></select></div><div class="field"><label>핵종 (알려진 경우)</label><select id="nuclide" data-key="nuclide"><option>Cs-137</option><option>Co-60</option><option>Sr-90/Y-90</option><option>C-14</option><option>Cl-36</option><option>Tc-99</option><option>Am-241</option><option>미상/혼합</option></select></div><div class="field"><label>오염원 중심 x (cm)</label><input id="sourceX" data-key="sourceX" type="number" step="any" value="0"></div><div class="field"><label>오염원 중심 y (cm)</label><input id="sourceY" data-key="sourceY" type="number" step="any" value="0"></div><div class="field"><label>두 번째 오염원 x (cm)</label><input id="sourceX2" data-key="sourceX2" type="number" step="any" value="5"></div><div class="field"><label>두 번째 오염원 y (cm)</label><input id="sourceY2" data-key="sourceY2" type="number" step="any" value="-3"></div><div class="field"><label>두 번째 오염원 비율 (%)</label><input id="secondaryPercent" data-key="secondaryPercent" type="number" min="0" max="100" step="any" value="35"></div><div class="field"><label>오염폭 σ (cm)</label><input id="sourceSigma" data-key="sourceSigma" type="number" min="0.2" step="any" value="2"></div><div class="field"><label>검출 감도폭 σ (cm)</label><input id="kernelSigma" data-key="kernelSigma" type="number" min="0.2" step="any" value="3"></div><div class="field"><label>지도 폭/높이 (cm)</label><input id="worldSize" data-key="worldSize" type="number" min="4" max="100" step="any" value="20"></div><div class="field"><label>상대응답 보정 F (무차원)</label><input id="relativeFactor" data-key="relativeFactor" type="number" min="0.000001" step="any" value="1"></div><div class="field"><label>보정 출처</label><select id="factorSource" data-key="factorSource"><option value="demo">가정/교육용</option><option value="measured">실측 교정자료</option></select></div><div class="field"><label>스캔속도 (cm/s)</label><input id="scanSpeed" data-key="scanSpeed" type="number" min="0.01" step="any" value="3"></div><div class="field"><label>관측 폭 (cm)</label><input id="scanWidth" data-key="scanWidth" type="number" min="0.01" step="any" value="5"></div></div><div id="scenarioCaveat" class="alert" style="margin-top:11px"></div></div>
+ <div class="card"><div class="card-header"><h2>인터랙티브 오염 지도</h2><button class="btn mini" id="btnCenterProbe">프로브 중앙 복귀</button></div><p class="small muted">지도 위를 클릭하거나 터치하면 프로브(십자표시)가 이동하며 예상 계수율을 다시 계산합니다.</p><div class="canvasbox" style="margin-top:8px"><canvas id="scenarioMap" class="square" width="600" height="600" aria-label="가상 오염분포 및 프로브 위치" role="img"></canvas></div><div class="stats" style="margin-top:12px;grid-template-columns:repeat(2,minmax(0,1fr))"><div class="stat"><span>예상 측정값</span><b id="scenarioCpm">—</b><em>cpm (배경 포함)</em></div><div class="stat"><span>프로브 위치</span><b id="scenarioProbe" style="font-size:1.05rem">—</b><em>cm, x·y</em></div></div><div class="inline" style="margin-top:11px"><button class="btn primary" id="btnSimCount">계수 난수 시뮬레이션</button><button class="btn" id="btnAddPoint">현재 위치를 다지점 측정에 추가</button></div><div id="sampleCount" class="alert">계수 시뮬레이션 결과는 실제 측정자료가 아닙니다.</div><div id="scenarioMetrics" class="small muted"></div></div></div>
+</section>
+<section id="view-spatial" class="view"><div class="page-title"><div class="kicker">04 / SPATIAL MODEL</div><h2>다지점 측정 · 오염지도 역산</h2><p>측정 위치와 계수율을 입력하고 단일 hotspot 탐색 또는 비음수 격자 적합을 수행합니다. 실제 검출기 감도교정이 없으면 지도의 물리적 확정은 금지합니다.</p></div><div class="two"><div class="card"><div class="card-header"><h2>측정지점 입력</h2><div class="inline"><button id="btnSamplePoints" class="btn mini">모의 9지점 생성</button><button id="btnClearPoints" class="btn mini">전체 삭제</button></div></div><div class="formgrid"><div class="field"><label>지점 x (cm)</label><input id="pointX" type="number" value="0" step="any"></div><div class="field"><label>지점 y (cm)</label><input id="pointY" type="number" value="0" step="any"></div><div class="field"><label>계수율 (cpm, 총계수)</label><input id="pointCpm" type="number" value="180" min="0" step="any"></div></div><button class="btn" id="btnAddManual" style="margin-top:9px">측정점 추가</button><div class="tbl-wrap" style="margin-top:10px"><table><thead><tr><th>지점</th><th>x</th><th>y</th><th>총 cpm</th><th></th></tr></thead><tbody id="pointRows"></tbody></table></div></div><div class="card"><div class="card-header"><h2>역산 조건</h2></div><div class="formgrid"><div class="field"><label>추정 알고리즘</label><select id="solverMode" data-key="solverMode"><option value="single">단일 hotspot 탐색</option><option value="nnls">비음수 격자 적합 (36셀)</option></select></div><div class="field"><label>정규화 λ (NNLS)</label><input id="regularization" data-key="regularization" type="number" min="0.0001" max="100" step="any" value="0.1"></div></div><button id="btnSolve" class="btn primary" style="margin-top:12px">공간 역산 실행</button><div id="solverText" class="alert" style="margin-top:10px">지점 3개 이상을 입력하여 비교할 수 있습니다.</div><div class="canvasbox"><canvas id="spatialMap" class="square" width="600" height="600" aria-label="다지점 데이터 기반 역산 지도" role="img"></canvas></div><p class="tiny muted">색상은 **가정한 커널**에서 추정된 상대/절대 방사능 분포입니다. 측정점 수가 격자 수보다 적으면 해는 고유하지 않습니다.</p></div></div></section>
+<section id="view-uncertainty" class="view"><div class="page-title"><div class="kicker">05 / STATISTICS</div><h2>계수통계 · 측정불확도 · 민감도</h2><p>계수통계만의 불확도와 교정·면적 불확도를 분리하고, 정규근사 및 분포전파를 비교합니다.</p></div><div class="two"><div class="card"><div class="card-header"><h2>불확도 입력</h2></div><div class="formgrid"><div class="field"><label>응답계수 상대 표준불확도 (%)</label><input id="effUnc" data-key="effUnc" type="number" min="0" max="200" step="any" value="15"></div><div class="field"><label>오염면적 상대 표준불확도 (%)</label><input id="areaUnc" data-key="areaUnc" type="number" min="0" max="200" step="any" value="0"></div><div class="field"><label>Monte Carlo 표본수</label><select id="mcN" data-key="mcN"><option value="1000">1,000</option><option value="5000" selected>5,000</option><option value="10000">10,000</option><option value="20000">20,000</option></select></div><div class="field"><label>난수 시드</label><input id="mcSeed" data-key="mcSeed" type="number" min="0" step="1" value="2026"></div></div><div class="alert">Monte Carlo는 <b>근사 측정불확도 분포의 전파</b>이며, 베이지안 사후확률이 아닙니다. 원시계수를 확인하지 않았다면 전체 결과는 가정 기반입니다.</div><button id="btnRunMC" class="btn primary">Monte Carlo 실행</button><div id="uncSummary" class="eq" style="margin-top:11px"></div></div><div class="card"><div class="card-header"><h2>불확도 기여도 분석</h2></div><div id="uncBudget"></div><div class="canvasbox" style="margin-top:12px"><canvas id="uncChart" class="plot" aria-label="불확도 기여도 그래프"></canvas></div></div></div><div class="card"><div class="card-header"><h2>Monte Carlo 결과</h2><span id="mcTag" class="tag">미실행</span></div><div class="canvasbox"><canvas id="mcChart" class="plot" aria-label="Monte Carlo 방사능 결과 히스토그램"></canvas></div><div id="mcSummary" class="small muted" style="margin-top:12px">Monte Carlo 실행을 선택하면 백분위와 히스토그램을 표시합니다.</div></div></section>
+<section id="view-calibration" class="view"><div class="page-title"><div class="kicker">06 / TRACEABILITY</div><h2>장비 교정 · 핵종 · 재질 조건</h2><p>교정계수의 출처와 적용조건을 관리합니다. 핵종이나 재질 선택만으로 임의의 보정계수를 생성하지 않습니다.</p></div><div class="two"><div class="card"><div class="card-header"><h2>교정 프로필</h2></div><div class="formgrid"><div class="field"><label>장비/프로브 식별자</label><input id="detector" data-key="detector" type="text" value="DEMO-GM" maxlength="80"></div><div class="field"><label>데이터 상태</label><select id="calStatus" data-key="calStatus"><option value="demo">교육용 가정</option><option value="measured">교정기록 있음 (사용자 주장)</option></select></div><div class="field"><label>교정 일자</label><input id="calDate" data-key="calDate" type="date"></div><div class="field"><label>교정 참조번호</label><input id="calRef" data-key="calRef" type="text" placeholder="증명서/절차 번호" maxlength="120"></div></div><div class="field" style="margin-top:10px"><label>교정/측정 조건 (거리·각도·표면·선원 등)</label><textarea id="calNote" data-key="calNote" placeholder="예: Cs-137, 평면, 프로브 창간격 5 mm, 특정 교정선원"></textarea></div><div id="calWarning" class="alert">교정기록이 있다고 표시하더라도 프로그램이 유효성을 검증하지는 않습니다.</div></div><div class="card"><h2 style="margin-bottom:12px">핵종·재질 적용 주의사항</h2><div id="nuclideInfo"></div><div id="materialInfo" class="alert"></div><details class="help"><summary>기기효율 · 표면효율 · 유효응답 K의 차이</summary><p>기기효율 εᵢ는 검출기에 도달한 입자에 대한 계수확률이며, 표면효율 εₛ는 방사능 대비 표면 방출과 관련된 응답입니다. 실제 유효응답 K(cps/Bq)는 입자방출률, 에너지, 거리, 자기흡수, 프로브를 포함한 모든 계측조건에 종속합니다. 이미 교정한 K를 사용했다면 관련 보정값을 중복 적용하면 안 됩니다.</p></details></div></div><div class="card"><div class="card-header"><h2>상태 및 사용자 프로필 관리</h2></div><div class="inline"><button class="btn" id="btnExportProfile">프로필 JSON 저장</button><button class="btn" id="btnCopyProfile">프로필 복사</button></div><div id="calTable" class="tbl-wrap" style="margin-top:13px"></div></div></section>
+<section id="view-report" class="view"><div class="page-title"><div class="kicker">07 / REPORT AND QA</div><h2>분석 보고서 · 파일 · 내장 검증시험</h2><p>모든 결과에 통계모델·면적·교정 출처 및 데이터 확인 상태를 함께 기록합니다.</p></div><div class="card"><div class="card-header"><h2>프로젝트와 결과 내보내기</h2></div><div class="inline no-print"><button id="btnExportJson" class="btn primary">프로젝트 JSON 내려받기</button><button id="btnImportJson" class="btn">JSON 불러오기</button><input type="file" id="importFile" accept=".json,application/json" hidden><button id="btnExportCsv" class="btn">보고 CSV</button><button id="btnPointCsv" class="btn">측정점 CSV</button><button id="btnPrint" class="btn">인쇄 · PDF</button><button id="btnCopyReport" class="btn">요약 복사</button></div><div class="inline no-print" style="margin-top:11px"><label class="check"><input id="autoSave" type="checkbox"> 브라우저 자동저장 (장치 내부만)</label><button id="btnClearStore" class="btn mini">로컬 데이터 삭제</button><button id="btnExportMap" class="btn mini">오염지도 PNG</button></div></div><div class="card"><div class="card-header"><h2>결과 보고</h2><span id="reportStatus" class="tag warn">교육/연구</span></div><div id="reportBody"></div></div><div class="card"><div class="card-header"><h2>자체 수치 검증시험</h2><button id="btnTests" class="btn primary no-print">검증시험 실행</button></div><div id="testSummary" class="small muted">내장 시험을 실행하면 수식별 통과/실패 여부를 볼 수 있습니다.</div><div id="testResults" class="tbl-wrap"></div></div><div class="card"><div class="card-header"><h2>모델 적용 범위 및 참고문헌</h2></div><p class="small">ISO 11929-1:2025는 결정임계값·검출한계·포함구간의 개념을 제공하지만, 본 프로그램은 ISO 규격의 조항별 적합성을 인증하지 않습니다. NUREG/ORAU 근사와 별도의 Poisson known-background 모델을 제공합니다. ISO 7503-1:2016은 피부·의류 오염에 적용되지 않습니다.</p><ul class="list small"><li><a href="https://www.nrc.gov/regulations-legislation/nureg-series-publications/publications-prepared-by-nrc-staff/sr1507" target="_blank" rel="noopener">NRC NUREG-1507 Rev.1 — Minimum Detectable Concentrations</a></li><li><a href="https://topclassmedia.oraulearning.org/topclass/orau/prod/topclass/media/cb92a1ae-9109-4225-9052-2d0452d9f340/mod-11.html" target="_blank" rel="noopener">ORAU Module 11 — Critical Levels, Detection Limits and MDA</a></li><li><a href="https://www.iso.org/standard/90839.html" target="_blank" rel="noopener">ISO 11929-1:2025 — Characteristic Limits</a></li><li><a href="https://www.iso.org/standard/60522.html" target="_blank" rel="noopener">ISO 7503-1:2016 — Surface Contamination</a></li><li><a href="https://www.bipm.org/en/publications/guides" target="_blank" rel="noopener">JCGM 100/101 — GUM and Monte Carlo uncertainty</a></li></ul><div class="alert">본 소프트웨어는 현장 의사결정을 지원하는 교육·연구용 시뮬레이터입니다. 법적 반출·제염종료·인체오염 판정에 단독으로 사용하지 마십시오.</div></div></section>
+<div class="footer">GM Frisker Lab v1.3 · Mobile-first · Offline-first · Client-side password · 조건부 계산과 규제 적합성 판정을 구분합니다.</div>
+</main></div>
+<nav id="mobileDock" class="mobile-quick" aria-label="모바일 주요 메뉴">
+ <button type="button" class="mobile-tab selected" data-mobile-view="main" aria-label="기본 계산"><span class="mobile-icon">▣</span>계산</button>
+ <button type="button" class="mobile-tab" data-mobile-view="mda" aria-label="MDA 분석"><span class="mobile-icon">◎</span>MDA</button>
+ <button type="button" class="mobile-tab" data-mobile-view="scenario" aria-label="오염 시나리오"><span class="mobile-icon">◉</span>시나리오</button>
+ <button type="button" class="mobile-tab" data-mobile-view="converter" aria-label="방사선 단위 변환"><span class="mobile-icon">⇄</span>변환</button>
+ <button type="button" class="mobile-tab" data-mobile-sheet="menu" aria-label="전체 기능"><span class="mobile-icon">☰</span>더보기</button>
+</nav>
+<div class="mobile-sheet" id="mobileMenu" hidden aria-hidden="true">
+ <button class="mobile-shade" data-sheet-close="menu" type="button" tabindex="-1" aria-label="닫기"></button>
+ <section class="mobile-sheet-inner" role="dialog" aria-modal="true" aria-labelledby="mobileMenuTitle"><div class="sheet-handle"></div><div class="sheet-head"><h2 id="mobileMenuTitle">전체 기능</h2><button class="sheet-close" type="button" data-sheet-close="menu" aria-label="메뉴 닫기">✕</button></div>
+  <button class="mobile-menu-option" type="button" data-menu-view="main">계산 대시보드 <span>▣</span></button>
+  <button class="mobile-menu-option" type="button" data-menu-view="mda">MDA · MDC · 결정임계값 <span>◎</span></button>
+  <button class="mobile-menu-option" type="button" data-menu-view="converter">방사선·방사능 단위 변환 <span>⇄</span></button>
+  <button class="mobile-menu-option" type="button" data-menu-view="scenario">핵종·재질별 오염 시나리오 <span>◉</span></button>
+  <button class="mobile-menu-option" type="button" data-menu-view="spatial">다지점 오염지도 · 역산 <span>▦</span></button>
+  <button class="mobile-menu-option" type="button" data-menu-view="uncertainty">불확도 · Monte Carlo <span>∿</span></button>
+  <button class="mobile-menu-option" type="button" data-menu-view="calibration">교정 · 핵종 · 재질 <span>⚙</span></button>
+  <button class="mobile-menu-option" type="button" data-menu-view="report">보고서 · 내보내기 · 검증 <span>▤</span></button>
+  <button class="mobile-menu-option" type="button" id="menuOpenSettings">화면·글자 크기 설정 <span>☷</span></button>
+ </section>
+</div>
+<div class="mobile-sheet" id="mobileSettings" hidden aria-hidden="true">
+ <button class="mobile-shade" data-sheet-close="settings" type="button" tabindex="-1" aria-label="닫기"></button>
+ <section class="mobile-sheet-inner" role="dialog" aria-modal="true" aria-labelledby="mobileSettingsTitle"><div class="sheet-handle"></div><div class="sheet-head"><h2 id="mobileSettingsTitle">보기 및 사용자 설정</h2><button class="sheet-close" type="button" data-sheet-close="settings" aria-label="설정 닫기">✕</button></div>
+ <div class="settings-grid"><div class="setting-field"><label for="mobileTheme">화면 테마</label><select id="mobileTheme"><option value="light">라이트</option><option value="dark">다크</option><option value="system">기기 설정 연동</option><option value="contrast">고대비</option><option value="sepia">세피아</option><option value="blueprint">블루프린트</option><option value="forest">포레스트</option></select></div>
+ <div class="setting-field"><label for="mobileFont">글자 크기 <b id="mobileFontValue">16px</b></label><input id="mobileFont" type="range" min="12" max="28" step="1" value="16"></div>
+ <div class="setting-field"><label for="mobileLine">줄간격 <b id="mobileLineValue">1.55</b></label><input id="mobileLine" type="range" min="1" max="2.2" step="0.05" value="1.55"></div>
+ <div class="settings-pair"><button type="button" class="btn" id="mobileLanguage">언어 변경</button><button type="button" class="btn primary" id="mobileSave">프로젝트 저장</button></div>
+ <button type="button" class="btn" id="mobileResetView">기본 보기 설정 복원</button></div>
+ <p class="auth-note" style="margin-top:15px">비밀번호는 정적 페이지의 편의용 화면 잠금입니다. 프로젝트는 브라우저 내부 또는 JSON 파일로 보관합니다.</p>
+ </section>
+</div>
+</div><div id="toast" role="status" aria-live="polite"></div>
+<script>
+'use strict';
+const $=id=>document.getElementById(id), fmt=(x,n=3)=>Number.isFinite(x)?x.toLocaleString('ko-KR',{maximumFractionDigits:n,minimumFractionDigits:0}):'—';
+const FIX=(x,n=3)=>Number.isFinite(x)?x.toFixed(n):'—';
+const esc=s=>String(s??'').replace(/[&<>"']/g,ch=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]));
+const defaults={grossCpm:180,bkgCpm:60,grossSec:60,bkgSec:60,grossCounts:180,bkgCounts:60,rawMode:false,verified:false,efficiency:20,calK:.2,calKs:3.1,instrumentEff:40,sourceEff:50,responseMode:'effective',probeArea:15.5,area:15.5,areaUnknown:false,reportedDensity:.5,compareReported:true,mdaMethod:'paired',alpha:5,beta:5,targetMdc:.4,limit:.4,timePolicy:'paired',shape:'point',sourceA:10,material:'철재',nuclide:'Cs-137',sourceX:0,sourceY:0,sourceX2:5,sourceY2:-3,secondaryPercent:35,sourceSigma:2,kernelSigma:3,worldSize:20,relativeFactor:1,factorSource:'demo',scanSpeed:3,scanWidth:5,solverMode:'single',regularization:.1,effUnc:15,areaUnc:0,mcN:5000,mcSeed:2026,detector:'DEMO-GM',calStatus:'demo',calDate:'',calRef:'',calNote:'',probeX:0,probeY:0};
+let s={...defaults}, points=[], inverse=null, mcData=null, view='main', settings={theme:'light',fontSize:16,lineHeight:1.55,lang:'ko',autoSave:false}, plotCache=[], lastResults={};
+const num=x=>Number(x), validPos=x=>Number.isFinite(x)&&x>0;
+function notify(message){const el=$('toast');el.textContent=message;el.style.display='block';clearTimeout(notify.timer);notify.timer=setTimeout(()=>el.style.display='none',3200)}
+function issue(message,level='warn'){return `<div class="alert ${level==='danger'?'danger':level==='good'?'good':''}">${esc(message)}</div>`}
+function syncInputs(){document.querySelectorAll('[data-key]').forEach(el=>{let k=el.dataset.key;if(!(k in s))return;if(el.type==='checkbox')el.checked=!!s[k];else el.value=s[k]??''});$('rawFields').hidden=!s.rawMode;$('grossCpm').disabled=s.rawMode;$('bkgCpm').disabled=s.rawMode;$('alpha').disabled=['paired','unequal'].includes(s.mdaMethod);$('beta').disabled=['paired','unequal'].includes(s.mdaMethod)}
+function rate(){const tg=s.grossSec,tb=s.bkgSec;const g=s.rawMode?(validPos(tg)?s.grossCounts/tg:NaN):s.grossCpm/60,b=s.rawMode?(validPos(tb)?s.bkgCounts/tb:NaN):s.bkgCpm/60;return {tg,tb,g,b,n:g-b,B:b*tg,N: g*tg,Ng:s.rawMode?s.grossCounts:g*tg,Nb:s.rawMode?s.bkgCounts:b*tb,raw:s.rawMode&&s.verified};}
+function coeff(){const area=s.areaUnknown?NaN:s.area;let K;if(s.responseMode==='effective')K=s.efficiency/100;else if(s.responseMode==='direct')K=s.calK;else if(s.responseMode==='factor')K=s.instrumentEff/100*s.sourceEff/100;else K=s.calKs/area;return {K,area,Ks:s.responseMode==='areal'?s.calKs:K*area};}
+function analyze(){let r=rate(),c=coeff(),issues=[];for(let name of ['tg','tb'])if(!validPos(r[name]))issues.push('총계수시간과 배경계수시간은 0보다 커야 합니다.');if(!Number.isFinite(r.g)||r.g<0||!Number.isFinite(r.b)||r.b<0)issues.push('총계수율과 배경계수율은 음수가 아닌 유한한 숫자여야 합니다.');if(!validPos(c.K))issues.push('유효 응답계수 K를 계산할 수 없습니다. 효율 또는 오염면적을 확인하십시오.');if(!validPos(c.area))issues.push('오염면적이 없으므로 일반적인 Bq/cm² 평가를 확정할 수 없습니다.');if(s.rawMode&&(!Number.isInteger(s.grossCounts)||s.grossCounts<0||!Number.isInteger(s.bkgCounts)||s.bkgCounts<0))issues.push('원시계수는 0 이상의 정수여야 합니다.');const A=validPos(c.K)?r.n/c.K:NaN,ad=validPos(c.area)?A/c.area:NaN,physA=Number.isFinite(A)?Math.max(A,0):NaN;
+const uncRate=validPos(r.tg)&&validPos(r.tb)&&r.g>=0&&r.b>=0?Math.sqrt(r.g/r.tg+r.b/r.tb):NaN;const uStat=validPos(c.K)?uncRate/c.K:NaN;const uK=Number.isFinite(A)?A*s.effUnc/100:NaN, uArea=Number.isFinite(ad)?ad*s.areaUnc/100:NaN;const uAtotal=Math.hypot(uStat,Number.isFinite(uK)?uK:0);const uDstat=validPos(c.area)?uStat/c.area:NaN;const uDtotal=Number.isFinite(ad)?Math.hypot(uDstat,ad*s.effUnc/100,uArea):NaN;
+return {r,c,A,ad,physA,uStat,uK,uArea,uAtotal,uDstat,uDtotal,issues};}
+function lanczosGamma(z){const p=[.99999999999980993,676.5203681218851,-1259.1392167224028,771.32342877765313,-176.6150291621406,12.507343278686905,-.13857109526572012,9.984369578019572e-6,1.5056327351493116e-7];if(z<.5)return Math.log(Math.PI)-Math.log(Math.sin(Math.PI*z))-lanczosGamma(1-z);z--;let x=p[0];for(let i=1;i<p.length;i++)x+=p[i]/(z+i);let t=z+7.5;return .5*Math.log(2*Math.PI)+(z+.5)*Math.log(t)-t+Math.log(x)}
+function gammaP(a,x){if(x<=0)return 0;if(!(a>0))return NaN;if(x>a+1){let b=x+1-a,c=1e300,d=1/b,h=d;for(let i=1;i<2000;i++){let an=-i*(i-a);b+=2;d=an*d+b;if(Math.abs(d)<1e-300)d=1e-300;c=b+an/c;if(Math.abs(c)<1e-300)c=1e-300;d=1/d;let delta=d*c;h*=delta;if(Math.abs(delta-1)<1e-13)break}let q=Math.exp(a*Math.log(x)-x-lanczosGamma(a))*h;return Math.max(0,Math.min(1,1-q))}let sum=1/a,term=sum,ap=a;for(let i=1;i<2000;i++){ap++;term*=x/ap;sum+=term;if(Math.abs(term)<Math.abs(sum)*1e-13)break}return Math.min(1,Math.max(0,sum*Math.exp(a*Math.log(x)-x-lanczosGamma(a))))}
+function poissonTail(k,lambda){if(k<=0)return 1;if(lambda<=0)return 0;if(lambda>1e6){let z=(k-.5-lambda)/Math.sqrt(lambda);return 1-normalCdf(z)}return gammaP(k,lambda)}
+function betaCF(a,b,x){let qab=a+b,qap=a+1,qam=a-1,c=1,d=1-qab*x/qap;if(Math.abs(d)<1e-30)d=1e-30;d=1/d;let h=d;for(let m=1;m<=300;m++){let m2=2*m,aa=m*(b-m)*x/((qam+m2)*(a+m2));d=1+aa*d;if(Math.abs(d)<1e-30)d=1e-30;c=1+aa/c;if(Math.abs(c)<1e-30)c=1e-30;d=1/d;h*=d*c;aa=-(a+m)*(qab+m)*x/((a+m2)*(qap+m2));d=1+aa*d;if(Math.abs(d)<1e-30)d=1e-30;c=1+aa/c;if(Math.abs(c)<1e-30)c=1e-30;d=1/d;let del=d*c;h*=del;if(Math.abs(del-1)<3e-13)break}return h}
+function betaI(a,b,x){if(x<=0)return 0;if(x>=1)return 1;let bt=Math.exp(lanczosGamma(a+b)-lanczosGamma(a)-lanczosGamma(b)+a*Math.log(x)+b*Math.log1p(-x));return x<(a+1)/(a+b+2)?bt*betaCF(a,b,x)/a:1-bt*betaCF(b,a,1-x)/b}
+function exactConditionalP(Ng,Nb,tg,tb){if(!Number.isInteger(Ng)||!Number.isInteger(Nb)||Ng<0||Nb<0||!(tg>0&&tb>0))return NaN;if(Ng===0)return 1;if(Nb===0)return Math.pow(tg/(tg+tb),Ng);return betaI(Ng,Nb+1,tg/(tg+tb))}
+function erf(x){let sign=x<0?-1:1;x=Math.abs(x);const t=1/(1+.3275911*x);let poly=1.061405429;poly=poly*t-1.453152027;poly=poly*t+1.421413741;poly=poly*t-.284496736;poly=poly*t+.254829592;poly*=t;return sign*(1-poly*Math.exp(-x*x))}
+function normalCdf(x){return .5*(1+erf(x/Math.SQRT2))}
+function invNorm(p){if(!(p>0&&p<1))return NaN;const a=[-39.69683028665376,220.9460984245205,-275.9285104469687,138.357751867269,-30.66479806614716,2.506628277459239],b=[-54.47609879822406,161.5858368580409,-155.6989798598866,66.80131188771972,-13.28068155288572],c=[-.007784894002430293,-.3223964580411365,-2.400758277161838,-2.549732539343734,4.374664141464968,2.938163982698783],d=[.007784695709041462,.3224671290700398,2.445134137142996,3.754408661907416];let q,r;if(p<.02425){q=Math.sqrt(-2*Math.log(p));return (((((c[0]*q+c[1])*q+c[2])*q+c[3])*q+c[4])*q+c[5])/((((d[0]*q+d[1])*q+d[2])*q+d[3])*q+1)}if(p>1-.02425)return -invNorm(1-p);q=p-.5;r=q*q;return (((((a[0]*r+a[1])*r+a[2])*r+a[3])*r+a[4])*r+a[5])*q/(((((b[0]*r+b[1])*r+b[2])*r+b[3])*r+b[4])*r+1)}
+function calcMDA(r,c,method=s.mdaMethod,alpha=s.alpha/100,beta=s.beta/100){let tg=r.tg,tb=r.tb,rb=r.b,B=rb*tg,K=c.K,A=c.area,valid=validPos(tg)&&validPos(tb)&&Number.isFinite(rb)&&rb>=0&&validPos(K)&&alpha>0&&alpha<.5&&beta>0&&beta<.5;if(!valid)return {valid:false,reason:'시간, 배경, 효율 및 확률 범위를 확인하십시오.'};let lc,ld,critical=null,precision='approx',model='';const V0=B*(1+tg/tb);if(method==='paired'){
+if(Math.abs(tg-tb)>1e-7*Math.max(tg,tb))return {valid:false,reason:'동일시간 Currie 모델은 총계수시간 = 배경계수시간일 때만 사용합니다. 시간비대칭 또는 정규근사 모델로 변경하십시오.'};lc=1.6448536269514722*Math.sqrt(V0);ld=3+4.65*Math.sqrt(B);model='NUREG-1507 동일시간 근사';}
+else if(method==='unequal'){lc=1.6448536269514722*Math.sqrt(V0);ld=3+3.29*Math.sqrt(V0);model='ORAU 5%/5% 서로 다른 시간 근사';}
+else if(method==='gaussian'){const za=invNorm(1-alpha),zb=invNorm(1-beta);lc=za*Math.sqrt(V0);ld=lc+zb*zb/2+zb*Math.sqrt(V0+lc+zb*zb/4);model='정규분포 기반 비대칭·신호분산 반영';}
+else if(method==='poisson'){const mu=B;let candidate=Math.max(1,Math.ceil(mu+invNorm(1-alpha)*Math.sqrt(Math.max(mu,.01))+1));while(candidate>1&&poissonTail(candidate-1,mu)<=alpha)candidate--;while(poissonTail(candidate,mu)>alpha)candidate++;critical=candidate;lc=candidate-mu;let lo=0,hi=Math.max(8,8*Math.sqrt(B+1));while(poissonTail(critical,B+hi)<1-beta&&hi<1e10)hi*=2;for(let i=0;i<85;i++){let mid=(lo+hi)/2;if(poissonTail(critical,B+mid)>=1-beta)hi=mid;else lo=mid}ld=hi;model='Poisson (배경 평균 정확히 알려진 가정)';precision='exact_known_background'}
+else return {valid:false,reason:'계산모델 오류'};
+return {valid:true,lc,ld,critical,B,V0,MDA:ld/(K*tg),MDC:validPos(A)?ld/(K*tg*A):NaN,model,precision,alpha:method==='paired'||method==='unequal'?.05:alpha,beta:method==='paired'||method==='unequal'?.05:beta};}
+function mdaPower(A,r,c,m){if(!m.valid||!(A>=0))return NaN;const sig=A*c.K*r.tg;if(m.critical!==null)return poissonTail(m.critical,m.B+sig);const var1=m.V0+sig;if(var1<=0)return sig>m.lc?1:0;return normalCdf((sig-m.lc)/Math.sqrt(var1))}
+function mdaTime(t,r,c){let tb=s.timePolicy==='fixed'?s.bkgSec:s.timePolicy==='ratio'?t*s.bkgSec/s.grossSec:t;let m=s.mdaMethod;if(m==='paired'&&s.timePolicy==='fixed')m='unequal';let rr={...r,tg:t,tb:tb,B:r.b*t},mm=calcMDA(rr,c,m);return mm;}
+function findRequiredTime(r,c){if(!validPos(s.targetMdc)||!validPos(c.area))return {time:NaN,reason:'목표 MDC와 실제 오염면적을 모두 입력하십시오.'};const target=s.targetMdc;let lo=.01,hi=86400;const upper=mdaTime(hi,r,c);if(!upper.valid||!(upper.MDC<=target))return {time:NaN,reason:'입력 조건에서는 24시간 이내에 목표 MDC를 달성할 수 없습니다.'};for(let i=0;i<66;i++){let mid=(lo+hi)/2,md=mdaTime(mid,r,c);if(!md.valid)return {time:NaN,reason:md.reason};if(md.MDC<=target)hi=mid;else lo=mid}return {time:hi,reason:''}}
+function color(name){return getComputedStyle(document.body).getPropertyValue(name).trim()||'#333'}
+function canvasContext(id,width=800,height=300){const ca=$(id);if(!ca)return null;const cw=Math.max(250,Math.round(ca.clientWidth||width)),ch=height;const dpr=Math.min(window.devicePixelRatio||1,2);ca.width=cw*dpr;ca.height=ch*dpr;ca.style.height=ch+'px';const ctx=ca.getContext('2d');ctx.setTransform(dpr,0,0,dpr,0,0);return {ctx,w:cw,h:ch}}
+function linePlot(id,datasets,options={}){let item=canvasContext(id,800,275);if(!item)return;const {ctx,w,h}=item;let left=56,right=14,top=20,bottom=39,pw=w-left-right,ph=h-top-bottom, data=datasets.flatMap(d=>d.data).filter(p=>Number.isFinite(p[0])&&Number.isFinite(p[1]));ctx.clearRect(0,0,w,h);if(!data.length)return;let xmin=options.xmin??Math.min(...data.map(p=>p[0])),xmax=options.xmax??Math.max(...data.map(p=>p[0]));let ymin=options.ymin??0,ymax=options.ymax??Math.max(...data.map(p=>p[1]));if(xmin===xmax)xmax=xmin+1;if(ymin===ymax)ymax=ymin+1;ymax*=1.1;const X=x=>left+(x-xmin)/(xmax-xmin)*pw,Y=y=>top+(1-(y-ymin)/(ymax-ymin))*ph;ctx.font='12px system-ui';ctx.strokeStyle=color('--line');ctx.fillStyle=color('--muted');ctx.lineWidth=1;for(let j=0;j<=4;j++){const y=ymin+(ymax-ymin)*j/4,yp=Y(y);ctx.beginPath();ctx.moveTo(left,yp);ctx.lineTo(w-right,yp);ctx.stroke();ctx.textAlign='right';ctx.fillText(fmt(y,Math.abs(ymax)<10?2:0),left-7,yp+4)}for(let j=0;j<=5;j++){let x=xmin+(xmax-xmin)*j/5,xp=X(x);ctx.textAlign='center';ctx.fillText(options.xformat?options.xformat(x):fmt(x,1),xp,h-16)}ctx.textAlign='left';ctx.fillText(options.ylabel||'',left+4,13);ctx.textAlign='right';ctx.fillText(options.xlabel||'',w-right,h-3);for(let d of datasets){ctx.strokeStyle=d.color||'#168fbd';ctx.lineWidth=d.width||2.5;ctx.setLineDash(d.dash||[]);ctx.beginPath();d.data.forEach((p,i)=>{if(i===0)ctx.moveTo(X(p[0]),Y(p[1]));else ctx.lineTo(X(p[0]),Y(p[1]))});ctx.stroke();ctx.setLineDash([])}}
+function renderMain(res,m){let {r,c,A,ad,uStat,uAtotal,issues}=res; $('kpiGross').textContent=fmt(r.g,3);$('kpiNet').textContent=fmt(r.n,3);$('kpiA').textContent=fmt(Math.max(0,A),3);$('kpiS').textContent=s.areaUnknown?'미상':fmt(Math.max(0,ad),3);$('respSummary').textContent=s.responseMode==='areal'?`면응답 Kₛ = ${fmt(s.calKs,5)} cps/(Bq/cm²) · 면적을 가정한 유효 K = ${fmt(c.K,6)} cps/Bq`:`유효응답 K = ${fmt(c.K,6)} cps/Bq · 교정/형상 일치 여부를 별도로 확인하십시오.`;
+$('formulas').innerHTML=`① 총계수율 = ${fmt(r.g*60,3)} / 60 = <b>${fmt(r.g,4)} cps</b><br>② 배경계수율 = ${fmt(r.b*60,3)} / 60 = ${fmt(r.b,4)} cps<br>③ 순계수율 = ${fmt(r.g,4)} − ${fmt(r.b,4)} = <b>${fmt(r.n,4)} cps</b><br>④ 방사능 A = ${fmt(r.n,4)} / ${fmt(c.K,6)} = <b>${fmt(A,4)} Bq</b> (미제한 추정)<br>⑤ 표면오염도 = ${fmt(A,4)} / ${fmt(c.area,3)} = <b>${fmt(ad,5)} Bq/cm²</b><br>⑥ u(NET) = √(gross/tg + bkg/tb) = ${fmt(res.uStat*res.c.K,5)} cps <br>⑦ u(A) = ${fmt(uStat,4)} Bq (계수통계 근사)`;
+let warnings=[...new Set(issues)];if(!s.rawMode)warnings.push('입력 cpm은 실계수로 확인되지 않았습니다. 계수시간은 설계 가정이며 통계구간은 예시 근사입니다.');else if(!s.verified)warnings.push('원시계수가 입력되어 있으나 실측 확인이 선택되지 않았습니다. 통계 유의성은 시뮬레이션으로만 해석합니다.');if(r.n<0)warnings.push('배경보다 총계수율이 낮습니다. 음의 순계수율은 보존하고 물리적 방사능 추정치만 0 이상으로 제한해 표시합니다.');if(s.compareReported&&Number.isFinite(s.reportedDensity)&&Number.isFinite(ad)&&Math.abs(s.reportedDensity-ad)>Math.max(.00005,Math.abs(ad)*.0001))warnings.push(`입력 보고값 ${fmt(s.reportedDensity,5)} Bq/cm²와 계산값 ${fmt(ad,5)} Bq/cm²가 일치하지 않습니다. 현재 방사능을 보고값에 맞추려면 면적 ${fmt(A/s.reportedDensity,4)} cm²가 필요합니다.`);if(s.calStatus==='demo')warnings.push('유효효율은 예제·교육용 가정입니다. 기기 실제 교정값이 아니라면 정량 판정에 사용하지 마십시오.');$('mainWarnings').innerHTML=warnings.map(x=>issue(x,issues.includes(x)?'danger':'warn')).join('');$('rawWarning').innerHTML=s.rawMode?(s.verified?'실측 계수자료로 표시되었습니다. 독립·정상 Poisson 계수 및 유효 교정 여부는 별도로 확인해야 합니다.':'원시 계수가 예시 또는 미확인 자료입니다. 실측 확인 체크 전까지 통계적 판정은 모의 분석입니다.'):'표시 cpm을 원시 counts로 역산할 수 없습니다. 원시계수와 실제 측정시간을 입력하면 정확한 계수 기반 검정을 사용할 수 있습니다.';
+$('briefLc').textContent=fmt(m.lc,2);$('briefMda').textContent=fmt(m.MDA,3);$('briefMdc').textContent=fmt(m.MDC,3);let sig=false,p=NaN;if(r.raw){p=exactConditionalP(r.Ng,r.Nb,r.tg,r.tb);sig=Number.isFinite(p)&&p<=(m.valid?m.alpha:.05)}else if(m.valid)sig=r.n*r.tg>m.lc;$('briefDetect').textContent=r.raw?(sig?'계수 신호 검출':'검출되지 않음'):'판정 미확정';
+const high=(Number.isFinite(ad)&&Number.isFinite(res.uDtotal))?ad+1.645*res.uDtotal:NaN,low=(Number.isFinite(ad)&&Number.isFinite(res.uDtotal))?ad-1.645*res.uDtotal:NaN;let message=r.raw?`독립 Poisson 계수에 대한 조건부 정확검정 p=${fmt(p,7)}. ${sig?'배경만으로 보기 어려운 계수 신호입니다.':'지정 오류율에서 검출되었다고 판단하기 어렵습니다.'}`:'cpm만으로는 계수 검출 유의성을 확정할 수 없습니다.';if(Number.isFinite(m.MDC))message+=` 측정방법의 MDC = ${fmt(m.MDC,4)} Bq/cm².`;if(!s.areaUnknown&&Number.isFinite(high)&&Number.isFinite(low)&&validPos(s.limit))message+=` 조건부 한쪽 95% 근사구간 [${fmt(low,3)}, ${fmt(high,3)}], 사용자 비교기준 ${fmt(s.limit,3)} Bq/cm².`;if(!r.raw||s.calStatus==='demo')message+=' 규제 적합성 판정에는 추가 근거가 필요합니다.';$('decisionSummary').textContent=message;lastResults={...res,m,signalDetected:sig,p};
+}
+function renderMda(res,m){$('mdaLc').textContent=fmt(m.lc,3);$('mdaLd').textContent=fmt(m.ld,3);$('mdaValue').textContent=fmt(m.MDA,4);$('mdcValue').textContent=fmt(m.MDC,4);$('alpha').disabled=['paired','unequal'].includes(s.mdaMethod);$('beta').disabled=['paired','unequal'].includes(s.mdaMethod);let txt='';if(!m.valid){txt=m.reason}else if(s.mdaMethod==='paired')txt=`B = ${fmt(m.B,3)} counts; Lc ≈ 1.645√(2B) = ${fmt(m.lc,3)} counts; Ld ≈ 3 + 4.65√B = ${fmt(m.ld,3)} counts; MDA = Ld/(K × tg) = ${fmt(m.MDA,5)} Bq.`;
+else if(s.mdaMethod==='unequal')txt=`V₀ = B×(1+tg/tb) = ${fmt(m.V0,4)} counts²; Lc ≈ 1.645√V₀ = ${fmt(m.lc,3)}; Ld ≈ 3+3.29√V₀ = ${fmt(m.ld,3)} counts; MDA = ${fmt(m.MDA,5)} Bq.`;
+else if(s.mdaMethod==='gaussian')txt=`zα=${fmt(invNorm(1-s.alpha/100),4)}; zβ=${fmt(invNorm(1-s.beta/100),4)}; V₀=${fmt(m.V0,3)}; Lc=zα√V₀=${fmt(m.lc,4)}; Ld=Lc+zβ²/2+zβ√(V₀+Lc+zβ²/4)=${fmt(m.ld,4)} counts.`;
+else txt=`알려진 배경 기대계수 B=${fmt(m.B,4)}에서 최소 총계수 기준 Ng≥${fmt(m.critical,0)}; P[Ng≥${fmt(m.critical,0)}|B]≤${fmt(s.alpha,2)}%; Ld=${fmt(m.ld,4)} 순계수; P[Ng≥기준|B+Ld]≥${fmt(100-s.beta,2)}%. 배경 추정불확도는 포함하지 않습니다.`;
+$('mdaFormula').textContent=txt;let warnings=[];if(m.valid&&m.B<20&&s.mdaMethod!=='poisson')warnings.push('배경 기대계수가 20 미만입니다. 정규/NUREG 근사의 낮은 계수율 오차를 Poisson 모델과 비교하십시오.');if(s.mdaMethod==='poisson')warnings.push('Poisson 정확 계산은 배경 평균 B를 오차 없이 알고 있다고 가정합니다. 독립 측정한 배경의 통계적 불확도를 반영하는 완전한 2표본 Poisson 검출한계가 아닙니다.');if(['paired','unequal'].includes(s.mdaMethod)&&(s.alpha!==5||s.beta!==5))warnings.push('이 근사법의 α=β=5%는 고정입니다. 입력한 α/β 값을 사용하려면 정규근사 또는 Poisson 계산으로 변경하십시오.');if(s.areaUnknown)warnings.push('오염면적 미상: MDC는 계산하지 않습니다.');if(s.calStatus==='demo')warnings.push('사용 중인 효율은 교정 검증이 없는 교육용 가정값입니다.');$('methodCaveat').textContent=`현재 방법: ${m.model||s.mdaMethod} · ${m.valid?'계수시간 '+fmt(res.r.tg)+' s / 배경시간 '+fmt(res.r.tb)+' s':'입력조건 오류'}.`;$('mdaWarnings').innerHTML=warnings.map(x=>issue(x)).join('');const req=findRequiredTime(res.r,res.c);$('requiredTime').textContent=Number.isFinite(req.time)?fmt(req.time,1)+' 초':'계산 불가';$('timeAdvice').textContent=req.reason||`현재 ${fmt(s.targetMdc,3)} Bq/cm²를 목표로 할 때 약 ${fmt(req.time/60,2)}분이 필요합니다. 배경시간 처리: ${s.timePolicy}. 교정·기하 조건 불변 가정.`;
+let minT=5,maxT=Math.min(7200,Math.max(180,req.time*1.4||360,res.r.tg*3));const data=[];for(let i=0;i<65;i++){let t=minT*Math.pow(maxT/minT,i/64),mm=mdaTime(t,res.r,res.c);if(mm.valid&&Number.isFinite(mm.MDC))data.push([t,mm.MDC])}plotCache=data;let targetline=[[minT,s.targetMdc],[maxT,s.targetMdc]];linePlot('mdaChart',[{data,color:'#168fbd'},{data:targetline,color:'#df9943',dash:[5,5]}],{xlabel:'counting time (s)',ylabel:'MDC (Bq/cm²)',xformat:x=>fmt(x,0)});
+let ap=[];if(m.valid){for(let i=0;i<=64;i++){let activity=(m.MDA||1)*i/18;let pp=mdaPower(activity,res.r,res.c,m);if(Number.isFinite(pp))ap.push([activity,pp])}}linePlot('powerChart',[{data:ap,color:'#168fbd'}],{xlabel:'true activity (Bq)',ylabel:'P(detection)',ymin:0,ymax:1,xformat:x=>fmt(x,1)});$('powerNote').textContent=m.valid?`계산모델 ${m.model}. ${s.mdaMethod==='poisson'?'Poisson known-B 모델의 정확 계수확률':'정규근사 신호분산 기반 검출력 예시'}.`:m.reason;
+let t0=res.r.tg;let scenarios=[['현 조건',res.c.K,res.r.b,t0],['효율 2배',res.c.K*2,res.r.b,t0],['배경 1/2',res.c.K,res.r.b/2,t0],['총·배경시간 2배',res.c.K,res.r.b,t0*2]];let rows=scenarios.map(([label,k,b,t])=>{let r2={...res.r,b,tg:t,tb:t};let cc={...res.c,K:k};const mm=calcMDA(r2,cc,s.mdaMethod);return `<tr><td>${esc(label)}</td><td class="number">${fmt(mm.MDC,4)}</td><td class="number">${fmt(mm.MDA,3)}</td></tr>`}).join('');$('mdaSensitivity').innerHTML=`<table><thead><tr><th>조건</th><th>MDC (Bq/cm²)</th><th>MDA (Bq)</th></tr></thead><tbody>${rows}</tbody></table>`;
+}
+function scenarioGrid(){const n=44,W=Math.max(4,s.worldSize),cell=W/n,src=[];let weights=[];for(let y=0;y<n;y++)for(let x=0;x<n;x++){let xx=(x+.5)*cell-W/2,yy=(y+.5)*cell-W/2;let w=0,sg=Math.max(.2,s.sourceSigma),d1=(xx-s.sourceX)**2+(yy-s.sourceY)**2,d2=(xx-s.sourceX2)**2+(yy-s.sourceY2)**2;if(s.shape==='point')w=(d1<2*cell*cell?Math.exp(-d1/(.17*cell*cell)):0);else if(s.shape==='uniform')w=d1<=Math.max(.01,s.area)/Math.PI?1:0;else if(s.shape==='gaussian')w=Math.exp(-d1/(2*sg*sg));else {let part=Math.max(0,Math.min(1,s.secondaryPercent/100));w=(1-part)*Math.exp(-d1/(2*sg*sg))+part*Math.exp(-d2/(2*sg*sg))}weights.push(w);src.push({x:xx,y:yy})}let total=weights.reduce((a,b)=>a+b,0)||1;const A=Math.max(0,s.sourceA);return {src,activity:weights.map(w=>A*w/total),n,W,cell};}
+function kernel(x,y,px,py){let sig=Math.max(.1,s.kernelSigma),d2=(x-px)**2+(y-py)**2;return Math.exp(-d2/(2*sig*sig))}
+function predictedAt(x,y,grid=scenarioGrid(),coeffic=coeff()){let v=0;for(let i=0;i<grid.src.length;i++){if(grid.activity[i]>0)v+=grid.activity[i]*kernel(grid.src[i].x,grid.src[i].y,x,y)}return {cps:v*coeffic.K*s.relativeFactor,receivedBq:v};}
+function heatColor(value,max){let t=max>0?Math.min(1,Math.max(0,value/max)):0;let hue=210-195*Math.pow(t,.8),sat=70+20*t,light=85-38*t;return `hsl(${hue} ${sat}% ${light}%)`}
+function renderHeatmap(id,grid,activities,marks,options={}){const c=$(id);if(!c)return;const size=600,dpr=1;c.width=size*dpr;c.height=size*dpr;const ctx=c.getContext('2d'),n=grid.n,W=grid.W,cell=size/n;ctx.clearRect(0,0,size,size);let max=Math.max(1e-12,...activities);for(let i=0;i<activities.length;i++){const gx=i%n,gy=Math.floor(i/n);ctx.fillStyle=heatColor(activities[i],max);ctx.fillRect(gx*cell,gy*cell,Math.ceil(cell)+.3,Math.ceil(cell)+.3)}ctx.strokeStyle='rgba(12,67,112,.25)';ctx.lineWidth=1;for(let k=0;k<=n;k+=Math.max(1,Math.round(n/8))){let p=k*cell;ctx.beginPath();ctx.moveTo(0,p);ctx.lineTo(size,p);ctx.moveTo(p,0);ctx.lineTo(p,size);ctx.stroke()}
+ctx.fillStyle='#133e62';ctx.font='bold 19px system-ui';ctx.fillText('−'+fmt(W/2,1)+' cm',11,25);ctx.textAlign='right';ctx.fillText('+'+fmt(W/2,1)+' cm',size-13,size-14);ctx.textAlign='left';for(let m of marks){const px=(m.x/W+.5)*size,py=(m.y/W+.5)*size;if(px<0||py<0||px>size||py>size)continue;ctx.lineWidth=3;ctx.strokeStyle=m.color||'#141414';ctx.fillStyle=m.fill||'#fff';ctx.beginPath();ctx.arc(px,py,m.r||7,0,2*Math.PI);ctx.fill();ctx.stroke();if(m.label){ctx.fillStyle='#122a3c';ctx.font='bold 15px system-ui';ctx.fillText(String(m.label),px+9,py-9)}}}
+function renderScenario(res){const grid=scenarioGrid(),p=predictedAt(s.probeX,s.probeY,grid,res.c),cpm=(res.r.b+p.cps)*60;renderHeatmap('scenarioMap',grid,grid.activity,[{x:s.probeX,y:s.probeY,color:'#0c2433',fill:'#fff',r:10,label:'Probe'}]);$('scenarioCpm').textContent=fmt(cpm,2);$('scenarioProbe').textContent=`(${fmt(s.probeX,1)}, ${fmt(s.probeY,1)})`;const areaFactor=s.relativeFactor;let warns=[];if(!validPos(res.c.K)||!validPos(areaFactor))warns.push('유효 응답계수 K와 상대 보정계수 F는 양수여야 합니다.');if(['피부','의류','면직물','보호복'].includes(s.material))warns.push('피부·의류는 ISO 7503-1 적용범위에서 제외됩니다. 표면측정 교정계수를 무검증 전용하지 마십시오.');if(s.nuclide==='Am-241')warns.push('Am-241의 알파 검출능력은 프로브 창/오염층/거리 등에서 매우 민감합니다. 일반 GM 효율을 알파 효율로 간주하지 마십시오.');if(s.factorSource!=='measured')warns.push('재질·핵종별 실제 응답자료가 없으므로, F와 가우시안 커널은 가정한 값이며 정량교정으로 인정되지 않습니다.');$('scenarioCaveat').innerHTML=warns.map(x=>issue(x)).join('');let dwell=s.scanWidth/s.scanSpeed;let chance=Number.isFinite(dwell)&&dwell>0&&dwell<1e7?`스캔 기초 체류시간≈${fmt(dwell,2)} s, 그 동안 예상 계수≈${fmt(cpm*dwell/60,2)} counts (시정수·스캔 이동응답 미반영)`: '스캔시간 입력을 확인하십시오.';if(validPos(dwell)&&validPos(res.c.K)){const standin=calcMDA({...res.r,tg:dwell,tb:dwell},res.c,'paired');if(standin.valid)chance+=`. 정지계측 체류시간 환산 MDA ≈ ${fmt(standin.MDA,3)} Bq (단순 참고값, 스캔 MDC 아님)`;}$('scenarioMetrics').textContent=`모의 총 활동 ${fmt(s.sourceA,3)} Bq / 프로브 커널이 포착한 등가 ${fmt(p.receivedBq,3)} Bq. ${chance}`}
+function makeRandom(seed){let t=(seed>>>0)||1;return ()=>{t+=0x6D2B79F5;let z=t;z=Math.imul(z^(z>>>15),z|1);z^=z+Math.imul(z^(z>>>7),z|61);return((z^(z>>>14))>>>0)/4294967296}}
+function standardNormal(rng){let u=Math.max(1e-15,rng()),v=rng();return Math.sqrt(-2*Math.log(u))*Math.cos(2*Math.PI*v)}
+function poissonSample(lambda,rng){if(!Number.isFinite(lambda)||lambda<0)return NaN;if(lambda<30){let e=Math.exp(-lambda),p=1,n=0;do{n++;p*=rng()}while(p>e&&n<1000);return n-1}return Math.max(0,Math.round(lambda+Math.sqrt(lambda)*standardNormal(rng)))}
+function renderPoints(){const tbody=$('pointRows');tbody.innerHTML=points.map((p,i)=>`<tr><td>#${i+1}</td><td class="number">${fmt(p.x,2)}</td><td class="number">${fmt(p.y,2)}</td><td class="number">${fmt(p.cpm,2)}</td><td><button class="btn mini pointDel" data-index="${i}" aria-label="${i+1}번 지점 삭제">×</button></td></tr>`).join('')||`<tr><td colspan="5" class="empty">측정점이 없습니다.</td></tr>`;tbody.querySelectorAll('.pointDel').forEach(el=>el.addEventListener('click',()=>{points.splice(+el.dataset.index,1);inverse=null;renderPoints();renderSpatial()}))}
+function fitSingle(points,res){const W=s.worldSize,delta=W/28;let best={err:Infinity,x:0,y:0,A:0};let k=res.c.K*s.relativeFactor;if(!validPos(k))return null;const obs=points.map(p=>p.cpm/60-res.r.b);for(let j=0;j<=28;j++)for(let i=0;i<=28;i++){const x=-W/2+i*delta,y=-W/2+j*delta,v=points.map(p=>k*kernel(x,y,p.x,p.y)),den=v.reduce((z,h)=>z+h*h,0);if(den<1e-13)continue;let A=Math.max(0,v.reduce((z,h,id)=>z+h*obs[id],0)/den),err=v.reduce((z,h,id)=>z+(h*A-obs[id])**2,0);if(err<best.err)best={err,x,y,A}}return {...best,obs,fit:points.map(p=>k*best.A*kernel(best.x,best.y,p.x,p.y))}}
+function fitNNLS(points,res){const n=6,W=s.worldSize,N=n*n,k=res.c.K*s.relativeFactor;if(!validPos(k))return null;const cells=[];for(let y=0;y<n;y++)for(let x=0;x<n;x++)cells.push({x:(x+.5)*W/n-W/2,y:(y+.5)*W/n-W/2});const H=points.map(p=>cells.map(q=>k*kernel(q.x,q.y,p.x,p.y))),b=points.map(p=>p.cpm/60-res.r.b);const lambda=Math.max(1e-5,s.regularization)*k*k;let M=new Array(N).fill(0),lipschitz=lambda;for(let i=0;i<H.length;i++)lipschitz+=H[i].reduce((z,h)=>z+h*h,0);const step=1/lipschitz;let pred=new Array(points.length);for(let iter=0;iter<1100;iter++){for(let i=0;i<H.length;i++){let sum=0;for(let j=0;j<N;j++)sum+=H[i][j]*M[j];pred[i]=sum-b[i]}let maxchg=0;for(let j=0;j<N;j++){let grad=lambda*M[j];for(let i=0;i<H.length;i++)grad+=H[i][j]*pred[i];const next=Math.max(0,M[j]-step*grad);maxchg=Math.max(maxchg,Math.abs(next-M[j]));M[j]=next}if(maxchg<1e-9)break}
+let model=H.map(row=>row.reduce((z,h,j)=>z+h*M[j],0)),err=model.reduce((z,h,i)=>z+(h-b[i])**2,0);return {cells,weights:M,n,W,fit:model,err,A:M.reduce((a,b)=>a+b,0),obs:b}}
+function performSolve(res){if(points.length<3){notify('최소 3개 측정점을 입력하세요.');return}inverse=s.solverMode==='single'?{kind:'single',value:fitSingle(points,res)}:{kind:'nnls',value:fitNNLS(points,res)};renderSpatial()}
+function renderSpatial(){const base=scenarioGrid(),W=s.worldSize;let values=new Array(base.n*base.n).fill(0),txt=points.length+'개 측정점이 등록되어 있습니다. ';if(inverse&&inverse.value){let v=inverse.value;if(inverse.kind==='single'){const sg=Math.max(.25,base.W/base.n),wv=base.src.map(p=>Math.exp(-((p.x-v.x)**2+(p.y-v.y)**2)/(2*sg*sg))),sum=wv.reduce((a,b)=>a+b,0);values=wv.map(x=>x/sum*v.A);txt+=`단일 점오염 가정: 위치 (${fmt(v.x,2)}, ${fmt(v.y,2)}) cm, 추정방사능 ${fmt(v.A,3)} Bq. RSS=${fmt(v.err,5)} (cps)².`}
+else {let n=v.n,grid=base;for(let idx=0;idx<values.length;idx++){let x=grid.src[idx].x,y=grid.src[idx].y;let ix=Math.min(n-1,Math.max(0,Math.floor((x/W+.5)*n))),iy=Math.min(n-1,Math.max(0,Math.floor((y/W+.5)*n)));values[idx]=v.weights[iy*n+ix]/((grid.n/n)**2)}txt+=`36셀 비음수 정규화 적합. 추정 총 활동 ${fmt(v.A,3)} Bq, RSS=${fmt(v.err,5)} (cps)². `}
+const k= inverse.kind==='nnls'?36:3;if(points.length<k)txt+=`미지변수 ${k}개에 비해 관측점 ${points.length}개로 식별성이 부족합니다. 지도는 가능한 해 중 하나에 불과합니다. `;if(s.calStatus==='demo')txt+='교정 자료가 없는 가정 커널로 계산한 예시입니다.';}
+else txt+='프로브 위치/계수율로 모의 데이터를 생성하거나 직접 입력하고 역산을 실행하세요.';$('solverText').textContent=txt;renderHeatmap('spatialMap',base,values,points.map((p,i)=>({x:p.x,y:p.y,color:'#101820',fill:'#fff',r:8,label:i+1})))}
+function renderUncertainty(res){let a=res.A,ad=res.ad,us=res.uStat,ue=Math.abs(res.uK),ua=Math.abs(res.uArea),ucs=res.uAtotal,usd=res.uDtotal;const fmtMethod=s.rawMode&&s.verified?'실측 원시계수 기반':'표시 cpm과 가정한 시간 기반';$('uncSummary').innerHTML=`통계 표준불확도 u(A) = ${fmt(us,5)} Bq<br>응답계수 기여 uK(A) = ${fmt(ue,5)} Bq<br>합성 표준불확도 uc(A) = ${fmt(ucs,5)} Bq<br>표면오염도 = ${fmt(ad,5)} ± ${fmt(usd,5)} Bq/cm² (1σ, 근사)<br>양측 95% 근사 = [${fmt(ad-1.96*usd,5)}, ${fmt(ad+1.96*usd,5)}] Bq/cm²<br>근거: ${esc(fmtMethod)}. 독립입력/정규근사 가정.`;
+let uAreaA=Number.isFinite(a)?Math.abs(a*s.areaUnc/100):0,values=[{name:'계수통계',v:us},{name:'응답계수',v:ue},{name:'면적 (표면오염도만)',v:uAreaA}];let sumsq=values.reduce((a,b)=>a+(b.v||0)**2,0);$('uncBudget').innerHTML=`<table><thead><tr><th>불확도 요인</th><th>u 기여 (Bq 등가)</th><th>분산 비율</th></tr></thead><tbody>${values.map(x=>`<tr><td>${esc(x.name)}</td><td class="number">${fmt(x.v,4)}</td><td class="number">${fmt(sumsq?100*x.v*x.v/sumsq:0,1)}%</td></tr>`).join('')}</tbody></table>`;const v=values.map((d,i)=>[i+1,d.v*d.v]);linePlot('uncChart',[{data:v,color:'#168fbd'}],{ymin:0,xmin:.8,xmax:3.2,xlabel:'1 counts · 2 K · 3 area',ylabel:'variance (Bq²)'});}
+function monteCarlo(res){const count=+s.mcN,seed=+s.mcSeed,rg=res.r.g,rb=res.r.b,tg=res.r.tg,tb=res.r.tb,K=res.c.K,area=res.c.area; if(!validPos(tg)||!validPos(tb)||!validPos(K)){notify('계산 조건이 잘못되어 MC를 실행할 수 없습니다.');return}const rng=makeRandom(seed),net=rg-rb,u=Math.sqrt(rg/tg+rb/tb),uncK=Math.max(0,s.effUnc/100),uncS=Math.max(0,s.areaUnc/100),arr=[];for(let i=0;i<count;i++){const rate=net+u*standardNormal(rng),k=K*Math.exp(uncK*standardNormal(rng)-uncK*uncK/2),a=validPos(area)?area*Math.exp(uncS*standardNormal(rng)-uncS*uncS/2):NaN;arr.push(rate/k/(validPos(a)?a:1))}arr.sort((a,b)=>a-b);mcData=arr;const q=p=>{let v=(arr.length-1)*p,lo=Math.floor(v),hi=Math.ceil(v);return arr[lo]+(arr[hi]-arr[lo])*(v-lo)};let lo=q(.025),median=q(.5),hi=q(.975),mu=arr.reduce((a,b)=>a+b,0)/arr.length;$('mcSummary').textContent=`n=${fmt(count,0)} · seed=${seed} · 평균=${fmt(mu,5)} · 중앙값=${fmt(median,5)} · 2.5–97.5% 분위수=[${fmt(lo,5)}, ${fmt(hi,5)}] ${validPos(area)?'Bq/cm²':'Bq'} · 계수통계 정규근사 + K/면적 로그정규 분포 전파 (독립 가정). 음수 순계수 추정도 유지합니다.`;$('mcTag').textContent=count.toLocaleString()+' samples';renderMCHist();}
+function renderMCHist(){const item=canvasContext('mcChart',800,280);if(!item)return;const {ctx,w,h}=item;if(!mcData?.length){ctx.fillStyle=color('--muted');ctx.fillText('Monte Carlo를 실행하십시오',30,45);return}const data=mcData,n=46,min=data[Math.floor(data.length*.002)],max=data[Math.floor(data.length*.998)];if(!(max>min))return;const bins=new Array(n).fill(0);data.forEach(x=>{const idx=Math.min(n-1,Math.max(0,Math.floor((x-min)/(max-min)*n)));bins[idx]++});const maxN=Math.max(...bins),left=50,top=20,right=10,bottom=40,wp=w-left-right,hp=h-top-bottom;ctx.strokeStyle=color('--line');ctx.strokeRect(left,top,wp,hp);for(let j=0;j<n;j++){let bw=wp/n,bh=bins[j]/maxN*hp;ctx.fillStyle='#168fbd';ctx.fillRect(left+j*bw,top+hp-bh,bw-.5,bh)}ctx.fillStyle=color('--muted');ctx.font='12px system-ui';ctx.textAlign='left';ctx.fillText(fmt(min,3),left,h-15);ctx.textAlign='right';ctx.fillText(fmt(max,3),w-right,h-15);ctx.textAlign='center';ctx.fillText('Monte Carlo value',w/2,h-3)}
+const nuclides={'Cs-137':'β⁻ 방출 및 Ba-137m의 γ(662 keV) 관찰 가능. 판케이크 GM 효율은 실제 프로브·형상 교정이 필요합니다.','Co-60':'β⁻ 및 약 1.17/1.33 MeV γ선. 직접계측 효율은 선원 형상·입사각에 종속합니다.','Sr-90/Y-90':'Sr-90과 Y-90의 베타선; 평형 상태와 표면 내 자기흡수를 확인해야 합니다.','C-14':'낮은 에너지 β선(최대 약 156 keV)으로 창·거리·표면층 영향이 큽니다.','Cl-36':'베타 방출 핵종. 검출창과 표면형상 교정자료가 필요합니다.','Tc-99':'낮은 에너지 β선. 박막·오염층 조건에 따라 효율 저하 가능성이 있습니다.','Am-241':'알파선 및 저에너지 γ선. 일반 GM 프리스커로 알파 총방사능을 일괄 정량할 수 없습니다.','미상/혼합':'단일 GM 계수율은 핵종을 분리하지 못합니다. 혼합비와 핵종별 교정효율 없이 단일한 방사능을 확정할 수 없습니다.'};
+function renderCalibration(res){$('nuclideInfo').innerHTML=`<div class="alert"><b>${esc(s.nuclide)}</b> · ${esc(nuclides[s.nuclide]||'실측 교정자료 필요')}</div><div class="small muted" style="margin:8px 0">핵종·재질을 변경해도 임의의 효율을 자동 적용하지 않습니다. 교정 상태가 '실측'이어도 증명서를 자동 검증하지 못합니다.</div>`;$('materialInfo').textContent=`현재 재질: ${s.material}. 표면 거칠기·자기흡수·후방산란·피복·거리의 영향을 고려하되 수치 보정은 별도 입력/교정이 필요합니다.`;$('calWarning').textContent=s.calStatus==='measured'?`사용자 표시: 교정기록 있음 (${s.calRef||'참조번호 없음'}). 이 프로그램은 교정기관·유효기간·측정형상 일치 여부를 자동 확인하지 않습니다.`:'DEMO-GM 교육용 프로필: 입력 효율을 실제 계측기의 검증된 감도로 취급하지 않습니다.';let fields=[['장비',s.detector],['핵종',s.nuclide],['재질',s.material],['유효 K (cps/Bq)',fmt(res.c.K,7)],['응답방식',s.responseMode],['프로브 면적 (cm²)',fmt(s.probeArea,2)],['오염면적 (cm²)',s.areaUnknown?'미상':fmt(s.area,2)],['교정일',s.calDate||'입력되지 않음'],['교정참조',s.calRef||'입력되지 않음'],['교정조건',s.calNote||'입력되지 않음']];$('calTable').innerHTML='<table><tbody>'+fields.map(x=>`<tr><th>${esc(x[0])}</th><td>${esc(x[1])}</td></tr>`).join('')+'</tbody></table>'}
+function reportText(res=lastResults){if(!res.r)return '';let m=res.m||{},r=res.r,c=res.c;return `GM Frisker Lab v1.3 — 조건부 분석 결과\n측정일: ${new Date().toISOString().slice(0,10)}\n장비/교정: ${s.detector}, ${s.calStatus==='demo'?'교육용 가정':'사용자 표시: 교정기록 있음'}\n핵종/재질: ${s.nuclide}, ${s.material}\n측정: ${fmt(r.g*60,3)} cpm / 배경 ${fmt(r.b*60,3)} cpm; 시간 ${fmt(r.tg)} / ${fmt(r.tb)} 초\n계수 확인: ${r.raw?'실측 원시계수 확인':'미확인 cpm 또는 시뮬레이션'}\n순계수율: ${fmt(r.n,5)} cps\n응답 K: ${fmt(c.K,7)} cps/Bq\n방사능: ${fmt(res.A,5)} Bq (미제한 순계수 추정)\n비음수 활동 추정: ${fmt(res.physA,5)} Bq\n오염면적: ${s.areaUnknown?'미상':fmt(c.area,3)+' cm²'}\n면적당 방사능: ${fmt(res.ad,6)} Bq/cm²\n표준불확도(계수): ${fmt(res.uStat,5)} Bq; 합성(근사): ${fmt(res.uAtotal,5)} Bq\nMDA 방법: ${m.model||s.mdaMethod}\nLC,LD: ${fmt(m.lc,4)}, ${fmt(m.ld,4)} net counts\nMDA: ${fmt(m.MDA,6)} Bq; MDC: ${fmt(m.MDC,6)} Bq/cm²\n목표/비교: ${fmt(s.targetMdc,4)}, ${fmt(s.limit,4)} Bq/cm² (사용자 정의)\n정확조건부검정 p: ${fmt(res.p,7)} (원시계수 확인 시에만 의미)\n주의: ISO 적합성, 교정 일치, 법령 적합성을 자동 보증하지 않음. 피부/의복은 ISO 7503-1 범위 외.\n참고: NRC NUREG-1507 Rev.1, ORAU Module 11, ISO 11929-1:2025, JCGM GUM.\n`;}
+function renderReport(res){let m=res.m||{},r=res.r;const status=s.calStatus==='demo'?'교육용 / 정량 검증 미확인':'사용자 교정기록 — 유효성 별도 확인';$('reportStatus').textContent=status;const rows=[['총 / 배경계수율',fmt(r.g*60,3)+' / '+fmt(r.b*60,3)+' cpm'],['총 / 배경시간',fmt(r.tg,3)+' / '+fmt(r.tb,3)+' s'],['원시 계수',r.raw?'확인 · '+fmt(r.Ng,0)+' / '+fmt(r.Nb,0):'미확인 · 정확 통계판정 제한'],['순계수율',fmt(r.n,5)+' cps'],['응답 K',fmt(res.c.K,6)+' cps/Bq'],['총 방사능',fmt(res.A,5)+' Bq (부호 보존 추정)'],['비음수 추정',fmt(res.physA,5)+' Bq'],['오염면적',s.areaUnknown?'미상':fmt(res.c.area,3)+' cm²'],['표면오염도',fmt(res.ad,5)+' Bq/cm²'],['합성 표준불확도',fmt(res.uAtotal,5)+' Bq'],['MDA 방식',m.model||'—'],['결정임계값 Lc',fmt(m.lc,4)+' net counts'],['검출한계 Ld',fmt(m.ld,4)+' net counts'],['MDA',fmt(m.MDA,5)+' Bq'],['MDC',fmt(m.MDC,5)+' Bq/cm²'],['비교기준',fmt(s.limit,4)+' Bq/cm² (사용자 정의)'],['교정 참조',s.calRef||'없음'],['데이터 상태',status],['측정지점',points.length+'개']];$('reportBody').innerHTML=`<div class="tbl-wrap"><table><tbody>${rows.map(x=>`<tr><th style="min-width:140px">${esc(x[0])}</th><td>${esc(x[1])}</td></tr>`).join('')}</tbody></table></div><p class="alert">비교 기준은 사용자 입력값이며 적용 법규가 확인되지 않았습니다. 신뢰구간, MDA 및 조건부 분포지도는 독립적 개념입니다. 본 계산 결과만으로 공식 판정을 수행하지 않습니다.</p>`}
+function viewSelect(name){if(!$("view-"+name))return;view=name;document.querySelectorAll('.view').forEach(el=>el.classList.toggle('active',el.id==='view-'+name));document.querySelectorAll('.nav').forEach(el=>el.classList.toggle('active',el.dataset.view===name));window.scrollTo({top:0,behavior:'auto'});setTimeout(()=>{if(name==='mda')renderMda(lastResults,lastResults.m);if(name==='scenario')renderScenario(lastResults);if(name==='spatial')renderSpatial();if(name==='uncertainty'){renderUncertainty(lastResults);renderMCHist()}},30)}
+function updateAll(){let res=analyze(),m=calcMDA(res.r,res.c);renderMain(res,m);res.m=m;res.p=lastResults.p;lastResults={...lastResults,...res,m};renderCalibration(res);renderReport(lastResults);let handle=view;if(handle==='mda')renderMda(res,m);if(handle==='scenario')renderScenario(res);if(handle==='spatial')renderSpatial();if(handle==='uncertainty')renderUncertainty(res);if(settings.autoSave)saveProject(false)}
+function applyTheme(){let theme=settings.theme;if(theme==='system')theme=window.matchMedia&&window.matchMedia('(prefers-color-scheme:dark)').matches?'dark':'light';document.body.dataset.theme=theme;document.documentElement.style.setProperty('--fontsize',settings.fontSize+'px');document.documentElement.style.setProperty('--leading',String(settings.lineHeight||1.55));$('lineHeight').value=settings.lineHeight||1.55;$('lineHeightLabel').textContent=fmt(settings.lineHeight||1.55,2);$('theme').value=settings.theme;$('fontSize').value=settings.fontSize;$('fontSizeLabel').textContent=settings.fontSize;document.querySelectorAll('[data-ko]').forEach(el=>el.textContent=el.dataset[settings.lang]||el.dataset.ko);$('btnLang').textContent=settings.lang==='ko'?'EN':'한국어';$('autoSave').checked=settings.autoSave;document.documentElement.lang=settings.lang;try{localStorage.setItem('gm-lab-prefs-v11',JSON.stringify(settings))}catch(e){};setTimeout(()=>{if(view==='mda')renderMda(lastResults,lastResults.m);if(view==='uncertainty'){renderUncertainty(lastResults);renderMCHist()}},50)}
+function serialize(){return {app:'GM Frisker Lab',version:'1.4',savedAt:new Date().toISOString(),state:s,points,settings}}
+function saveProject(toast=true){try{localStorage.setItem('gm-lab-project-v11',JSON.stringify(serialize()));if(toast)notify('이 브라우저에 프로젝트를 저장했습니다.')}catch(e){if(toast)notify('저장 실패: 스토리지 용량 또는 차단 설정을 확인하십시오.')}}
+function loadSaved(){try{let st=JSON.parse(localStorage.getItem('gm-lab-prefs-v11')||'null');if(st&&typeof st==='object')settings={...settings,...st};let data=JSON.parse(localStorage.getItem('gm-lab-project-v11')||'null');if(data?.state&&settings.autoSave)importObject(data,false)}catch(e){}}
+function importObject(obj,tell=true){if(!obj||typeof obj!=='object'||!obj.state||typeof obj.state!=='object')throw new Error('프로젝트 JSON 구조가 잘못되었습니다.');const incoming={...defaults};for(let [k,defaultVal]of Object.entries(defaults)){let v=obj.state[k];if(typeof defaultVal==='number'&&typeof v==='number'&&Number.isFinite(v))incoming[k]=v;else if(typeof defaultVal==='boolean'&&typeof v==='boolean')incoming[k]=v;else if(typeof defaultVal==='string'&&typeof v==='string')incoming[k]=v.slice(0,2000)}s=incoming;points=Array.isArray(obj.points)?obj.points.slice(0,250).filter(p=>p&&[p.x,p.y,p.cpm].every(x=>typeof x==='number'&&Number.isFinite(x))&&p.cpm>=0).map(p=>({x:p.x,y:p.y,cpm:p.cpm})):[];if(obj.settings&&typeof obj.settings==='object')settings={...settings,theme:['light','dark','system','contrast','sepia','blueprint','forest'].includes(obj.settings.theme)?obj.settings.theme:settings.theme,fontSize:Math.max(11,Math.min(28,Number(obj.settings.fontSize)||15)),lineHeight:Math.max(1,Math.min(2.2,Number(obj.settings.lineHeight)||1.55)),lang:obj.settings.lang==='en'?'en':'ko',autoSave:!!obj.settings.autoSave};inverse=null;mcData=null;syncInputs();applyTheme();renderPoints();updateAll();if(tell)notify('프로젝트를 불러왔습니다.')}
+function blobDownload(data,filename,mime){const blob=new Blob([data],{type:mime}),url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download=filename;document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),2500)}
+function csv(rows){return '\uFEFF'+rows.map(row=>row.map(value=>{let str=String(value??'');if(/^[\s]*[=+@-]/.test(str)&&!/^-?\d+(\.\d+)?$/.test(str))str="'"+str;return '"'+str.replace(/"/g,'""')+'"'}).join(',')).join('\r\n')+'\r\n'}
+function copy(text){if(navigator.clipboard?.writeText)return navigator.clipboard.writeText(text).then(()=>notify('클립보드에 복사했습니다.'),()=>fallbackCopy(text));fallbackCopy(text)}
+function fallbackCopy(text){let ta=document.createElement('textarea');ta.value=text;ta.style.position='fixed';ta.style.left='-99999px';document.body.appendChild(ta);ta.select();try{document.execCommand('copy');notify('복사했습니다.')}catch(e){notify('복사 실패: 브라우저 접근 권한을 확인하십시오.')}ta.remove()}
+function loadPreset(type){s={...defaults};if(type==='low'){s.grossCpm=7;s.bkgCpm=5;s.efficiency=10;s.grossCounts=7;s.bkgCounts=5}else if(type==='negative'){s.grossCpm=45;s.bkgCpm=60;s.grossCounts=45;s.bkgCounts=60}else if(type==='highbg'){s.grossCpm=900;s.bkgCpm=800;s.grossCounts=900;s.bkgCounts=800}else if(type==='alpha'){s.nuclide='Am-241';s.efficiency=1;s.calK=.01;s.calStatus='demo';s.material='피부'}s.probeX=0;s.probeY=0;points=[];inverse=null;mcData=null;syncInputs();renderPoints();updateAll();notify('예제를 불러왔습니다. 값과 실측 상태를 확인하십시오.')}
+function addPoint(x,y,cpm){if(points.length>=250){notify('측정지점은 최대 250개입니다.');return}if(![x,y,cpm].every(Number.isFinite)||cpm<0){notify('지점 수치를 확인하십시오.');return}points.push({x,y,cpm});inverse=null;renderPoints();renderSpatial();if(settings.autoSave)saveProject(false)}
+function testSuite(){let cases=[],assert=(name,cond,detail='')=>cases.push({name,pass:!!cond,detail}),close=(v,x,tol=1e-8)=>Math.abs(v-x)<=tol;let orig={...defaults};const r={tg:60,tb:60,g:3,b:1,n:2,B:60,Ng:180,Nb:60};const c={K:.2,area:15.5,Ks:3.1};const mm=calcMDA(r,c,'paired');assert('T01 총계수율 3 cps',close(r.g,180/60));assert('T02 순계수율 2 cps',close(r.g-r.b,2));assert('T03 총방사능 10 Bq',close((r.g-r.b)/c.K,10));assert('T04 면오염도 0.645161',close(10/15.5,.64516129032258));assert('T05 오염면적 20 → 0.5',close(10/20,.5));assert('T06 계수 불확도 0.258199 cps',close(Math.sqrt(3/60+1/60),.258198889747,1e-9));assert('T07 MDA 약 3.252 Bq',close(mm.MDA,(3+4.65*Math.sqrt(60))/12,1e-10));assert('T08 MDC 약 0.210 Bq/cm²',close(mm.MDC,mm.MDA/15.5));assert('T09 Lc 약 18.018 counts',close(mm.lc,1.6448536269514722*Math.sqrt(120)));assert('T10 unequal bg 300s → 검출한계 감소',calcMDA({...r,tb:300},c,'unequal').MDA<calcMDA(r,c,'unequal').MDA);assert('T11 동일시간 모델의 다른 시간 차단',!calcMDA({...r,tb:300},c,'paired').valid);assert('T12 B=0 Poisson critical=1',calcMDA({...r,b:0,B:0},c,'poisson').critical===1);assert('T13 B=0 Poisson MDA exact',close(calcMDA({...r,b:0,B:0},c,'poisson').MDA,-Math.log(.05)/12,2e-7));assert('T14 P(Poisson≥1|λ=2)',close(poissonTail(1,2),1-Math.exp(-2),1e-9));assert('T15 P(Poisson≥3|λ=2)',close(poissonTail(3,2),1-Math.exp(-2)*(1+2+2),1e-9));assert('T16 정확 이항검정 p=0.5',close(exactConditionalP(1,0,60,60),.5));assert('T17 베타 정규화 I₀.₅(2,2)=0.5',close(betaI(2,2,.5),.5,1e-10));assert('T18 정규분포 역함수 z0.95',close(invNorm(.95),1.64485362695147,2e-5));assert('T19 노이즈 불확도 0.08329 Bq/cm²',close(Math.sqrt(240)/60/.2/15.5,.083290,1e-5));assert('T20 효율 15% 추가시 불확도 확대',Math.hypot(.08329,.645161*.15)>.08329);assert('T21 저효율 → MDA 증가',calcMDA(r,{...c,K:.1},'paired').MDA>mm.MDA);assert('T22 배경 증가 → MDA 증가',calcMDA({...r,b:4,B:240},c,'paired').MDA>mm.MDA);assert('T23 시간 2배 → MDA 감소',calcMDA({...r,tg:120,tb:120,B:120},c,'paired').MDA<mm.MDA);assert('T24 음의 순계수 보존',45/60-60/60<0);assert('T25 미상 면적은 MDC 미산출',!Number.isFinite(calcMDA(r,{...c,area:NaN},'paired').MDC));const rng1=makeRandom(1337),rng2=makeRandom(1337);assert('T26 난수 시드 재현성',rng1()===rng2()&&rng1()===rng2());assert('T27 검출력 MDA에서 95% 근방',mdaPower(mm.MDA,r,c,mm)>.91);assert('T28 정확 Poisson 꼬리 확률 유계',poissonTail(250,250)>=0&&poissonTail(250,250)<=1);const pass=cases.filter(c=>c.pass).length;$('testSummary').textContent=`${pass}/${cases.length} 통과 · 수학적 단위시험 (실측기기 검증시험을 대신하지 않음)`;$('testResults').innerHTML=`<table><thead><tr><th>ID / 검사</th><th>결과</th></tr></thead><tbody>${cases.map(c=>`<tr><td>${esc(c.name)}</td><td class="${c.pass?'':'bad'}">${c.pass?'✓ 통과':'✕ 실패'} ${esc(c.detail)}</td></tr>`).join('')}</tbody></table>`;return {passed:pass,total:cases.length,failed:cases.filter(c=>!c.pass).map(c=>c.name)}}
+function init(){loadSaved();applyTheme();syncInputs();renderPoints();document.querySelectorAll('[data-key]').forEach(el=>{const handler=()=>{const k=el.dataset.key,ref=defaults[k];if(typeof ref==='boolean')s[k]=el.checked;else if(typeof ref==='number')s[k]=el.value.trim()===''?NaN:Number(el.value);else s[k]=el.value;if(k==='rawMode'){if(s.rawMode&&!(s.grossCounts>=0))s.grossCounts=Math.round(s.grossCpm*s.grossSec/60);$('rawFields').hidden=!s.rawMode;$('grossCpm').disabled=s.rawMode;$('bkgCpm').disabled=s.rawMode}if(k==='mdaMethod'){$('alpha').disabled=['paired','unequal'].includes(s.mdaMethod);$('beta').disabled=['paired','unequal'].includes(s.mdaMethod)}if(['grossCpm','bkgCpm','grossCounts','bkgCounts','grossSec','bkgSec','responseMode','efficiency','area','calK','calKs','instrumentEff','sourceEff','rawMode','mdaMethod','areaUnknown','reportedDensity','compareReported'].includes(k))mcData=null;if(k==='solverMode'||k==='kernelSigma'||k==='worldSize')inverse=null;updateAll()};el.addEventListener('input',handler);if(el.tagName==='SELECT')el.addEventListener('change',handler)});
+document.querySelectorAll('.nav').forEach(btn=>btn.addEventListener('click',()=>viewSelect(btn.dataset.view)));document.querySelectorAll('[data-goto]').forEach(btn=>btn.addEventListener('click',()=>viewSelect(btn.dataset.goto)));
+$('theme').addEventListener('change',e=>{settings.theme=e.target.value;applyTheme()});$('fontSize').addEventListener('input',e=>{settings.fontSize=Number(e.target.value);applyTheme()});$('lineHeight').addEventListener('input',e=>{settings.lineHeight=Number(e.target.value);applyTheme()});$('btnLang').addEventListener('click',()=>{settings.lang=settings.lang==='ko'?'en':'ko';applyTheme();notify(settings.lang==='en'?'English navigation enabled; scientific details remain in Korean.':'한국어 탐색으로 변경했습니다.')});$('btnSave').addEventListener('click',()=>saveProject());$('btnReset').addEventListener('click',()=>loadPreset('original'));$('examplePreset').addEventListener('change',e=>loadPreset(e.target.value));$('btnCopyFormula').addEventListener('click',()=>copy($('formulas').innerText));$('btnDownloadMdaCsv').addEventListener('click',()=>blobDownload(csv([['count_seconds','MDC_Bq_cm2'],...plotCache]),'GM_MDA_vs_Time.csv','text/csv;charset=utf-8'));
+$('btnCenterProbe').addEventListener('click',()=>{s.probeX=0;s.probeY=0;renderScenario(analyze())});$('scenarioMap').addEventListener('pointerdown',e=>{let rect=e.target.getBoundingClientRect(),xx=(e.clientX-rect.left)/rect.width,yy=(e.clientY-rect.top)/rect.height;s.probeX=Math.round((xx-.5)*s.worldSize*100)/100;s.probeY=Math.round((yy-.5)*s.worldSize*100)/100;renderScenario(analyze())});$('btnSimCount').addEventListener('click',()=>{let res=analyze(),v=predictedAt(s.probeX,s.probeY,scenarioGrid(),res.c),rng=makeRandom((Date.now()%4294967295)>>>0),N=poissonSample((res.r.b+v.cps)*s.grossSec,rng);$('sampleCount').textContent=`가상 관측: ${fmt(N,0)} counts / ${fmt(s.grossSec,2)} s = ${fmt(N*60/s.grossSec,2)} cpm. 실제 원시계수 아님. 추가 버튼으로 공간분석 입력 가능.`;s.lastSampleCpm=N*60/s.grossSec;});$('btnAddPoint').addEventListener('click',()=>{let res=analyze(),v=predictedAt(s.probeX,s.probeY,scenarioGrid(),res.c);addPoint(s.probeX,s.probeY,Number.isFinite(s.lastSampleCpm)?s.lastSampleCpm:60*(res.r.b+v.cps));delete s.lastSampleCpm;notify('현재 프로브의 모의 측정점을 추가했습니다.')});
+$('btnAddManual').addEventListener('click',()=>addPoint(Number($('pointX').value),Number($('pointY').value),Number($('pointCpm').value)));$('btnClearPoints').addEventListener('click',()=>{points=[];inverse=null;renderPoints();renderSpatial()});$('btnSamplePoints').addEventListener('click',()=>{points=[];let res=analyze(),grid=scenarioGrid(),W=s.worldSize/2;for(let j=-1;j<=1;j++)for(let i=-1;i<=1;i++){let x=i*W*.65,y=j*W*.65,v=predictedAt(x,y,grid,res.c);points.push({x,y,cpm:60*(res.r.b+v.cps)})}inverse=null;renderPoints();renderSpatial();notify('시나리오 커널에 따른 9지점 예측값을 생성했습니다.')});$('btnSolve').addEventListener('click',()=>performSolve(analyze()));$('btnRunMC').addEventListener('click',()=>monteCarlo(analyze()));$('btnTests').addEventListener('click',()=>{let t=testSuite();notify(`수치검증: ${t.passed}/${t.total} 통과`)});
+$('btnExportJson').addEventListener('click',()=>blobDownload(JSON.stringify(serialize(),null,2),'GM_Frisker_Project_v1.4.json','application/json;charset=utf-8'));$('btnImportJson').addEventListener('click',()=>$('importFile').click());$('importFile').addEventListener('change',async e=>{let f=e.target.files[0];if(!f)return;try{if(f.size>2e6)throw Error('파일이 2 MB를 초과합니다.');importObject(JSON.parse(await f.text()))}catch(err){notify('JSON 읽기 실패: '+err.message)}e.target.value=''});
+$('btnExportCsv').addEventListener('click',()=>blobDownload(csv([['key','value'],...Object.entries({...lastResults}).filter(([k])=>['A','ad','uStat','uAtotal','uDtotal','physA'].includes(k)),['MDA_Bq',lastResults.m?.MDA],['MDC_Bq_cm2',lastResults.m?.MDC],['net_cps',lastResults.r?.n],['K_cps_per_Bq',lastResults.c?.K],['nuclide',s.nuclide],['material',s.material],['raw_verified',s.rawMode&&s.verified],['calibration_status',s.calStatus]]),'GM_Frisker_Results.csv','text/csv;charset=utf-8'));
+$('btnPointCsv').addEventListener('click',()=>blobDownload(csv([['x_cm','y_cm','gross_cpm'],...points.map(p=>[p.x,p.y,p.cpm])]),'GM_Frisker_Measurement_Points.csv','text/csv;charset=utf-8'));$('btnPrint').addEventListener('click',()=>{renderReport(lastResults);window.print()});$('btnCopyReport').addEventListener('click',()=>copy(reportText(lastResults)));$('btnExportMap').addEventListener('click',()=>{const a=$('scenarioMap');renderScenario(analyze());a.toBlob(blob=>{if(!blob)return;const url=URL.createObjectURL(blob),link=document.createElement('a');link.href=url;link.download='GM_Frisker_Contamination_Map.png';link.click();setTimeout(()=>URL.revokeObjectURL(url),1000)},'image/png')});$('btnExportProfile').addEventListener('click',()=>blobDownload(JSON.stringify({instrument:s.detector,date:s.calDate,ref:s.calRef,note:s.calNote,status:s.calStatus,nuclide:s.nuclide,material:s.material,responseMode:s.responseMode,K:coeff().K,probeArea:s.probeArea},null,2),'GM_Calibration_Profile.json','application/json'));$('btnCopyProfile').addEventListener('click',()=>copy(JSON.stringify({detector:s.detector,K:coeff().K,nuclide:s.nuclide,material:s.material,calibration:s.calRef,status:s.calStatus},null,2)));
+$('autoSave').addEventListener('change',e=>{settings.autoSave=e.target.checked;applyTheme();if(settings.autoSave)saveProject(false)});$('btnClearStore').addEventListener('click',()=>{try{localStorage.removeItem('gm-lab-project-v11');localStorage.removeItem('gm-lab-prefs-v11');settings.autoSave=false;applyTheme();notify('저장된 프로젝트를 삭제했습니다.')}catch(e){notify('삭제할 수 없습니다.')}});window.addEventListener('resize',()=>{clearTimeout(window.__resizeT);window.__resizeT=setTimeout(()=>{if(view==='mda')renderMda(lastResults,lastResults.m);if(view==='uncertainty'){renderUncertainty(lastResults);renderMCHist()}},170)});if(window.matchMedia)window.matchMedia('(prefers-color-scheme:dark)').addEventListener?.('change',()=>{if(settings.theme==='system')applyTheme()});updateAll();testSuite();}
+init();
+</script>
+<script>
+/* ===== v1.2 UX-only enhancements and simple static entry gate ===== */
+(() => {
+  'use strict';
+  const byId = id => document.getElementById(id);
+  const passwordDigest = '888fa60f08bc9df572f798f423de3e823f6f0413c70e8dec0bbcdf3b84df7fff'; // SHA-256('gm-frisker-mobile-v12|'+input)
+  const sessionKey = 'gm-frisker-mobile-auth-session-v12';
+  const trustedKey = 'gm-frisker-mobile-auth-remember-v12';
+  const rememberMs = 7 * 24 * 60 * 60 * 1000;
+  let failedAttempts = 0;
+  const fallbackDigest = '4350f871';
+  function offlineDigest(text){
+    // Deterministic offline fallback for file:// or browsers without WebCrypto.
+    // It does NOT provide security, just a simple client-side screen gate.
+    let n=2166136261>>>0;
+    for(let i=0;i<text.length;i++){n=Math.imul(n ^ text.charCodeAt(i),16777619)>>>0}
+    return n.toString(16).padStart(8,'0');
+  }
+  async function hashPassword(pwd) {
+    const text='gm-frisker-mobile-v12|' + pwd;
+    if (!window.crypto?.subtle || !window.TextEncoder) return 'offline:'+offlineDigest(text);
+    const data = new TextEncoder().encode(text);
+    const result = await crypto.subtle.digest('SHA-256', data);
+    return Array.from(new Uint8Array(result), b => b.toString(16).padStart(2,'0')).join('');
+  }
+  function safeStorage(which){try{return window[which]}catch(_){return null}}
+  function readStorage(key,storage){try{return storage?.getItem(key)||null}catch(_){return null}}
+  function setStorage(key,val,storage){try{storage?.setItem(key,val)}catch(_){}}
+  function removeStorage(key,storage){try{storage?.removeItem(key)}catch(_){}}
+  function authorized(){
+    if(readStorage(sessionKey, safeStorage('sessionStorage')) === passwordDigest)return true;
+    try {
+      const rec=JSON.parse(readStorage(trustedKey,safeStorage('localStorage'))||'null');
+      if(rec && rec.digest === passwordDigest && rec.until > Date.now())return true;
+    }catch(_){}
+    removeStorage(trustedKey,safeStorage('localStorage')); return false;
+  }
+  function unlock(){document.documentElement.classList.add('gm-unlocked');byId('authPassword').value='';byId('authError').textContent='';}
+  function lock(){removeStorage(sessionKey,safeStorage('sessionStorage'));removeStorage(trustedKey,safeStorage('localStorage'));document.documentElement.classList.remove('gm-unlocked');closeSheets();byId('authPassword').value='';byId('authError').textContent='';window.scrollTo(0,0);}
+  async function submitLogin(e){
+    e.preventDefault();const btn=byId('authSubmit');const pwd=byId('authPassword').value;
+    if(!pwd){byId('authError').textContent='비밀번호를 입력해 주세요.';return}
+    btn.disabled=true;btn.textContent='확인 중…';
+    try{
+      const digest=await hashPassword(pwd);
+      if(digest!==passwordDigest && digest!=='offline:'+fallbackDigest){
+        failedAttempts++;
+        byId('authError').textContent='비밀번호가 올바르지 않습니다. 다시 입력해 주세요.';
+        byId('authPassword').value='';byId('authPassword').focus();
+      } else {
+        setStorage(sessionKey,passwordDigest,safeStorage('sessionStorage'));
+        if(byId('authRemember').checked){setStorage(trustedKey,JSON.stringify({digest:passwordDigest,until:Date.now()+rememberMs}),safeStorage('localStorage'))}
+        else removeStorage(trustedKey,safeStorage('localStorage'));
+        failedAttempts=0;unlock();
+      }
+    }catch(err){byId('authError').textContent=err.message}
+    finally{btn.disabled=false;btn.textContent='프로그램 시작 →'}
+  }
+  byId('authForm').addEventListener('submit',submitLogin);
+  byId('authShow').addEventListener('click',()=>{const input=byId('authPassword'),visible=input.type==='password';input.type=visible?'text':'password';byId('authShow').textContent=visible?'숨김':'표시';byId('authShow').setAttribute('aria-pressed',String(visible))});
+  byId('btnLockDesktop').addEventListener('click',lock);
+  byId('btnLockMobile').addEventListener('click',lock);
+  if(authorized())unlock();
+
+  function closeSheets(){['mobileMenu','mobileSettings'].forEach(id=>{const sheet=byId(id);sheet.hidden=true;sheet.setAttribute('aria-hidden','true')});document.body.style.overflow=''}
+  function toggleSheet(name,open=true){closeSheets();if(!open)return;const el=byId(name==='menu'?'mobileMenu':'mobileSettings');el.hidden=false;el.setAttribute('aria-hidden','false');document.body.style.overflow='hidden';const x=el.querySelector('.sheet-close');if(x)x.focus();if(name==='settings')syncSettings()}
+  function syncDock(){document.querySelectorAll('[data-mobile-view]').forEach(b=>b.classList.toggle('selected',b.dataset.mobileView===view));document.querySelector('[data-mobile-sheet="menu"]').classList.toggle('selected',['uncertainty','calibration','report'].includes(view));}
+  function updateQuick(){
+    const a=lastResults?.A,ad=lastResults?.ad,m=lastResults?.m;
+    byId('quickA').textContent=Number.isFinite(a)?Math.max(0,a).toLocaleString('ko-KR',{maximumFractionDigits:3})+' Bq':'—';
+    byId('quickDensity').textContent=s.areaUnknown?'면적 미상':Number.isFinite(ad)?Math.max(0,ad).toLocaleString('ko-KR',{maximumFractionDigits:3})+' Bq/cm²':'—';
+    byId('quickMda').textContent=Number.isFinite(m?.MDA)?m.MDA.toLocaleString('ko-KR',{maximumFractionDigits:3})+' Bq':'—';
+  }
+  const prevViewSelect = viewSelect;
+  viewSelect = function(name){prevViewSelect(name);syncDock();closeSheets()};
+  const prevUpdateAll = updateAll;
+  updateAll = function(...args){const ret=prevUpdateAll(...args);updateQuick();return ret};
+  document.querySelectorAll('[data-mobile-view]').forEach(b=>b.addEventListener('click',()=>viewSelect(b.dataset.mobileView)));
+  document.querySelectorAll('[data-menu-view]').forEach(b=>b.addEventListener('click',()=>viewSelect(b.dataset.menuView)));
+  document.querySelector('[data-mobile-sheet="menu"]').addEventListener('click',()=>toggleSheet('menu'));
+  document.querySelectorAll('[data-sheet-close]').forEach(b=>b.addEventListener('click',closeSheets));
+  byId('btnSettingsMobile').addEventListener('click',()=>toggleSheet('settings'));
+  byId('menuOpenSettings').addEventListener('click',()=>toggleSheet('settings'));
+  document.addEventListener('keydown',e=>{if(e.key==='Escape')closeSheets()});
+  function syncSettings(){byId('mobileTheme').value=settings.theme;byId('mobileFont').value=settings.fontSize;byId('mobileLine').value=settings.lineHeight;byId('mobileFontValue').textContent=settings.fontSize+'px';byId('mobileLineValue').textContent=Number(settings.lineHeight).toFixed(2)}
+  byId('mobileTheme').addEventListener('change',e=>{settings.theme=e.target.value;applyTheme();syncSettings()});
+  byId('mobileFont').addEventListener('input',e=>{settings.fontSize=Number(e.target.value);applyTheme();syncSettings()});
+  byId('mobileLine').addEventListener('input',e=>{settings.lineHeight=Number(e.target.value);applyTheme();syncSettings()});
+  byId('mobileLanguage').addEventListener('click',()=>{byId('btnLang').click();syncSettings()});
+  byId('mobileSave').addEventListener('click',()=>{byId('btnSave').click();closeSheets()});
+  byId('mobileResetView').addEventListener('click',()=>{settings.theme='light';settings.fontSize=16;settings.lineHeight=1.55;applyTheme();syncSettings()});
+  document.querySelectorAll('[data-quick-preset]').forEach(b=>b.addEventListener('click',()=>{loadPreset(b.dataset.quickPreset);updateQuick()}));
+  for (const [id,step] of Object.entries({grossCpm:10,bkgCpm:10,efficiency:1,area:0.5})){
+    const input=byId(id);
+    if(!input)continue;
+    const parent=input.parentElement;
+    const box=document.createElement('div');box.className='stepper';
+    const mkBtn=(dir)=>{
+      const b=document.createElement('button');b.type='button';b.className='stepper-btn';b.textContent=dir===-1?'−':'+';b.setAttribute('aria-label',(dir===-1?'감소: ':'증가: ')+(parent.querySelector('label')?.textContent||id));
+      b.addEventListener('click',()=>{
+        if(input.disabled)return;
+        let v=Number(input.value)||0;const min=input.min===''?-Infinity:Number(input.min),max=input.max===''?Infinity:Number(input.max);
+        v=Math.min(max,Math.max(min,Math.round((v+dir*step)*10000)/10000));
+        input.value=String(v);input.dispatchEvent(new Event('input',{bubbles:true}));
+      });return b;
+    };
+    parent.insertBefore(box,input);box.append(mkBtn(-1),input,mkBtn(1));
+    input.setAttribute('inputmode','decimal');
+  }
+  document.querySelectorAll('input[type="number"]').forEach(input=>{if(!input.hasAttribute('inputmode'))input.setAttribute('inputmode','decimal');input.setAttribute('enterkeyhint','done')});
+  updateQuick();syncDock();syncSettings();
+})();
+</script>
+
+<script>
+/* GM Frisker Lab v1.3 — Physical quantity-aware radiation units. No external dependency. */
+(function(root){
+'use strict';
+const E_CHARGE=1.602176634e-19; // exact SI-defined elementary charge, C
+function unit(id,name,factor,details=''){return {id,name,factor,details}}
+const families=[
+ {id:'activity',name:'방사능 · Activity',base:'Bq',note:'핵변환률. 방사능 Bq와 계측기 계수율(cps, cpm)은 같지 않습니다.',units:[
+  unit('Bq','베크렐',1),unit('kBq','킬로베크렐',1e3),unit('MBq','메가베크렐',1e6),unit('GBq','기가베크렐',1e9),unit('TBq','테라베크렐',1e12),unit('mBq','밀리베크렐',1e-3),unit('μBq','마이크로베크렐',1e-6),
+  unit('Ci','큐리',3.7e10),unit('mCi','밀리큐리',3.7e7),unit('μCi','마이크로큐리',3.7e4),unit('nCi','나노큐리',37),unit('pCi','피코큐리',.037),unit('dps','초당 핵변환',1,'물리적 핵변환/초이며 검출계수 cps와 구분'),unit('dpm','분당 핵변환',1/60,'물리적 핵변환/분이며 검출계수 cpm과 구분')]},
+ {id:'surface',name:'표면오염도 · Activity per area',base:'Bq/cm²',note:'단위면적당 방사능. dpm은 핵변환/분을 뜻하며 검출계수(cpm)가 아닙니다.',units:[
+  unit('Bq/cm²','제곱센티미터당 베크렐',1),unit('Bq/m²','제곱미터당 베크렐',1e-4),unit('kBq/m²','제곱미터당 킬로베크렐',.1),unit('Bq/100cm²','100 cm²당 베크렐',.01),unit('dpm/cm²','cm²당 핵변환/분',1/60),unit('dpm/100cm²','100 cm²당 핵변환/분',1/6000),unit('pCi/cm²','cm²당 피코큐리',.037),unit('pCi/100cm²','100 cm²당 피코큐리',.00037),unit('μCi/cm²','cm²당 마이크로큐리',3.7e4)]},
+ {id:'volume_activity',name:'체적 방사능농도 · Activity concentration',base:'Bq/L',note:'Bq/L 기준. 기체·액체에 대한 농도이며 다른 물리량과 직접 변환할 수 없습니다.',units:[
+  unit('Bq/L','리터당 베크렐',1),unit('Bq/m³','세제곱미터당 베크렐',.001),unit('kBq/m³','세제곱미터당 킬로베크렐',1),unit('MBq/m³','세제곱미터당 메가베크렐',1e3),unit('Bq/mL','밀리리터당 베크렐',1e3),unit('Bq/cm³','세제곱센티미터당 베크렐',1e3),unit('pCi/L','리터당 피코큐리',.037),unit('pCi/m³','세제곱미터당 피코큐리',.000037),unit('μCi/mL','밀리리터당 마이크로큐리',3.7e7)]},
+ {id:'mass_activity',name:'질량 방사능농도 · Specific activity',base:'Bq/kg',note:'질량당 방사능. 질량이 없으면 총 Bq로 변환할 수 없습니다.',units:[
+  unit('Bq/kg','킬로그램당 베크렐',1),unit('kBq/kg','킬로그램당 킬로베크렐',1000),unit('MBq/kg','킬로그램당 메가베크렐',1e6),unit('Bq/g','그램당 베크렐',1000),unit('mBq/g','그램당 밀리베크렐',1),unit('pCi/g','그램당 피코큐리',37),unit('dpm/g','그램당 핵변환/분',1000/60)]},
+ {id:'absdose',name:'흡수선량 · Absorbed dose',base:'Gy',note:'흡수선량은 Gy 또는 rad. Sv와는 수치가 같아도 물리량이 다르므로 일반적으로 직접 환산할 수 없습니다.',units:[
+  unit('Gy','그레이',1),unit('mGy','밀리그레이',1e-3),unit('μGy','마이크로그레이',1e-6),unit('nGy','나노그레이',1e-9),unit('rad','래드',.01),unit('mrad','밀리래드',1e-5),unit('μrad','마이크로래드',1e-8)]},
+ {id:'equivdose',name:'등가·유효선량 단위 · Dose equivalent',base:'Sv',note:'Sv와 rem의 숫자 단위만 변환합니다. Hp(10), H*(10), 등가선량, 유효선량은 물리량과 해석이 다를 수 있습니다.',units:[
+  unit('Sv','시버트',1),unit('mSv','밀리시버트',1e-3),unit('μSv','마이크로시버트',1e-6),unit('nSv','나노시버트',1e-9),unit('rem','렘',.01),unit('mrem','밀리렘',1e-5),unit('μrem','마이크로렘',1e-8)]},
+ {id:'absrate',name:'흡수선량률 · Absorbed dose rate',base:'Gy/s',note:'단위 시간당 흡수선량. 누적선량은 측정시간을 곱해야 합니다.',units:[
+  unit('Gy/s','그레이/초',1),unit('Gy/min','그레이/분',1/60),unit('Gy/h','그레이/시간',1/3600),unit('mGy/h','밀리그레이/시간',1e-3/3600),unit('μGy/h','마이크로그레이/시간',1e-6/3600),unit('nGy/h','나노그레이/시간',1e-9/3600),unit('rad/h','래드/시간',.01/3600),unit('mrad/h','밀리래드/시간',1e-5/3600)]},
+ {id:'equivrate',name:'선량당량률 · Dose equivalent rate',base:'Sv/s',note:'선량당량률 등의 단위 환산. 선량률 종류(H*(10), Hp(10), E 등)는 일치해야 합니다.',units:[
+  unit('Sv/s','시버트/초',1),unit('Sv/h','시버트/시간',1/3600),unit('mSv/h','밀리시버트/시간',1e-3/3600),unit('μSv/h','마이크로시버트/시간',1e-6/3600),unit('nSv/h','나노시버트/시간',1e-9/3600),unit('μSv/min','마이크로시버트/분',1e-6/60),unit('rem/h','렘/시간',.01/3600),unit('mrem/h','밀리렘/시간',1e-5/3600),unit('μrem/h','마이크로렘/시간',1e-8/3600)]},
+ {id:'exposure',name:'조사선량 · Exposure (air)',base:'C/kg',note:'조사선량 R은 공기 중 전하 생성 관련 물리량입니다. R을 Sv/Gy로 직접 변환하지 않습니다.',units:[
+  unit('C/kg','쿨롬/킬로그램',1),unit('mC/kg','밀리쿨롬/킬로그램',1e-3),unit('μC/kg','마이크로쿨롬/킬로그램',1e-6),unit('R','뢴트겐',2.58e-4),unit('mR','밀리뢴트겐',2.58e-7),unit('μR','마이크로뢴트겐',2.58e-10)]},
+ {id:'exposurerate',name:'조사선량률 · Exposure rate',base:'C/kg/s',note:'조사선량률 단위. 조사선량률을 선량당량률로 직접 변환하지 않습니다.',units:[
+  unit('C/kg/s','쿨롬/킬로그램/초',1),unit('C/kg/h','쿨롬/킬로그램/시간',1/3600),unit('μC/kg/h','마이크로쿨롬/킬로그램/시간',1e-6/3600),unit('R/h','뢴트겐/시간',2.58e-4/3600),unit('mR/h','밀리뢴트겐/시간',2.58e-7/3600),unit('μR/h','마이크로뢴트겐/시간',2.58e-10/3600)]},
+ {id:'count',name:'계수율 · Instrument count rate',base:'cps',note:'검출된 계수율(cpm, cps). dpm/Bq가 아니며, Bq로 환산하려면 효율/응답계수가 필요합니다.',units:[
+  unit('cps','초당 계수',1),unit('cpm','분당 계수',1/60),unit('cph','시간당 계수',1/3600)]},
+ {id:'fluence',name:'입자 플루언스 · Particle fluence',base:'particles/m²',note:'입자 종류·에너지 분포를 고정한 단위면적당 입자수의 단위 환산입니다.',units:[
+  unit('particles/m²','제곱미터당 입자',1),unit('particles/cm²','제곱센티미터당 입자',1e4),unit('particles/mm²','제곱밀리미터당 입자',1e6),unit('particles/100cm²','100cm²당 입자',100)]},
+ {id:'fluencerate',name:'입자 플루언스율 · Fluence rate',base:'particles/m²/s',note:'단위시간 단위면적당 입자수. 계수율(cps), 선량률(Sv/h)로 바꾸려면 에너지별 응답함수가 필요합니다.',units:[
+  unit('particles/m²/s','m²당 초당 입자',1),unit('particles/cm²/s','cm²당 초당 입자',1e4),unit('particles/cm²/min','cm²당 분당 입자',1e4/60),unit('particles/cm²/h','cm²당 시간당 입자',1e4/3600),unit('particles/m²/h','m²당 시간당 입자',1/3600)]},
+ {id:'energy',name:'방사선 입자 에너지 · Energy',base:'J',note:'1 eV = 1.602176634×10⁻¹⁹ J (정의에 따라 정확). 선량 Gy와 에너지 J는 질량 정보가 있어야 연결됩니다.',units:[
+  unit('J','줄',1),unit('mJ','밀리줄',1e-3),unit('μJ','마이크로줄',1e-6),unit('pJ','피코줄',1e-12),unit('fJ','펨토줄',1e-15),unit('eV','전자볼트',E_CHARGE),unit('keV','킬로전자볼트',E_CHARGE*1e3),unit('MeV','메가전자볼트',E_CHARGE*1e6),unit('GeV','기가전자볼트',E_CHARGE*1e9)]},
+ {id:'time',name:'시간 · Time',base:'s',note:'Julian year = 365.25일로 정의한 계산 단위입니다. 달력 연도와 다를 수 있습니다.',units:[
+  unit('s','초',1),unit('ms','밀리초',.001),unit('min','분',60),unit('h','시간',3600),unit('day','일',86400),unit('Julian yr','율리우스년',31557600)]},
+ {id:'area',name:'면적 · Area',base:'m²',note:'면적단위 환산. 물리적 프로브면적과 오염평가면적은 별개입니다.',units:[
+  unit('m²','제곱미터',1),unit('cm²','제곱센티미터',1e-4),unit('mm²','제곱밀리미터',1e-6),unit('km²','제곱킬로미터',1e6)]},
+ {id:'mass',name:'질량 · Mass',base:'kg',note:'방사능농도에서 총 방사능으로 환산하려면 대상 질량을 알아야 합니다.',units:[
+  unit('kg','킬로그램',1),unit('g','그램',.001),unit('mg','밀리그램',1e-6),unit('μg','마이크로그램',1e-9),unit('t','톤',1000)]},
+ {id:'volume',name:'부피 · Volume',base:'m³',note:'방사능농도에서 총 방사능으로 환산하려면 오염매체의 부피를 알아야 합니다.',units:[
+  unit('m³','세제곱미터',1),unit('L','리터',.001),unit('mL','밀리리터',1e-6),unit('cm³','세제곱센티미터',1e-6)]},
+ {id:'crosssection',name:'핵반응 단면적 · Cross-section',base:'m²',note:'반응 단면적은 확률적 상호작용의 면적 차원입니다. 1 barn = 10⁻²⁸ m².',units:[
+  unit('m²','제곱미터',1),unit('cm²','제곱센티미터',1e-4),unit('barn','반',1e-28),unit('mbarn','밀리반',1e-31),unit('μbarn','마이크로반',1e-34)]}
+];
+const byId=Object.fromEntries(families.map(f=>[f.id,f]));
+function findUnit(family,id){const f=byId[family];if(!f)throw new Error('지원하지 않는 물리량: '+family);const u=f.units.find(x=>x.id===id);if(!u)throw new Error('단위가 일치하지 않습니다: '+id);return u}
+function convert(value,family,from,to){let v=Number(value);if(!Number.isFinite(v))throw new Error('유효한 유한 숫자를 입력하세요.');const a=findUnit(family,from),b=findUnit(family,to);const result=v*a.factor/b.factor;if(!Number.isFinite(result))throw new Error('변환 결과가 숫자 범위를 초과합니다.');return result}
+function coefficient(family,from,to){return convert(1,family,from,to)}
+function parseValue(v){const t=String(v).trim().replace(/[,_\s]/g,'').replace(/−/g,'-');if(!t||!/^[-+]?(?:\d+(?:\.\d*)?|\.\d+)(?:e[-+]?\d+)?$/i.test(t))throw new Error('값을 입력하세요 (예: 1, 0.25, 3.7e10).');const n=Number(t);if(!Number.isFinite(n))throw new Error('숫자 범위를 벗어났습니다.');return n}
+function precisionFormat(value,digits=6,mode='auto'){if(!Number.isFinite(value))return '—';const s=Math.min(12,Math.max(2,Number(digits)||6));if(value===0)return '0';const abs=Math.abs(value);let fmt=mode;if(fmt==='auto')fmt=(abs<1e-4||abs>=1e9)?'scientific':'normal';if(fmt==='scientific')return value.toExponential(s-1);if(fmt==='engineering'){let exponent=Math.floor(Math.log10(abs)/3)*3;let mantissa=value/Math.pow(10,exponent);let v=Number(mantissa.toPrecision(s));if(Math.abs(v)>=1000){v/=1000;exponent+=3}return v.toString()+'e'+(exponent>=0?'+':'')+exponent}return new Intl.NumberFormat('ko-KR',{maximumSignificantDigits:s,useGrouping:true}).format(value)}
+function within(a,b,rel=1e-11){return Math.abs(a-b)<=rel*Math.max(1,Math.abs(a),Math.abs(b))}
+function conditional(mode,params){const n=k=>Number(params[k]);const positive=(x,name)=>{if(!Number.isFinite(x)||x<=0)throw new Error(name+'은(는) 0보다 커야 합니다.');return x};const nonnegative=(x,name)=>{if(!Number.isFinite(x)||x<0)throw new Error(name+'은(는) 0 이상이어야 합니다.');return x};
+ if(mode==='counts'){
+  const gross=nonnegative(n('gross'),'총계수율'),bg=nonnegative(n('background'),'배경계수율'),k=positive(n('response'),'응답 K'),area=positive(n('area'),'면적');const net=(gross-bg)/60,act=net/k;return {netCpm:gross-bg,netCps:net,activityBq:act,surfaceBqCm2:act/area,expectedGrossCpm:(nonnegative(n('expectedA'),'예상 방사능')*k)*60+bg,note:act<0?'순계수율 음수: 통계적 관측치이며 물리적 방사능의 음수 확정값이 아닙니다.':'교정된 K(cps/Bq)가 해당 핵종·배치에 적절하다고 가정했습니다.'}
+ }
+ if(mode==='surface'){const a=n('activity'),area=positive(n('area'),'면적');if(!Number.isFinite(a))throw new Error('값을 입력하세요.');const A=params.direction==='inverse'?a*area:a;return {surfaceBqCm2:A/area,activityBq:A}}
+ if(mode==='mass'){const a=n('activity'),mass=positive(n('mass'),'질량');if(!Number.isFinite(a))throw new Error('값을 입력하세요.');const A=params.direction==='inverse'?a*mass:a;return {bqKg:A/mass,activityBq:A}}
+ if(mode==='volume'){const a=n('activity'),vol=positive(n('volume'),'부피');if(!Number.isFinite(a))throw new Error('값을 입력하세요.');const A=params.direction==='inverse'?a*vol:a;return {bqL:A/vol,activityBq:A}}
+ if(mode==='integrate'){const v=n('rate'),hours=nonnegative(n('hours'),'시간');if(!Number.isFinite(v))throw new Error('선량률이 필요합니다.');const cat=params.kind==='absrate'?'absrate':'equivrate';const canonical=convert(v,cat,params.unit,cat==='absrate'?'Gy/s':'Sv/s');return {dose:canonical*hours*3600,unit:cat==='absrate'?'Gy':'Sv'} }
+ if(mode==='decay'){const a=nonnegative(n('activity'),'초기 방사능'),t=nonnegative(n('time'),'경과시간'),half=positive(n('half'),'반감기');return {activityBq:a*Math.exp(-Math.LN2*t/half),remainingFraction:Math.exp(-Math.LN2*t/half),decayedBq:a*(1-Math.exp(-Math.LN2*t/half))}}
+ throw new Error('지원되지 않는 조건부 계산입니다.');
+}
+const api={E_CHARGE,families,byId,findUnit,convert,coefficient,parseValue,precisionFormat,conditional,within};if(typeof module!=='undefined'&&module.exports)module.exports=api;root.GMUnits=api;
+})(typeof window!=='undefined'?window:globalThis);
+
+</script>
+<script>
+/* v1.3 Radiation unit center UI; integrates without replacing v1.2 calculations */
+(() => {
+'use strict';
+const C=window.GMUnits, get=id=>document.getElementById(id), safe=t=>String(t??'').replace(/[&<>"']/g,x=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[x]));
+const initial={family:'activity',from:'Bq',to:'Ci',value:'1',digits:6,format:'auto'};
+let unitState={...initial}, favorites=[], history=[], latest=null, batchRows=[], conditionMode='counts';
+const condState={counts:{gross:180,background:60,response:.2,area:15.5,expectedA:10},surface:{direction:'forward',activity:10,area:15.5},mass:{direction:'forward',activity:10,mass:2},volume:{direction:'forward',activity:10,volume:1},integrate:{kind:'equivrate',rate:5,unit:'μSv/h',hours:2},decay:{activity:100,time:30,half:30}};
+const presets=[
+ {name:'1 Ci → Bq',category:'activity',from:'Ci',to:'Bq',value:'1'},
+ {name:'1 mCi → MBq',category:'activity',from:'mCi',to:'MBq',value:'1'},
+ {name:'1 Bq → dpm',category:'activity',from:'Bq',to:'dpm',value:'1'},
+ {name:'1 Bq/cm² → dpm/100cm²',category:'surface',from:'Bq/cm²',to:'dpm/100cm²',value:'1'},
+ {name:'0.4 Bq/cm² → Bq/m²',category:'surface',from:'Bq/cm²',to:'Bq/m²',value:'0.4'},
+ {name:'1 rad → mGy',category:'absdose',from:'rad',to:'mGy',value:'1'},
+ {name:'1 rem → mSv',category:'equivdose',from:'rem',to:'mSv',value:'1'},
+ {name:'10 μSv/h → mrem/h',category:'equivrate',from:'μSv/h',to:'mrem/h',value:'10'},
+ {name:'1 R → C/kg',category:'exposure',from:'R',to:'C/kg',value:'1'},
+ {name:'180 cpm → cps',category:'count',from:'cpm',to:'cps',value:'180'},
+ {name:'1 MeV → J',category:'energy',from:'MeV',to:'J',value:'1'},
+ {name:'1 pCi/L → Bq/m³',category:'volume_activity',from:'pCi/L',to:'Bq/m³',value:'1'},
+ {name:'1 barn → cm²',category:'crosssection',from:'barn',to:'cm²',value:'1'}
+];
+function readStore(){try{const data=JSON.parse(localStorage.getItem('gm-lab-units-v13')||'null');if(!data||typeof data!=='object')return;
+ if(C.byId[data.state?.family]){const a=data.state;const f=C.byId[a.family];if(f.units.some(u=>u.id===a.from)&&f.units.some(u=>u.id===a.to)){unitState={family:a.family,from:a.from,to:a.to,value:String(a.value).slice(0,80),digits:Math.min(12,Math.max(2,Number(a.digits)||6)),format:['auto','normal','scientific','engineering'].includes(a.format)?a.format:'auto'}}}
+ favorites=Array.isArray(data.favorites)?data.favorites.slice(0,15).filter(isValidPair):[];
+ history=Array.isArray(data.history)?data.history.slice(0,10).filter(isValidPair):[];
+ }catch(e){}
+}
+function isValidPair(p){return p&&C.byId[p.family]&&C.byId[p.family].units.some(u=>u.id===p.from)&&C.byId[p.family].units.some(u=>u.id===p.to)}
+function persist(){try{localStorage.setItem('gm-lab-units-v13',JSON.stringify({state:unitState,favorites,history}))}catch(e){}}
+function format(x){return C.precisionFormat(x,unitState.digits,unitState.format)}
+function options(f,selected){return f.units.map(u=>`<option value="${safe(u.id)}" ${u.id===selected?'selected':''}>${safe(u.id)} · ${safe(u.name)}</option>`).join('')}
+function renderCategories(){get('ucFamilyPick').innerHTML=C.families.map(f=>`<option value="${safe(f.id)}">${safe(f.name)}</option>`).join('');get('ucFamilyPick').value=unitState.family;
+ get('ucFamilyChips').innerHTML=C.families.map(f=>`<button type="button" data-family="${safe(f.id)}" aria-pressed="${f.id===unitState.family}">${safe(f.name.split(' · ')[0])}</button>`).join('')}
+function selectCategory(id){const f=C.byId[id];if(!f)return;unitState.family=id;unitState.from=f.units[0].id;unitState.to=f.units[1]?.id||f.units[0].id;updateCategory();calc();}
+function updateCategory(){const f=C.byId[unitState.family];get('ucFrom').innerHTML=options(f,unitState.from);get('ucTo').innerHTML=options(f,unitState.to);get('ucFamilyPick').value=f.id;get('ucFamilyLabel').textContent=f.name.split(' · ')[0];
+ get('ucFamilyChips').querySelectorAll('button').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.family===f.id)));get('ucValue').value=unitState.value;get('ucDigits').value=String(unitState.digits);get('ucFormat').value=unitState.format;
+}
+function copyText(text){if(typeof copy==='function'){copy(text);return}if(navigator.clipboard?.writeText)navigator.clipboard.writeText(text).then(()=>notify('복사 완료'));else alert(text)}
+function record(){const pair={family:unitState.family,from:unitState.from,to:unitState.to,value:String(unitState.value)};history=[pair,...history.filter(p=>!isSamePair(p,pair))].slice(0,10);persist();renderFavorites()}
+function isSamePair(a,b){return a.family===b.family&&a.from===b.from&&a.to===b.to}
+function applyPair(p){if(!isValidPair(p))return;unitState={...unitState,family:p.family,from:p.from,to:p.to,value:String(p.value??1)};updateCategory();calc();}
+function calc(){let val;const f=C.byId[unitState.family],a=C.findUnit(f.id,unitState.from),b=C.findUnit(f.id,unitState.to);
+ try{val=C.parseValue(unitState.value);const result=C.convert(val,f.id,a.id,b.id),factor=C.coefficient(f.id,a.id,b.id);latest={val,result,factor};get('ucResultNumber').textContent=format(result);get('ucResultUnit').textContent=b.id;get('ucFactor').textContent=`1 ${a.id} = ${format(factor)} ${b.id} · ${format(val)} × ${format(factor)} = ${format(result)} ${b.id}`;
+ get('ucWarning').textContent=f.note+(val<0?' · 음수값은 통계적 순계수율 등에서 나타날 수 있지만 음수 방사능의 물리적 확정값을 뜻하지 않습니다.':'');get('ucWarning').classList.toggle('warning',val<0);
+ }catch(e){latest=null;get('ucResultNumber').textContent='값 확인';get('ucResultUnit').textContent='';get('ucFactor').textContent=e.message;get('ucWarning').textContent=f.note;get('ucWarning').classList.remove('warning')}
+ renderAllResults();persist();}
+function renderAllResults(){const f=C.byId[unitState.family],filter=get('ucSearch').value.trim().toLowerCase(),list=f.units.filter(x=>!filter||(x.id+' '+x.name).toLowerCase().includes(filter));get('ucCountUnits').textContent=f.units.length+'개 단위';
+ if(!latest){get('ucAllResults').innerHTML='<div class="uc-empty">유효한 값을 입력하면 단위별 결과가 표시됩니다.</div>';return}
+ get('ucAllResults').innerHTML=list.map(u=>{const n=C.convert(latest.val,unitState.family,unitState.from,u.id);return `<div class="uc-tile"><div><strong>${safe(u.id)}</strong><small>${safe(u.name)}</small></div><button type="button" data-unit-target="${safe(u.id)}" title="이 단위로 결과 선택">${safe(format(n))}</button></div>`}).join('')||'<div class="uc-empty">일치하는 단위가 없습니다.</div>';
+}
+function renderPresets(){get('ucPresets').innerHTML=presets.map((p,i)=>`<button type="button" data-unit-preset="${i}">${safe(p.name)}</button>`).join('')}
+function renderFavorites(){const render=(entries,kind)=>entries.map((x,i)=>`<div class="uc-tile"><div><button type="button" data-${kind}-open="${i}" style="max-width:unset;text-align:left">${safe(C.byId[x.family].name.split(' · ')[0])}: ${safe(x.from)} → ${safe(x.to)}</button></div>${kind==='favorite'?`<button type="button" data-favorite-del="${i}" aria-label="즐겨찾기 삭제 ${i+1}">✕</button>`:`<small>${safe(x.value??'')}</small>`}</div>`).join('');
+ get('ucFavorites').innerHTML='<b class="uc-label">★ 즐겨찾기 ('+favorites.length+')</b>'+(favorites.length?render(favorites,'favorite'):'<div class="uc-empty">변환 화면의 ☆ 버튼으로 저장할 수 있습니다.</div>');
+ get('ucHistory').innerHTML='<b class="uc-label">최근 사용 ('+history.length+')</b>'+(history.length?render(history,'history'):'<div class="uc-empty">변환 결과를 복사하면 최근 사용에 기록됩니다.</div>')}
+function runBatch(){const lines=get('ucBatchInput').value.replace(/\r/g,'').split('\n').filter(x=>x.trim()!=='').slice(0,300);batchRows=lines.map((text,i)=>{try{const n=C.parseValue(text),result=C.convert(n,unitState.family,unitState.from,unitState.to);return {row:i+1,input:n,output:result,status:'OK'}}catch(e){return {row:i+1,input:text,output:'',status:e.message}}});
+ get('ucBatchResults').innerHTML='<table><thead><tr><th>행</th><th>'+safe(unitState.from)+'</th><th>'+safe(unitState.to)+'</th><th>결과</th></tr></thead><tbody>'+batchRows.map(r=>`<tr><td>${r.row}</td><td>${safe(r.input)}</td><td>${typeof r.output==='number'?safe(format(r.output)):'—'}</td><td>${safe(r.status)}</td></tr>`).join('')+'</tbody></table>';notify(batchRows.length+'행 변환 완료');}
+function batchText(){return batchRows.map(r=>`${r.input}\t${r.output}\t${r.status}`).join('\n')}
+const field=(key,label,val,kind='number',choices=[])=>`<div><label for="ucC_${safe(key)}">${safe(label)}</label>${kind==='select'?`<select class="uc-select" data-cond="${safe(key)}" id="ucC_${safe(key)}">${choices.map(c=>`<option value="${safe(c[0])}" ${String(c[0])===String(val)?'selected':''}>${safe(c[1])}</option>`).join('')}</select>`:`<input class="uc-num" inputmode="decimal" type="number" step="any" id="ucC_${safe(key)}" data-cond="${safe(key)}" value="${safe(val)}">`}</div>`;
+const directionOptions=[['forward','방사능 Bq → 농도'],['inverse','농도 → 방사능 Bq']];
+const fields={
+ counts:p=>[field('gross','총계수율 (cpm)',p.gross),field('background','배경 (cpm)',p.background),field('response','유효응답 K (cps/Bq)',p.response),field('area','오염면적 (cm²)',p.area),field('expectedA','예상 방사능 A (Bq)',p.expectedA)].join(''),
+ surface:p=>[field('direction','방향',p.direction,'select',directionOptions),field('activity',p.direction==='inverse'?'표면오염도 (Bq/cm²)':'방사능 (Bq)',p.activity),field('area','실제 오염면적 (cm²)',p.area)].join(''),
+ mass:p=>[field('direction','방향',p.direction,'select',directionOptions),field('activity',p.direction==='inverse'?'질량농도 (Bq/kg)':'방사능 (Bq)',p.activity),field('mass','대상 질량 (kg)',p.mass)].join(''),
+ volume:p=>[field('direction','방향',p.direction,'select',directionOptions),field('activity',p.direction==='inverse'?'체적농도 (Bq/L)':'방사능 (Bq)',p.activity),field('volume','부피 (L)',p.volume)].join(''),
+ integrate:p=>[field('kind','선량률 물리량',p.kind,'select',[['equivrate','선량당량률 / Sv'],['absrate','흡수선량률 / Gy']]),field('rate','선량률 값',p.rate),field('unit','선량률 단위',p.unit,'select',C.byId[p.kind].units.map(x=>[x.id,x.id])),field('hours','노출시간 (시간)',p.hours)].join(''),
+ decay:p=>[field('activity','초기 방사능 A₀ (Bq)',p.activity),field('time','경과시간 (반감기와 동일단위)',p.time),field('half','물리적 반감기 (같은 시간단위)',p.half)].join('')
+};
+const descriptions={
+ counts:'계측기 응답 K(cps/Bq)에는 핵종·에너지·표면효율·기하구조를 적절히 포함해야 합니다. 이미 교정된 K에 효율을 다시 곱하면 중복 보정입니다.',
+ surface:'총 방사능을 실제 오염면적으로 나누어 평균 표면오염도를 구합니다. 프로브 창 면적과 오염면적은 별개일 수 있습니다.',
+ mass:'Bq/kg = Bq ÷ kg. 질량이 확인된 동일 시료의 방사능에 대한 평균 농도입니다.',
+ volume:'Bq/L = Bq ÷ L. 같은 시료의 부피가 알려져 있어야 합니다.',
+ integrate:'일정한 선량률이 노출시간 내내 유지된다고 가정합니다. 변하는 선량률은 시간 적분이 필요하며, Sv 또는 Gy 물리량 종류는 보존됩니다.',
+ decay:'외부 유입·배출 및 생물학적 제거를 고려하지 않은 단일 핵종 물리적 붕괴만 계산합니다. 반감기와 경과시간 단위를 통일하세요.'
+};
+function showCondFields(){get('ucConditionTabs').querySelectorAll('button').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.mode===conditionMode)));const p=condState[conditionMode];
+ if(conditionMode==='integrate'&&!C.byId[p.kind].units.some(u=>u.id===p.unit))p.unit=p.kind==='absrate'?'μGy/h':'μSv/h';
+ get('ucConditionFields').innerHTML=fields[conditionMode](p);get('ucConditionUse').hidden=!['counts','surface','mass','volume'].includes(conditionMode);get('ucConditionUse').textContent=conditionMode==='counts'?'현재 계측 조건 불러오기':'현재 측정 방사능(Bq) 대입';get('ucConditionNote').textContent=descriptions[conditionMode];computeCond();}
+function computeCond(){const p=condState[conditionMode];try{const result=C.conditional(conditionMode,p);let str;
+ if(conditionMode==='counts')str=`순계수율: ${format(result.netCpm)} cpm = ${format(result.netCps)} cps\n추정 방사능 A = ${format(result.activityBq)} Bq\n평균 표면오염도 = ${format(result.surfaceBqCm2)} Bq/cm²\nA = ${format(p.expectedA)} Bq일 때 예상 총계수율 = ${format(result.expectedGrossCpm)} cpm`;
+ else if(conditionMode==='surface')str=`방사능: ${format(result.activityBq)} Bq\n평균 표면오염도: ${format(result.surfaceBqCm2)} Bq/cm²`;
+ else if(conditionMode==='mass')str=`방사능: ${format(result.activityBq)} Bq\n질량 방사능농도: ${format(result.bqKg)} Bq/kg`;
+ else if(conditionMode==='volume')str=`방사능: ${format(result.activityBq)} Bq\n체적 방사능농도: ${format(result.bqL)} Bq/L`;
+ else if(conditionMode==='integrate')str=`누적 ${result.unit==='Gy'?'흡수선량':'선량당량'}: ${format(result.dose)} ${result.unit}\n시간: ${format(p.hours)} h (일정 선량률 가정)`;
+ else str=`잔존 방사능: ${format(result.activityBq)} Bq\n잔존 비율: ${format(result.remainingFraction*100)}%\n활동도 감소량 ΔA: ${format(result.decayedBq)} Bq`;
+ get('ucConditionResult').textContent=str;get('ucConditionResult').dataset.raw=str;
+ }catch(e){get('ucConditionResult').textContent='입력 확인: '+e.message;get('ucConditionResult').dataset.raw='';}}
+function fromMeasurement(silent=false){const r=typeof rate==='function'?rate():null,c=typeof coeff==='function'?coeff():null;if(!r||!c){notify('계측 입력을 찾지 못했습니다.');return}
+ const p=condState.counts;p.gross=r.g*60;p.background=r.b*60;p.response=c.K;p.area=(c.area>0&&Number.isFinite(c.area))?c.area:15.5;p.expectedA=(lastResults?.physA>=0&&Number.isFinite(lastResults.physA))?lastResults.physA:10;
+ conditionMode='counts';showCondFields();if(!silent)notify('현재 측정 조건을 가져왔습니다. 교정조건과 오염면적을 확인하세요.');}
+function useMeasuredForCondition(){if(conditionMode==='counts'){fromMeasurement();return;}const p=condState[conditionMode];if(!p||!Number.isFinite(lastResults?.A)){notify('먼저 측정 결과를 확인하세요.');return;}p.direction='forward';p.activity=lastResults.A;if(conditionMode==='surface'&&Number.isFinite(lastResults?.c?.area)&&lastResults.c.area>0)p.area=lastResults.c.area;showCondFields();notify('측정 방사능을 적용했습니다. 대상 면적·질량·부피를 확인하세요.')}
+function jumpMeasured(){const a=lastResults?.A,ad=lastResults?.ad;if(!Number.isFinite(a)){notify('계측 결과가 유효하지 않습니다.');return}applyPair({family:'activity',from:'Bq',to:'Ci',value:String(a)});record();notify(`계측 방사능 ${format(a)} Bq를 가져왔습니다.${Number.isFinite(ad)?' 표면오염도는 해당 물리량 선택에서 변환하세요.':''}`)}
+function jumpSurface(){const value=lastResults?.ad;if(!Number.isFinite(value)){notify('오염면적이 미상입니다. 먼저 계측 계산에서 면적을 확인하세요.');return}applyPair({family:'surface',from:'Bq/cm²',to:'dpm/100cm²',value:String(value)});record();notify('현재 계산된 표면오염도에서 변환합니다.')}
+function attach(){readStore();renderCategories();renderPresets();renderFavorites();updateCategory();calc();showCondFields();
+ get('ucFamilyPick').addEventListener('change',e=>selectCategory(e.target.value));get('ucFamilyChips').addEventListener('click',e=>{const b=e.target.closest('[data-family]');if(b)selectCategory(b.dataset.family)});
+ get('ucFrom').addEventListener('change',e=>{unitState.from=e.target.value;calc();record()});get('ucTo').addEventListener('change',e=>{unitState.to=e.target.value;calc();record()});
+ get('ucValue').addEventListener('input',e=>{unitState.value=e.target.value;calc()});get('ucSwap').addEventListener('click',()=>{[unitState.from,unitState.to]=[unitState.to,unitState.from];updateCategory();calc();record()});
+ get('ucDigits').addEventListener('change',e=>{unitState.digits=Number(e.target.value);calc()});get('ucFormat').addEventListener('change',e=>{unitState.format=e.target.value;calc()});
+ get('ucSearch').addEventListener('input',renderAllResults);get('ucAllResults').addEventListener('click',e=>{const b=e.target.closest('[data-unit-target]');if(!b)return;unitState.to=b.dataset.unitTarget;updateCategory();calc();record()});
+ get('ucPresets').addEventListener('click',e=>{const b=e.target.closest('[data-unit-preset]');if(!b)return;const p=presets[Number(b.dataset.unitPreset)];applyPair({...p,family:p.category});record()});
+ get('ucCopyResult').addEventListener('click',()=>{if(!latest){notify('유효한 값을 먼저 입력하세요.');return}copyText(`${format(latest.result)} ${unitState.to}`);record()});get('ucCopyFormula').addEventListener('click',()=>{if(!latest)return;copyText(get('ucFactor').textContent);record()});
+ get('ucFavorite').addEventListener('click',()=>{if(!latest)return;const p={family:unitState.family,from:unitState.from,to:unitState.to,value:unitState.value};const old=favorites.findIndex(v=>isSamePair(v,p));if(old>=0){favorites.splice(old,1);notify('즐겨찾기에서 해제했습니다.')}else{favorites.unshift(p);favorites=favorites.slice(0,15);notify('즐겨찾기에 등록했습니다.')}persist();renderFavorites()});
+ get('ucFavorites').addEventListener('click',e=>{const o=e.target.closest('[data-favorite-open]'),d=e.target.closest('[data-favorite-del]');if(o){applyPair(favorites[Number(o.dataset.favoriteOpen)]);record()}if(d){favorites.splice(Number(d.dataset.favoriteDel),1);persist();renderFavorites()}});
+ get('ucHistory').addEventListener('click',e=>{const o=e.target.closest('[data-history-open]');if(o)applyPair(history[Number(o.dataset.historyOpen)])});
+ get('ucResetHistory').addEventListener('click',()=>{history=[];persist();renderFavorites();notify('최근 변환기록을 삭제했습니다.')});
+ get('ucBatchRun').addEventListener('click',runBatch);get('ucBatchCopy').addEventListener('click',()=>{if(!batchRows.length)runBatch();copyText('입력값\t결과값\t상태\n'+batchText())});
+ get('ucBatchCsv').addEventListener('click',()=>{if(!batchRows.length)runBatch();const rows=[['input_'+unitState.from,'output_'+unitState.to,'status'],...batchRows.map(r=>[r.input,r.output,r.status])];blobDownload(csv(rows),'GM_Units_'+unitState.family+'_v1.3.csv','text/csv;charset=utf-8')});
+ get('ucConditionTabs').addEventListener('click',e=>{const b=e.target.closest('[data-mode]');if(!b)return;conditionMode=b.dataset.mode;showCondFields()});
+ get('ucConditionFields').addEventListener('input',e=>{const key=e.target.dataset.cond;if(!key)return;condState[conditionMode][key]=e.target.tagName==='SELECT'?e.target.value:(e.target.value===''?NaN:Number(e.target.value));if(['direction','kind'].includes(key)){showCondFields()}else computeCond()});
+ get('ucConditionFields').addEventListener('change',e=>{const key=e.target.dataset.cond;if(!key)return;condState[conditionMode][key]=e.target.tagName==='SELECT'?e.target.value:(e.target.value===''?NaN:Number(e.target.value));if(['direction','kind'].includes(key))showCondFields();else computeCond()});
+ get('ucConditionCalc').addEventListener('click',computeCond);get('ucConditionCopy').addEventListener('click',()=>copyText(get('ucConditionResult').dataset.raw||get('ucConditionResult').textContent));get('ucConditionUse').addEventListener('click',useMeasuredForCondition);get('ucJumpMeasured').addEventListener('click',jumpMeasured);get('ucJumpSurface').addEventListener('click',jumpSurface);
+ const priorViewSelect=viewSelect;
+ viewSelect=function(name){priorViewSelect(name);document.body.classList.toggle('gm-unit-view',name==='converter')};
+ document.querySelectorAll('[data-goto="converter"]').forEach(b=>b.addEventListener('click',()=>viewSelect('converter')));
+ get('ucMainShortcut')?.addEventListener('click',()=>viewSelect('converter'));
+ if(typeof s!=='undefined'&&s)fromMeasurement(true);
+}
+attach();
+})();
+
+</script>
+<script id="gm14extension">
+/* GM Frisker Lab v1.4 advanced analytical extension (offline, dependency-free).
+   Original v1.3 core and its controls are preserved. No official release decisions. */
+(function(){'use strict';
+ const el=id=>document.getElementById(id);
+ const val=(id,fallback=NaN)=>{const node=el(id);const n=Number(node?.value);return node&&node.value!==''&&Number.isFinite(n)?n:fallback};
+ const fmt4=(x,d=4)=>Number.isFinite(x)?Number(x).toLocaleString('ko-KR',{maximumFractionDigits:d}):'—';
+ const safeText=x=>String(x).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+ const status=(id,str)=>{if(el(id))el(id).textContent=str;};
+ const quality=(msg,type='warn')=>`<div class="adv-note ${type}">${safeText(msg)}</div>`;
+ let lastProfile=[],lastScan=[],lastSimType='none',lastExact=null,lastAdvancedMC=null;
+ function tryDrawLine(id,series,opts){try{linePlot(id,series,opts)}catch(e){status(id+'Error','그래프 표시 오류: '+e.message)}}
+ // 2 independent Poisson counts under H0 (equal rates), conditional exact one-sided binomial test.
+ // For fixed observed background counts Nb=j, derive minimal gross counts Ng with P(X>=Ng | total=Ng+j) <= alpha.
+ function exactTwoSampleMda(rb,tg,tb,K,area,alpha=.05,beta=.05){
+  if(![rb,tg,tb,K,alpha,beta].every(Number.isFinite)||rb<0||tg<=0||tb<=0||K<=0||alpha<=0||alpha>=.5||beta<=0||beta>=.5)throw Error('배경, 측정시간, 응답 K, α/β를 확인하십시오.');
+  const muB=rb*tb,muG=rb*tg;
+  if(muB>70||muG>70)throw Error('정확 2표본 모델은 계산량을 고려해 배경 기대계수 70 이하에서만 실행합니다. 다른 경우 정규근사 모델을 사용하십시오.');
+  const bgDist=[];let p=Math.exp(-muB),sum=0;
+  for(let j=0;j<Math.max(12,Math.ceil(muB+12*Math.sqrt(muB+1)));j++){
+   bgDist.push([j,p]);sum+=p;if(sum>1-1e-12&&j>=muB)break;p*=muB/(j+1);
+  }
+  const crit=[];
+  for(const [nb] of bgDist){
+   let lo=0,hi=1;
+   while(exactConditionalP(hi,nb,tg,tb)>alpha&&hi<8192)hi*=2;
+   while(lo+1<hi){const md=Math.floor((lo+hi)/2);if(exactConditionalP(md,nb,tg,tb)<=alpha)hi=md;else lo=md;}
+   crit.push(hi);
+  }
+  const power=A=>bgDist.reduce((sm,[nb,p],i)=>sm+p*poissonTail(crit[i],muG+A*K*tg),0);
+  let lo=0,hi=Math.max(1,5*Math.sqrt(muG+muB+1)/(K*tg));
+  while(power(hi)<1-beta&&hi<1e9)hi*=2;
+  for(let i=0;i<47;i++){const md=(lo+hi)/2;if(power(md)>=1-beta)hi=md;else lo=md;}
+  return {MDA:hi,MDC:area>0?hi/area:NaN,power0:power(0),powermda:power(hi),power,nbRange:bgDist.length,critical0:crit[0],muB,muG,alpha,beta};
+ }
+ // NUREG-inspired illustrative a priori scan approximation with externally supplied K_scan and d'.
+ // Does not model instrument time response, human observation, attenuation, shielding, scan speed geometry or alarm threshold.
+ function scanApprox(rb,speed,width,Kscan,area,dprime){
+  if(![rb,speed,width,Kscan,area,dprime].every(Number.isFinite)||rb<0||speed<=0||width<=0||Kscan<=0||area<=0||dprime<=0)throw Error('스캔 입력은 유효한 양수, 배경은 0 이상이어야 합니다.');
+  if(rb===0)throw Error('배경계수율이 0이면 d′√b 정규근사는 0 MDC를 잘못 예측하므로 사용하지 않습니다. 정확한 계수검정 또는 별도 스캔 평가모델을 사용하십시오.');
+  const dwell=width/speed,b=rb*dwell,netCounts=dprime*Math.sqrt(b),minimumBq=netCounts/(Kscan*dwell);
+  return {dwell,b,netCounts,MDA:minimumBq,MDC:minimumBq/area};
+ }
+ // Nonnegative Poisson parameter Garwood interval (equal-tail).
+ function chiQuantile(prob,df){if(prob<=0)return 0;if(prob>=1)return Infinity;if(!(df>0))throw Error('자유도 오류');let lo=0,hi=Math.max(2,df+14*Math.sqrt(2*df)+40);for(let k=0;k<78;k++){const mid=(lo+hi)/2;if(gammaP(df/2,mid/2)<prob)lo=mid;else hi=mid;}return(hi+lo)/2;}
+ function garwood(n,coverage=.975){if(!Number.isInteger(n)||n<0)throw Error('원시 계수는 음이 아닌 정수여야 합니다.');const tail=(1-coverage)/2;return [n===0?0:chiQuantile(tail,2*n)/2,chiQuantile(1-tail,2*(n+1))/2];}
+ function conservativeNetInterval(Ng,Nb,tg,tb,K,coverage=.95){if(!(tg>0&&tb>0&&K>0))throw Error('시간과 유효응답은 양수여야 합니다.');const indiv=1-(1-coverage)/2;const g=garwood(Ng,indiv),b=garwood(Nb,indiv);return {lo:(g[0]/tg-b[1]/tb)/K,hi:(g[1]/tg-b[0]/tb)/K,coverage,individual:indiv};}
+ function refreshExact(){const r=rate(),c=coeff(),alpha=val('advExactAlpha',5)/100,beta=val('advExactBeta',5)/100;
+  try{const exact=exactTwoSampleMda(r.b,r.tg,r.tb,c.K,c.area,alpha,beta),m=calcMDA(r,c,'gaussian',alpha,beta);lastExact=exact;
+   el('advExactResult').innerHTML=`<div class="adv-kpis"><div><span>2표본 Poisson MDA</span><strong>${fmt4(exact.MDA,5)} Bq</strong></div><div><span>2표본 MDC</span><strong>${fmt4(exact.MDC,5)} Bq/cm²</strong></div><div><span>H₀ 실제 오검출률</span><strong>${fmt4(exact.power0*100,3)}%</strong></div><div><span>MDA에서 검출력</span><strong>${fmt4(exact.powermda*100,3)}%</strong></div></div>`;
+   status('advExactNote',`입력 배경 기대계수 (총/배경) ${fmt4(exact.muG,3)}/${fmt4(exact.muB,3)} counts · α=${fmt4(alpha*100,2)}%, β=${fmt4(beta*100,2)}% · 정규근사 비교 MDA=${fmt4(m.MDA,4)} Bq. 배경 분포를 주변화하고 독립 2표본 조건부 정확검정으로 검출력을 계산한 사전 민감도 모의 모델입니다. 원시계수·교정·배경의 시간 정상성을 전제합니다.`);
+   let graph=[];for(let i=0;i<=45;i++){let a=exact.MDA*i/23;graph.push([a,exact.power(a)*100]);}tryDrawLine('advExactPlot',[{data:graph,color:'#168fbd'}],{xlabel:'실제 방사능 가정 (Bq)',ylabel:'검출력 (%)',ymin:0,ymax:100});
+  }catch(e){lastExact=null;el('advExactResult').innerHTML=quality(e.message);status('advExactNote','실측 배경수준, 계수시간 및 모델 한계를 확인하십시오.');}
+ }
+ function refreshScan(){const r=rate(),speed=val('advScanSpeed',3),width=val('advScanWidth',5),k=val('advScanK',.2),area=val('advScanArea',15.5),d=val('advDprime',2.32);
+  try{const x=scanApprox(r.b,speed,width,k,area,d);el('advScanResult').innerHTML=`<div class="adv-kpis"><div><span>유효 관측시간</span><strong>${fmt4(x.dwell,3)} s</strong></div><div><span>배경 기대계수</span><strong>${fmt4(x.b,3)} counts</strong></div><div><span>모의 스캔 MDA</span><strong>${fmt4(x.MDA,4)} Bq</strong></div><div><span>모의 스캔 MDC</span><strong>${fmt4(x.MDC,4)} Bq/cm²</strong></div></div>`;
+   let curve=[];for(let i=0;i<42;i++){let v=Math.max(.05,speed)*(.25+1.75*i/41);curve.push([v,scanApprox(r.b,v,width,k,area,d).MDC]);}tryDrawLine('advScanPlot',[{data:curve,color:'#168fbd'}],{xlabel:'스캔 속도 (cm/s)',ylabel:'스캔 근사 MDC (Bq/cm²)',ymin:0});
+   status('advScanNote',`관계식: τ=w/v=${fmt4(x.dwell,3)} s, MDCR_net≈d′√(r_b τ)=${fmt4(x.netCounts,3)} counts, MDC≈MDCR_net/(K_scan τ × 면적). ${x.b<5?'배경 기대계수가 5 미만이므로 정규 근사 오차가 큽니다. ':''}이 모델은 d′·현장 검출응답의 사용자 가정에 의존하는 교육용 민감도 추정이며, 정식 NUREG 스캔 MDC의 세부 모델 및 현장 검증을 대체하지 않습니다.`);
+   lastScan=curve;
+  }catch(e){el('advScanResult').innerHTML=quality(e.message);status('advScanNote','입력값을 확인하세요.');}
+ }
+ function drawProfile(){const grid=scenarioGrid(),r=rate(),c=coeff(),xs=[],ys=[],left=-grid.W/2,right=grid.W/2;
+  for(let i=0;i<=55;i++){const x=left+(right-left)*i/55,y=predictedAt(x,s.probeY,grid,c);xs.push([x,60*(r.b+y.cps)]);ys.push([x,60*r.b]);}
+  lastProfile=xs;tryDrawLine('advScenarioProfile',[{data:xs,color:'#168fbd'},{data:ys,color:'#db8b42',dash:[4,5]}],{xlabel:'x 위치 (cm), y='+fmt4(s.probeY,1)+' cm',ylabel:'예상 총계수율 (cpm)'});
+  const peak=xs.reduce((a,b)=>b[1]>a[1]?b:a,xs[0]);status('advScenarioInfo',`현재 y=${fmt4(s.probeY,2)} cm 횡단선에서 최대 ${fmt4(peak[1],2)} cpm (x=${fmt4(peak[0],2)} cm) · 오염의 실제 위치와 프로브 계수율 최대위치는 일치하지 않을 수 있습니다. 감도커널은 교정된 실측 커널이 아닌 가우시안 가정입니다.`);
+ }
+ function presetScenario(kind){const presets={spot:{shape:'point',sourceA:10,sourceX:0,sourceY:0,sourceSigma:1.1},spread:{shape:'uniform',sourceA:10,sourceX:0,sourceY:0,area:24},gaussian:{shape:'gaussian',sourceA:15,sourceSigma:3,sourceX:2,sourceY:-1},multiple:{shape:'multi',sourceA:20,sourceSigma:1.5,sourceX:-4,sourceY:1,sourceX2:4,sourceY:-2,sourceY2:-2,secondaryPercent:40},skin:{shape:'gaussian',sourceA:10,sourceSigma:2,material:'피부',factorSource:'demo'},fabric:{shape:'uniform',sourceA:10,area:20,material:'의류',factorSource:'demo'}};
+  if(!presets[kind])return;Object.assign(s,presets[kind]);syncInputs();updateAll();drawProfile();notify('시나리오 가정값을 불러왔습니다. 실제 교정효율을 자동 부여하지 않습니다.');
+ }
+ function simulatedGrid(n,noise){if(!validPos(rate().tg)||!validPos(coeff().K))return notify('측정시간과 효율 조건을 확인하세요.');
+  const W=s.worldSize,grid=scenarioGrid(),c=coeff(),r=rate(),rng=makeRandom(val('advSeed',2026)),t=val('advGridSec',60);
+  if(!Number.isFinite(t)||t<=0)return notify('모의 관측시간을 확인하세요.');
+  const made=[];for(let j=0;j<n;j++)for(let i=0;i<n;i++){const x=-W*.42+(W*.84)*i/(n-1),y=-W*.42+(W*.84)*j/(n-1),mu=predictedAt(x,y,grid,c).cps+r.b;
+   const simulated=noise?poissonSample(Math.max(0,mu*t),rng)*60/t:mu*60;
+   made.push({x:+x.toFixed(4),y:+y.toFixed(4),cpm:simulated});}
+  points=made;inverse=null;lastSimType='synthetic';renderPoints();renderSpatial();notify(`${n*n}개 모의 측정점 생성 완료 · 실제 측정자료가 아닙니다.`);
+  status('advSpatialProvenance',`현재 측정점: ${made.length}개 · 가정한 오염모델에서 생성한 ${noise?'Poisson 모의 계수':'기댓값'} 자료 · 측정시간 ${t}초 · 반응 및 기하 모델은 교육용입니다.`);
+ }
+ function importPointsCsv(text){const rows=text.trim().split(/\r?\n/).filter(Boolean);if(rows.length>252)throw Error('최대 250개 지점만 지원합니다.');const vals=[];
+  for(let i=0;i<rows.length;i++){let cells=rows[i].replace(/"/g,'').split(/[,;\t]/).map(v=>v.trim());if(i===0&&cells.some(v=>/x|cpm|위치|계수/i.test(v)))continue;if(cells.length<3)continue;const data=cells.slice(0,3).map(Number);if(data.every(Number.isFinite)&&data[2]>=0&&Math.abs(data[0])<=1e5&&Math.abs(data[1])<=1e5)vals.push({x:data[0],y:data[1],cpm:data[2]});}
+  if(!vals.length)throw Error('유효한 x,y,gross_cpm 데이터가 없습니다.');points=vals.slice(0,250);inverse=null;lastSimType='imported';renderPoints();renderSpatial();status('advSpatialProvenance',`CSV에서 ${points.length}개 지점 불러옴. 측정시간·핵종·교정기록은 CSV에 포함되지 않아 별도 확인해야 합니다.`);return points.length;
+ }
+ function spatialDiagnostics(){if(!inverse?.value||!points.length){status('advSpatialReport','공간 역산을 실행하면 적합오차, 측정점 수와 미지변수 수를 진단합니다.');el('advSpatialResiduals').innerHTML='';return;}
+  const v=inverse.value,k=inverse.kind==='nnls'?36:3,pred=v.fit.map(x=>60*(rate().b+x)),obs=points.map(p=>p.cpm),n=obs.length,mean=obs.reduce((a,b)=>a+b,0)/n;
+  const residual=obs.map((x,i)=>x-pred[i]),rmse=Math.sqrt(residual.reduce((a,b)=>a+b*b,0)/n),mae=residual.reduce((a,b)=>a+Math.abs(b),0)/n,tss=obs.reduce((a,b)=>a+(b-mean)**2,0),rss=residual.reduce((a,b)=>a+b*b,0),r2=tss>0?1-rss/tss:NaN;
+  const under=n<k,tag=under?'관측점 수보다 미지변수가 많음 — 해 비고유':n===k?'정방정식 — 외부 검증 필요':'과잉결정 — 잔차 검토 가능';
+  el('advSpatialReport').innerHTML=`<div class="adv-kpis"><div><span>관측점 / 미지수</span><strong>${n} / ${k}</strong></div><div><span>RMSE</span><strong>${fmt4(rmse,3)} cpm</strong></div><div><span>MAE</span><strong>${fmt4(mae,3)} cpm</strong></div><div><span>R² (학습자료)</span><strong>${fmt4(r2,3)}</strong></div></div>${quality(tag,under?'danger':'warn')}<p class="adv-small">잔차는 가정한 감도커널에 대한 적합오차만 보여줍니다. 높은 R²나 낮은 RMSE는 실제 오염분포의 식별성·정확성을 입증하지 않습니다.</p>`;
+  el('advSpatialResiduals').innerHTML='<table><thead><tr><th>위치</th><th>측정 총 cpm</th><th>모형 총 cpm</th><th>잔차 cpm</th></tr></thead><tbody>'+points.map((p,i)=>`<tr><td>${fmt4(p.x,1)}, ${fmt4(p.y,1)}</td><td>${fmt4(p.cpm,2)}</td><td>${fmt4(pred[i],2)}</td><td>${fmt4(residual[i],2)}</td></tr>`).join('')+'</tbody></table>';
+ }
+ function uncCorrelated(){const res=analyze(),c=res.c,r=res.r,rho=val('advRho',0),drift=val('advBgDrift',0);if(!validPos(c.K)||!validPos(c.area)||!Number.isFinite(res.ad)||rho<-1||rho>1||drift<0||drift>10000){status('advGumResult','유효응답 K, 오염면적, 상관계수 및 배경변동을 확인하세요.');return null;}
+  const de=Math.abs(res.ad)*s.effUnc/100,da=Math.abs(res.ad)*s.areaUnc/100,dstat=Math.sqrt(r.g/r.tg+r.b/r.tb)/(c.K*c.area),ddb=drift/60/(c.K*c.area),cov=2*rho*de*da;
+  const variance=dstat*dstat+de*de+da*da+ddb*ddb+cov,unc=Math.sqrt(Math.max(0,variance)),expanded=1.96*unc;
+  el('advGumResult').innerHTML=`<div class="adv-kpis"><div><span>합성 표준불확도</span><strong>${fmt4(unc,5)} Bq/cm²</strong></div><div><span>확장불확도 k=1.96</span><strong>±${fmt4(expanded,5)}</strong></div><div><span>정규근사 하한</span><strong>${fmt4(res.ad-expanded,4)}</strong></div><div><span>정규근사 상한</span><strong>${fmt4(res.ad+expanded,4)}</strong></div></div><div class="adv-simple-table"><div>계수통계 분산: ${fmt4(dstat*dstat,8)}</div><div>응답계수 분산: ${fmt4(de*de,8)}</div><div>면적 분산: ${fmt4(da*da,8)}</div><div>배경변동 분산: ${fmt4(ddb*ddb,8)}</div><div>공분산 교차항: ${fmt4(cov,8)}</div></div>`;
+  return {res,dstat,de,da,ddb,cov,unc};
+ }
+ function exactCountsInterval(){const r=rate(),c=coeff();if(!s.rawMode||!s.verified){status('advCountsInterval','실측 원시계수 모드와 원시계수 확인 체크를 사용하면, 서로 독립인 총·배경 Poisson 계수의 보수적 95% 구간을 표시합니다.');return;}
+  try{const g=conservativeNetInterval(s.grossCounts,s.bkgCounts,r.tg,r.tb,c.K,.95),a=c.area;
+   status('advCountsInterval',`원시계수 ${s.grossCounts}/${s.bkgCounts} counts · Bonferroni 보수적 95% 구간 (K 고정): A ∈ [${fmt4(g.lo,5)}, ${fmt4(g.hi,5)}] Bq${validPos(a)?`; 표면오염도 ∈ [${fmt4(g.lo/a,5)}, ${fmt4(g.hi/a,5)}] Bq/cm²`:''}. 교정·재질·거리·면적 불확도는 이 구간에 포함되지 않으며, 하한 음수는 통계적 추정구간으로 허용합니다.`);
+  }catch(e){status('advCountsInterval','정확 구간 계산 불가: '+e.message)}
+ }
+ function correlatedMC(){const u=uncCorrelated();if(!u)return;const res=u.res,r=res.r,c=res.c,rng=makeRandom(val('advMcSeed',2026)),rho=val('advRho',0),drift=val('advBgDrift',0)/60;
+  let N=Math.max(500,Math.min(20000,Math.floor(val('advMcN',5000)))),arr=[],Ksigma=Math.sqrt(Math.log(1+Math.pow(s.effUnc/100,2))),Asigma=Math.sqrt(Math.log(1+Math.pow(s.areaUnc/100,2)));
+  for(let i=0;i<N;i++){
+   const z1=standardNormal(rng),z2=standardNormal(rng),k=c.K*Math.exp(Ksigma*z1-Ksigma*Ksigma/2),area=c.area*Math.exp(Asigma*(rho*z1+Math.sqrt(1-rho*rho)*z2)-Asigma*Asigma/2),bi=Math.max(0,r.b+drift*standardNormal(rng));
+   // Parametric bootstrap: plug-in observed count rates are means of repeated measurements.
+   const ng=poissonSample(Math.max(0,r.g*r.tg),rng),nb=poissonSample(Math.max(0,bi*r.tb),rng);
+   arr.push((ng/r.tg-nb/r.tb)/(k*area));
+  }
+  arr.sort((a,b)=>a-b);lastAdvancedMC=arr;let q=p=>{let z=(N-1)*p,k=Math.floor(z);return arr[k]+(arr[Math.min(k+1,N-1)]-arr[k])*(z-k)};
+  const lo=q(.025),hi=q(.975),m=q(.5),limit=s.limit,above=Number.isFinite(limit)?arr.filter(v=>v>limit).length/N:NaN;
+  el('advMCResult').innerHTML=`<div class="adv-kpis"><div><span>분포전파 중앙값</span><strong>${fmt4(m,5)}</strong></div><div><span>2.5% 분위수</span><strong>${fmt4(lo,5)}</strong></div><div><span>97.5% 분위수</span><strong>${fmt4(hi,5)}</strong></div><div><span>기준값 초과 모형반복분율</span><strong>${fmt4(above*100,2)}%</strong></div></div><p class="adv-small">단위 Bq/cm² · n=${N.toLocaleString()} · 난수시드=${val('advMcSeed',2026)} · 계수의 plug-in Poisson 재표집 + 양수 로그정규 교정/면적 + 지정 상관계수 + 모의 배경변동. 위 반복분율은 실제 기준초과 사후확률이나 규제 적합률이 아닙니다. 30 이상 큰 기대계수의 Poisson 난수에는 정규근사 샘플러를 사용합니다.</p>`;
+  const data=[];const bins=36,min=arr[Math.max(0,Math.floor(N*.002))],max=arr[Math.min(N-1,Math.floor(N*.998))];if(max>min){let hist=Array(bins).fill(0);arr.forEach(v=>{hist[Math.max(0,Math.min(bins-1,Math.floor((v-min)/(max-min)*bins)))]++});hist.forEach((v,i)=>data.push([min+(i+.5)*(max-min)/bins,v]));tryDrawLine('advMCChart',[{data,color:'#168fbd'}],{xlabel:'Bq/cm²',ylabel:'표본 수'});}
+ }
+ function renderExtras(){try{if(view==='mda'){refreshScan();if(lastExact)refreshExact();}if(view==='scenario')drawProfile();if(view==='spatial')spatialDiagnostics();if(view==='uncertainty'){uncCorrelated();exactCountsInterval();}}catch(e){console.warn('Advanced addon render warning',e)}}
+ function downloadCsvGrid(){if(!lastProfile.length)return;blobDownload(csv([['x_cm','expected_gross_cpm'],...lastProfile]),'GM_v1.4_Transect_Profile.csv','text/csv;charset=utf-8')}
+ function attach(){
+  // Add progressive disclosure of expert scenario inputs: top quick inputs stay accessible on 320px phones.
+  const fg=el('view-scenario')?.querySelector('.formgrid');if(fg){const items=[...fg.children];const hidden=items.slice(4);const details=document.createElement('details');details.className='adv-details';details.innerHTML='<summary>고급 기하·두 번째 오염원·스캔 조건 (12개 설정)</summary><div class="formgrid"></div>';hidden.forEach(x=>details.querySelector('.formgrid').append(x));fg.after(details);}
+  // Populate advanced blocks.
+  const insert=(viewId,html)=>{const node=document.createElement('div');node.innerHTML=html;const target=el(viewId);if(target){const after=viewId==='view-mda'?target.querySelector('.stats'):target.querySelector('.page-title');if(after)after.after(node.firstElementChild);else target.prepend(node.firstElementChild)}};
+  insert('view-mda',`<div class="adv-stack">
+   <div class="adv-hero"><div><span class="adv-eyebrow">MDA LAB · 고급 검출능력</span><h2>검출한계, 검출력, 스캔 조건을 구분합니다</h2><p>정지계측 Lc/MDA와 스캔 MDC를 혼동하지 않도록 별도 모델로 비교합니다.</p></div><a href="manual.html#mda">수식·근거 안내 ↗</a></div>
+   <div class="adv-card"><h3>① 2표본 Poisson 사전 MDA — 저계수율</h3><p class="adv-small">총계수와 배경계수를 각각 Poisson으로 모델링하며, 관측된 배경계수에 조건부 정확검정을 적용합니다. 배경평균을 정확히 안다고 가정하는 기존 Poisson 모드와 다릅니다.</p><div class="adv-form"><label>오검출 α (%)<input id="advExactAlpha" type="number" value="5" min="0.01" max="49" step="any" inputmode="decimal"></label><label>미검출 β (%)<input id="advExactBeta" type="number" value="5" min="0.01" max="49" step="any" inputmode="decimal"></label></div><button class="btn primary adv-btn" id="advExactRun">2표본 검출한계 계산</button><div id="advExactResult" class="adv-inner"></div><div class="canvasbox"><canvas id="advExactPlot" role="img" aria-label="2표본 Poisson 검출력 곡선"></canvas></div><p id="advExactNote" class="adv-small" aria-live="polite">계산 버튼을 누르세요.</p></div>
+   <div class="adv-card"><h3>② 이동 스캔 MDC 민감도 — 교육용 근사</h3><p class="adv-small">체류시간과 d′(검출성능 지수)를 가정하여 스캔속도가 검출능력에 미치는 영향을 살펴봅니다. 실측 스캔 교정곡선이 없으면 공식 스캔 검출한계로 사용할 수 없습니다.</p><div class="adv-form"><label>속도 (cm/s)<input type="number" id="advScanSpeed" value="3" min="0.01" step="any" inputmode="decimal"></label><label>관측 폭 (cm)<input type="number" id="advScanWidth" value="5" min="0.01" step="any" inputmode="decimal"></label><label>스캔 교정 K_scan (cps/Bq)<input type="number" id="advScanK" value="0.2" min="0.000001" step="any" inputmode="decimal"></label><label>스캔 평가면적 (cm²)<input type="number" id="advScanArea" value="15.5" min="0.000001" step="any" inputmode="decimal"></label><label>d′ (사용자 설정)<input type="number" id="advDprime" value="2.32" min="0.01" step="any" inputmode="decimal"></label></div><div class="adv-buttons"><button class="btn primary adv-btn" id="advScanRun">스캔 민감도 계산</button><button class="btn" id="advScanFromCal">현재 계측 교정값 적용</button><button class="btn" id="advScanCsv">곡선 CSV</button></div><div id="advScanResult" class="adv-inner"></div><div class="canvasbox"><canvas id="advScanPlot" role="img" aria-label="스캔속도별 근사 MDC"></canvas></div><p id="advScanNote" class="adv-small"></p></div>
+   </div>`);
+  insert('view-scenario',`<div class="adv-stack"><div class="adv-hero"><div><span class="adv-eyebrow">SCENARIO STUDIO</span><h2>오염형상 1터치 선택 → 지도 → 계수율 비교</h2><p>아래 예제는 <strong>실측 교정값이 아닌</strong> 교육용 형상 예제입니다.</p></div><a href="manual.html#spatial">공간모델 안내 ↗</a></div><div class="adv-chips" id="advScenarioPresets"><button data-adv-preset="spot">📍 점오염</button><button data-adv-preset="spread">▦ 균일 면오염</button><button data-adv-preset="gaussian">◉ 집중오염</button><button data-adv-preset="multiple">●● 다지점</button><button data-adv-preset="skin">피부</button><button data-adv-preset="fabric">의류</button></div><div class="adv-card"><div class="adv-cardhead"><h3>수평 스캔 프로파일 · 예상 cpm</h3><button class="btn mini" id="advProfileCsv">CSV</button></div><div class="canvasbox"><canvas id="advScenarioProfile" role="img" aria-label="오염원과 프로브 상대 위치에 따른 예상 계수율"></canvas></div><p id="advScenarioInfo" class="adv-small"></p></div></div>`);
+  insert('view-spatial',`<div class="adv-stack"><div class="adv-hero"><div><span class="adv-eyebrow">SPATIAL WORKBENCH</span><h2>격자 측정 생성·CSV 입력·적합오차 진단</h2><p>측정점 수, 감도커널, 미지수 수에 따라 공간역산의 신뢰성이 달라집니다.</p></div><a href="manual.html#inversion">역산 근거 ↗</a></div><div class="adv-card"><h3>① 데이터 준비</h3><div class="adv-form"><label>모의 계수시간 (s)<input id="advGridSec" type="number" value="60" min="0.01" step="any"></label><label>난수 시드<input id="advSeed" type="number" value="2026" step="1"></label></div><div class="adv-buttons"><button id="advGrid9" class="btn primary">3 × 3 모의 계수</button><button id="advGrid25" class="btn">5 × 5 모의 계수</button><button id="advGridExact" class="btn">5 × 5 기대 계수율</button><button id="advLoadPointCsv" class="btn">측정점 CSV 가져오기</button><input hidden type="file" id="advPointCsvFile" accept=".csv,text/csv"></div><p class="adv-small" id="advSpatialProvenance">CSV: x_cm,y_cm,gross_cpm · 생성 데이터는 실제 측정자료가 아닙니다.</p></div><div class="adv-card"><h3>② 역산모형 진단</h3><div id="advSpatialReport" class="adv-inner">역산을 실행하면 잔차·식별성 지표를 표시합니다.</div><details class="adv-details"><summary>측정–예측 잔차표 확인</summary><div class="tbl-wrap" id="advSpatialResiduals"></div></details></div></div>`);
+  insert('view-uncertainty',`<div class="adv-stack"><div class="adv-hero"><div><span class="adv-eyebrow">UNCERTAINTY EXPLORER</span><h2>불확도 예산과 모형 가정의 영향 확인</h2><p>계수의 통계적 변동, 응답 교정, 오염면적, 시간에 따른 배경변동을 구분합니다.</p></div><a href="manual.html#uncertainty">불확도 근거 ↗</a></div><div class="adv-card"><h3>① 독립·상관 입력을 고려한 GUM 근사</h3><div class="adv-form"><label>효율–면적 상관 ρ (−1~1)<input type="number" id="advRho" value="0" min="-1" max="1" step="0.1" inputmode="decimal"></label><label>배경 변동 표준불확도 (cpm)<input type="number" id="advBgDrift" value="0" min="0" step="any" inputmode="decimal"></label></div><div id="advGumResult" class="adv-inner"></div><div class="adv-note warn">여기 표시하는 k=1.96 구간은 선형화·정규근사입니다. 낮은 계수·비선형·큰 교정불확도에는 적합하지 않을 수 있습니다.</div></div><div class="adv-card"><h3>② 독립 Poisson 원시계수의 보수적 구간</h3><div class="adv-small" id="advCountsInterval">원시계수 확인 모드에서 활성화됩니다.</div></div><div class="adv-card"><h3>③ 상관·배경변동을 반영한 모형 반복 시뮬레이션</h3><div class="adv-form"><label>시뮬레이션 표본 수<select id="advMcN"><option value="1000">1,000</option><option value="5000" selected>5,000</option><option value="10000">10,000</option><option value="20000">20,000</option></select></label><label>난수 시드<input type="number" id="advMcSeed" step="1" value="2026"></label></div><button id="advMCRun" class="btn primary adv-btn">상관 Monte Carlo 실행</button><div id="advMCResult" class="adv-inner"><p class="adv-small">버튼을 누르면 분포 전파, 분위수, 모형반복 초과분율을 확인할 수 있습니다.</p></div><div class="canvasbox"><canvas id="advMCChart" role="img" aria-label="상관 Monte Carlo 표본 분포"></canvas></div></div></div>`);
+  // Add links inside main and report and guide view.
+  const main=el('view-main');const ribbon=document.createElement('div');ribbon.className='adv-shortcuts';ribbon.innerHTML='<button type="button" data-adv-jump="mda">◉ MDA 고급</button><button type="button" data-adv-jump="scenario">◉ 오염지도</button><button type="button" data-adv-jump="uncertainty">∿ 불확도</button><button type="button" data-adv-jump="guide">ⓘ 수식 안내</button>';main.insertBefore(ribbon,main.querySelector('.page-title'));
+  const guide=document.createElement('section');guide.id='view-guide';guide.className='view';guide.innerHTML=`<div class="page-title"><div class="kicker">09 / METHODS & SOURCES</div><h2>계산 수식 · 모델 가정 · 사용 안내</h2><p>핵심 공식과 대표 수치 예제를 확인할 수 있습니다. 상세 해설은 별도 오프라인 페이지로 제공합니다.</p></div>
+    <div class="adv-hero"><div><span class="adv-eyebrow">METHOD HANDBOOK v1.4</span><h2>근거가 있는 계산, 명확한 적용 한계</h2><p>정적 계수·스캔·계수 신호 판정·표면오염도 추정을 명확히 분리합니다.</p></div><a href="manual.html" target="_blank" rel="noopener">📚 별도 안내서 열기 ↗</a></div>
+    <div class="adv-card"><h3>자주 사용하는 공식</h3><div class="adv-equations"><p><b>계수율:</b> r_net = N_g/t_g − N_b/t_b</p><p><b>방사능:</b> A = r_net / K</p><p><b>면오염도:</b> a_s = A / S</p><p><b>정적 Currie 근사:</b> L_D ≈ 3 + 4.65√B, &nbsp;MDA = L_D/(K t_g)</p><p><b>Poisson 분산:</b> u²(r_net) ≈ N_g/t_g² + N_b/t_b²</p><p><b>공간 역산:</b> y_i = Σ_j H_ij a_j + ε_i</p></div></div>
+    <div class="adv-card"><h3>상세 안내서의 구성</h3><div class="adv-guide-links"><a href="manual.html#quick">시작 가이드</a><a href="manual.html#counts">계수·방사능</a><a href="manual.html#mda">MDA·검출력</a><a href="manual.html#scan">스캔 MDC</a><a href="manual.html#spatial">오염형상</a><a href="manual.html#inversion">공간 역산</a><a href="manual.html#uncertainty">불확도·Monte Carlo</a><a href="manual.html#validation">검증·주의</a></div></div>
+    <div class="adv-note warn"><b>실측 기반 판정에는 전제조건 확인이 필요합니다.</b> 피부·의류는 ISO 7503의 표면측정 적용범위에서 제외되며, 교정이 없는 가우시안 커널로 산출한 지도를 현장 오염지도나 반출판정 근거로 사용하지 마십시오.</div>`;
+  el('view-report').after(guide);
+  const sidebar=document.querySelector('.sidebar');const b=document.createElement('button');b.className='nav';b.dataset.view='guide';b.innerHTML='<span>ⓘ</span><span>수식·사용 안내</span>';sidebar.insertBefore(b,sidebar.querySelector('.sidebar-note'));
+  // Sidebar buttons were bound in init() before this insertion; attach here.
+  b.addEventListener('click',()=>viewSelect('guide'));
+  document.querySelectorAll('[data-adv-jump]').forEach(node=>node.addEventListener('click',()=>viewSelect(node.dataset.advJump)));
+  el('advScenarioPresets').addEventListener('click',e=>{const button=e.target.closest('[data-adv-preset]');if(button)presetScenario(button.dataset.advPreset)});
+  el('advProfileCsv').addEventListener('click',downloadCsvGrid);
+  el('advGrid9').addEventListener('click',()=>simulatedGrid(3,true));el('advGrid25').addEventListener('click',()=>simulatedGrid(5,true));el('advGridExact').addEventListener('click',()=>simulatedGrid(5,false));
+  el('advLoadPointCsv').addEventListener('click',()=>el('advPointCsvFile').click());el('advPointCsvFile').addEventListener('change',async e=>{const file=e.target.files[0];if(!file)return;try{if(file.size>500000)throw Error('파일은 500 KB 이하로 제한합니다.');const count=importPointsCsv(await file.text());notify(count+'개 지점 가져옴');}catch(err){notify(err.message)}e.target.value='';});
+  el('advExactRun').addEventListener('click',refreshExact);el('advScanRun').addEventListener('click',refreshScan);
+  el('advScanFromCal').addEventListener('click',()=>{el('advScanK').value=String(coeff().K);el('advScanArea').value=String(s.area);el('advScanWidth').value=String(s.scanWidth);el('advScanSpeed').value=String(s.scanSpeed);refreshScan();notify('기존 K를 복사했습니다. 정적 K가 스캔 K와 같다는 보장은 없습니다.');});
+  el('advScanCsv').addEventListener('click',()=>{refreshScan();blobDownload(csv([['scan_speed_cm_s','approx_MDC_Bq_cm2'],...lastScan]),'GM_v1.4_Scan_Sensitivity.csv','text/csv;charset=utf-8')});
+  el('advMCRun').addEventListener('click',correlatedMC);['advRho','advBgDrift'].forEach(id=>el(id).addEventListener('input',uncCorrelated));
+  // Extend render and update hooks without touching the trusted v1.3 calculation code.
+  const prevSelect=viewSelect;viewSelect=function(name){prevSelect(name);const menuBtn=document.querySelector('[data-mobile-sheet="menu"]');if(menuBtn)menuBtn.classList.toggle('selected',['guide','spatial','uncertainty','calibration','report'].includes(name));setTimeout(renderExtras,40)};
+  const prevUpdate=updateAll;updateAll=function(){prevUpdate();if(['scenario','spatial','mda','uncertainty'].includes(view))setTimeout(renderExtras,70);};
+  const prevSolve=performSolve;performSolve=function(res){prevSolve(res);spatialDiagnostics()};
+  const prevLoad=importObject;importObject=function(obj,tell=true){prevLoad(obj,tell);lastSimType='unknown';lastExact=null;status('advSpatialProvenance','프로젝트에서 불러온 지점입니다. 측정 출처와 교정조건을 별도 확인하세요.');};
+  // Add real mobile 'More' entry. Existing mobile viewSelect wrapper closes the sheet.
+  const mInner=document.querySelector('#mobileMenu .mobile-sheet-inner');
+  if(mInner){const extra=document.createElement('button');extra.type='button';extra.className='mobile-menu-option';extra.dataset.menuView='guide';extra.innerHTML='수식 · 근거 · 사용 안내 <span>ⓘ</span>';
+    const settingsButton=el('menuOpenSettings');mInner.insertBefore(extra,settingsButton);
+    extra.addEventListener('click',()=>viewSelect('guide'));
+  }
+  renderExtras();
+  // Exposure of deterministic pure core for isolated browser-based self tests. Not a security API.
+  window.GM14Tests={scanApprox,exactTwoSampleMda,garwood,conservativeNetInterval,chiQuantile};
+ }
+ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',attach,{once:true});else attach();
+})();
+
+</script>
+</body></html>

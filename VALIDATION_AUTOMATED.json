@@ -1,0 +1,178 @@
+{
+  "total": 34,
+  "passed": 34,
+  "failed": [],
+  "js_errors": [],
+  "checks": [
+    {
+      "check": "login blocked initially",
+      "passed": true,
+      "details": ""
+    },
+    {
+      "check": "password redpass login",
+      "passed": true,
+      "details": ""
+    },
+    {
+      "check": "base 10 Bq",
+      "passed": true,
+      "details": ""
+    },
+    {
+      "check": "navigate mda",
+      "passed": true,
+      "details": ""
+    },
+    {
+      "check": "navigate scenario",
+      "passed": true,
+      "details": ""
+    },
+    {
+      "check": "navigate spatial",
+      "passed": true,
+      "details": ""
+    },
+    {
+      "check": "navigate uncertainty",
+      "passed": true,
+      "details": ""
+    },
+    {
+      "check": "navigate guide",
+      "passed": true,
+      "details": ""
+    },
+    {
+      "check": "navigate converter",
+      "passed": true,
+      "details": ""
+    },
+    {
+      "check": "navigate report",
+      "passed": true,
+      "details": ""
+    },
+    {
+      "check": "exact paired Poisson detects with 95% power",
+      "passed": true,
+      "details": "{'exact': 3.548509068630195, 'alpha': 0.04127683657915061, 'power': 0.950000000000004, 'scan': 8.985321363201205, 'zeroScanReject': True}"
+    },
+    {
+      "check": "scan MDA baseline and zero background guard",
+      "passed": true,
+      "details": ""
+    },
+    {
+      "check": "spatial 3x3 residuals",
+      "passed": true,
+      "details": "관측점 / 미지수\n9 / 3\nRMSE\n6.746 cpm\nMAE\n5.523 cpm\nR² (학습자료)\n0.977\n과잉결정 — 잔차 검토 가능\n\n잔차"
+    },
+    {
+      "check": "correlated MC",
+      "passed": true,
+      "details": ""
+    },
+    {
+      "check": "raw-count conservative interval",
+      "passed": true,
+      "details": "원시계수 180/60 counts · Bonferroni 보수적 95% 구간 (K 고정): A ∈ [5.95405, 14.04111] Bq; 표"
+    },
+    {
+      "check": "legacy internal 28/28",
+      "passed": true,
+      "details": "{'passed': 28, 'total': 28, 'failed': []}"
+    },
+    {
+      "check": "mobile more menu opens",
+      "passed": true,
+      "details": ""
+    },
+    {
+      "check": "mobile guide link",
+      "passed": true,
+      "details": ""
+    },
+    {
+      "check": "no JS errors",
+      "passed": true,
+      "details": "[]"
+    },
+    {
+      "check": "responsive main 320",
+      "passed": true,
+      "details": "content 320px"
+    },
+    {
+      "check": "responsive scenario 320",
+      "passed": true,
+      "details": "content 320px"
+    },
+    {
+      "check": "responsive main 360",
+      "passed": true,
+      "details": "content 360px"
+    },
+    {
+      "check": "responsive scenario 360",
+      "passed": true,
+      "details": "content 360px"
+    },
+    {
+      "check": "responsive main 390",
+      "passed": true,
+      "details": "content 390px"
+    },
+    {
+      "check": "responsive scenario 390",
+      "passed": true,
+      "details": "content 390px"
+    },
+    {
+      "check": "responsive main 768",
+      "passed": true,
+      "details": "content 768px"
+    },
+    {
+      "check": "responsive scenario 768",
+      "passed": true,
+      "details": "content 768px"
+    },
+    {
+      "check": "responsive main 1024",
+      "passed": true,
+      "details": "content 1024px"
+    },
+    {
+      "check": "responsive scenario 1024",
+      "passed": true,
+      "details": "content 1024px"
+    },
+    {
+      "check": "responsive main 1366",
+      "passed": true,
+      "details": "content 1366px"
+    },
+    {
+      "check": "responsive scenario 1366",
+      "passed": true,
+      "details": "content 1366px"
+    },
+    {
+      "check": "manual password prompt",
+      "passed": true,
+      "details": ""
+    },
+    {
+      "check": "manual password and headings",
+      "passed": true,
+      "details": ""
+    },
+    {
+      "check": "manual search and theme",
+      "passed": true,
+      "details": ""
+    }
+  ]
+}

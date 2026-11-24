@@ -1,0 +1,383 @@
+<!doctype html><html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1,viewport-fit=cover"><meta name="color-scheme" content="light dark"><title>GM Frisker Lab 1.4 · 수식·근거 안내서</title><style>
+:root{--bg:#f3f6fa;--paper:#fff;--ink:#173045;--muted:#5a7183;--line:#d9e4ed;--accent:#107caa;--soft:#e9f5fb;--fontsize:17px}body.dark{--bg:#0d1a28;--paper:#15283a;--ink:#f2f8fd;--muted:#acc2d6;--line:#39536a;--accent:#7bd4ff;--soft:#1d3b52;color-scheme:dark}*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font-family:system-ui,-apple-system,'Apple SD Gothic Neo','Malgun Gothic',sans-serif;font-size:var(--fontsize);line-height:1.73}button,input{font:inherit}.top{position:sticky;top:0;z-index:10;background:var(--paper);border-bottom:1px solid var(--line)}.top-inner{max-width:1240px;margin:auto;display:flex;align-items:center;gap:9px;justify-content:space-between;padding:9px 14px;flex-wrap:wrap}.brand{font-size:.93rem;font-weight:850}.top-actions{display:flex;align-items:center;gap:7px}.top-actions button,.top-actions a{background:var(--soft);color:var(--ink);border:1px solid var(--line);border-radius:9px;padding:8px 10px;min-height:43px;text-decoration:none;font-size:.82rem;font-weight:730}.layout{display:grid;grid-template-columns:225px minmax(0,1fr);max-width:1240px;margin:auto;gap:20px;padding:18px}main{min-width:0;max-width:100%;overflow-wrap:anywhere}.toc{position:sticky;top:77px;align-self:start;max-height:calc(100vh - 95px);overflow:auto;background:var(--paper);padding:14px;border:1px solid var(--line);border-radius:12px}.toc strong{display:block;padding-bottom:8px}.toc a{display:block;color:var(--muted);text-decoration:none;font-size:.8rem;padding:7px 9px;border-radius:7px}.toc a:hover,.toc a:focus{color:var(--ink);background:var(--soft)}.content{background:var(--paper);padding:clamp(17px,3vw,35px);border:1px solid var(--line);border-radius:16px;min-width:0;overflow-wrap:anywhere}.content h1{font-size:1.66rem;line-height:1.32;letter-spacing:-.035em}.content h2{font-size:1.28rem;letter-spacing:-.02em;border-top:1px solid var(--line);padding-top:22px;margin-top:30px;scroll-margin-top:80px}.content h3{font-size:1.05rem;margin-top:25px;scroll-margin-top:80px}.content a{color:var(--accent);overflow-wrap:anywhere}.content p,.content ul,.content ol{margin:11px 0 15px}.content blockquote{margin:12px 0;padding:13px 17px;border-left:4px solid var(--accent);background:var(--soft);border-radius:8px}.content code{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;background:var(--soft);padding:2px 4px;border-radius:4px}.content pre{padding:16px;background:var(--soft);border:1px solid var(--line);border-radius:10px;max-width:100%;overflow:auto;font-size:.87rem;line-height:1.65}.content pre code{background:none;padding:0}.content table{width:100%;border-collapse:collapse;display:block;overflow-x:auto;font-size:.85rem}.content th,.content td{padding:10px 13px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}.content th{background:var(--soft)}.content h2,.content h3{position:relative}.mobile-toc{display:none}.search{width:100%;max-width:420px;border:1px solid var(--line);background:var(--paper);color:var(--ink);padding:10px 12px;border-radius:9px;font-size:16px;min-height:43px}.search-result{font-size:.78rem;color:var(--muted);padding:8px 0}.signin[hidden]{display:none!important}.signin{position:fixed;inset:0;z-index:99;background:var(--bg);display:flex;align-items:center;justify-content:center;padding:20px}.signbox{width:min(420px,100%);background:var(--paper);padding:27px;border:1px solid var(--line);border-radius:17px;box-shadow:0 9px 36px #0001}.signbox label{display:block;margin:17px 0 7px}.signbox input{padding:12px;border-radius:10px;border:1px solid var(--line);background:var(--soft);color:var(--ink);width:100%;min-height:48px;font-size:16px}.signbox button{border:0;background:#137cad;color:#fff;padding:12px;width:100%;margin-top:13px;min-height:48px;border-radius:10px;font-weight:700}.signbox small{color:var(--muted);display:block;margin-top:12px;line-height:1.6}.signbox [role="alert"]{color:#bb3737;font-size:.83rem}body.locked .top,body.locked .layout{visibility:hidden}.mobile-toc summary{cursor:pointer;padding:12px;font-weight:750}.mobile-toc a{display:inline-block;padding:8px 11px;color:var(--accent);font-size:.82rem}.mobile-toc details{border:1px solid var(--line);border-radius:10px;background:var(--paper)}footer{font-size:.8rem;color:var(--muted);text-align:center;padding:25px}a:focus-visible,button:focus-visible,input:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+@media(max-width:850px){.layout{grid-template-columns:minmax(0,1fr);padding:12px;gap:10px}.toc{display:none}.mobile-toc{display:block;margin-bottom:12px}.content{padding:18px}.content h1{font-size:1.35rem}.top-inner{padding:9px 12px}.top-actions button,.top-actions a{font-size:.78rem;min-height:44px}.content pre{font-size:.78rem}.brand{font-size:.85rem}}@media print{.top,.toc,.mobile-toc,.signin{display:none!important}.layout{display:block;padding:0}.content{border:0;padding:0}body{background:white;color:black}.content a{color:black}}
+</style></head><body class="locked"><div class="signin" id="manualGate"><form class="signbox" id="manualLogin"><div style="font-size:.78rem;color:#137cad;font-weight:800">GM FRISKER LAB · METHODS</div><h1 style="font-size:1.42rem;line-height:1.3;margin:10px 0">수식·근거 안내서</h1><p>앱과 동일한 간단 비밀번호 확인이 필요합니다.</p><label for="manualPassword">접속 비밀번호</label><input id="manualPassword" type="password" required autocomplete="current-password" placeholder="비밀번호 입력"><p role="alert" id="manualError"></p><button type="submit">안내서 열기</button><small>GitHub Pages 정적 파일의 클라이언트 비밀번호는 보안 인증이 아니며 누구나 우회할 수 있습니다.</small></form></div><header class="top"><div class="top-inner"><div class="brand">GM Frisker Lab · v1.4 방법 안내서</div><div class="top-actions"><a href="index.html">← 계산기로 돌아가기</a><button id="guideTheme" type="button">🌙 테마</button><button id="textMinus" type="button">A−</button><button id="textPlus" type="button">A+</button><button id="printGuide" type="button">인쇄</button></div></div></header><div class="layout"><nav class="toc"><strong>목차 · 바로가기</strong><a href="#quick">1. 사용 가이드</a><a href="#counts">2. 계수율·방사능</a><a href="#countstats">3. 계수통계</a><a href="#mda">4~6. MDA·Poisson</a><a href="#scan">7. 스캔 민감도</a><a href="#spatial">8. 오염형상</a><a href="#inversion">9. 공간 역산</a><a href="#uncertainty">10~12. 불확도</a><a href="#units">13. 단위 변환</a><a href="#validation">14~16. 검증·출처</a></nav><main><div class="mobile-toc"><details><summary>☰ 안내서 목차 열기</summary><a href="#quick">1. 사용 가이드</a><a href="#counts">2. 계수율·방사능</a><a href="#countstats">3. 계수통계</a><a href="#mda">4~6. MDA·Poisson</a><a href="#scan">7. 스캔 민감도</a><a href="#spatial">8. 오염형상</a><a href="#inversion">9. 공간 역산</a><a href="#uncertainty">10~12. 불확도</a><a href="#units">13. 단위 변환</a><a href="#validation">14~16. 검증·출처</a></details></div><div class="content" id="guideContent"><div><input class="search" id="guideSearch" placeholder="안내서에서 찾아보기 (예: MDA, Poisson)" aria-label="안내서 텍스트 검색"><div class="search-result" id="searchResult">검색어가 포함된 항목 수를 안내합니다.</div></div><h1>GM Frisker Lab v1.4 — 계산 수식·물리 모델·통계·근거 안내서</h1>
+<blockquote>
+<p><strong>목적:</strong> GM-Frisker 계수자료를 이용한 방사능·표면오염도 계산, MDA/MDC, 시나리오/공간역산, 불확도와 모델 진단을 교육·연구 목적으로 수행한다. 실제 측정기·핵종·매질·거리·교정·품질보증이 검증되지 않은 결과는 법적 적합성·반출·제염 종료의 단독 근거로 사용할 수 없다.</p>
+<p><strong>버전:</strong> 1.4 / 2026-11-24. 이 문서는 개념 설명 및 구현 수식의 출처 안내다. 표준 원문을 대체하거나 ISO 규격 적합성을 보증하지 않는다.</p>
+</blockquote>
+<p><a id="quick"></a></p>
+<h2>1. 1분 사용 가이드</h2>
+<ol>
+<li>웹에서 <code>index.html</code> 열기 → 편의용 비밀번호 <code>redpass</code> 입력. 정적 페이지 보호는 아님.</li>
+<li><strong>계산</strong> 탭: 측정기 총계수율·배경계수율, 총/배경 계수시간, 교정 유효응답 <code>K</code>, 오염면적을 확인한다. 가급적 <strong>원시 counts</strong> 입력 및 실측 확인을 사용한다.</li>
+<li><strong>MDA</strong> 탭: 계측조건별 정지계측 MDA/MDC, 목표 검출능력에 필요한 시간, <strong>2표본 Poisson</strong> 모델, <strong>스캔 근사</strong>를 구분해 본다.</li>
+<li><strong>시나리오</strong> 탭: 점·면·집중·2점 오염형상 예제를 고르고, 지도에서 프로브 위치를 이동하며 예상 계수율 변화를 확인한다.</li>
+<li><strong>공간분석</strong> 탭: 3×3/5×5 <strong>모의 자료</strong>를 생성하거나 CSV로 측정점을 불러와 단일 hotspot 또는 36셀 비음수 역산을 실행한다. 잔차와 해의 비고유성 경고를 확인한다.</li>
+<li><strong>불확도</strong> 탭: 계수통계·응답계수·면적·배경 변동을 입력하고 95% 정규근사와 모델 반복(Monte Carlo)의 차이를 확인한다.</li>
+<li><strong>변환</strong> 탭은 물리량이 같은 단위끼리 환산하며, cpm→Bq는 반드시 별도 유효응답을 지정한다.</li>
+</ol>
+<h3>메인 예제의 입력과 출력</h3>
+<table>
+<thead>
+<tr>
+  <th>변수</th>
+  <th style="text-align:right">설정</th>
+  <th>해석</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td>총계수율</td>
+  <td style="text-align:right">180 cpm</td>
+  <td><strong>배경 포함</strong></td>
+</tr>
+<tr>
+  <td>배경계수율</td>
+  <td style="text-align:right">60 cpm</td>
+  <td>독립 측정이라고 가정</td>
+</tr>
+<tr>
+  <td>총·배경 계수시간</td>
+  <td style="text-align:right">각 60 s</td>
+  <td>비율과 분산 계산에 필요</td>
+</tr>
+<tr>
+  <td>유효응답 K</td>
+  <td style="text-align:right">0.2 cps/Bq</td>
+  <td>해당 핵종·기하·재질에 유효하다는 가정</td>
+</tr>
+<tr>
+  <td>오염면적 S</td>
+  <td style="text-align:right">15.5 cm²</td>
+  <td>프로브 창 면적과 <strong>동일하다는 가정은 아님</strong></td>
+</tr>
+<tr>
+  <td>순계수율</td>
+  <td style="text-align:right">2 cps</td>
+  <td>(180−60)/60</td>
+</tr>
+<tr>
+  <td>방사능</td>
+  <td style="text-align:right">10 Bq</td>
+  <td>2/0.2</td>
+</tr>
+<tr>
+  <td>평균 표면오염도</td>
+  <td style="text-align:right">0.645161 Bq/cm²</td>
+  <td>10/15.5</td>
+</tr>
+<tr>
+  <td>동일시간 근사 MDA</td>
+  <td style="text-align:right">약 3.252 Bq</td>
+  <td>아래 5장 참고</td>
+</tr>
+</tbody>
+</table>
+<p><strong>중요:</strong> 10 Bq와 0.5 Bq/cm²를 동시에 사용하려면 오염면적이 20 cm²여야 한다. 입력 표에 표시된 15.5 cm²로 계산하면 0.645 Bq/cm²가 된다.</p>
+<p><a id="counts"></a></p>
+<h2>2. GM 계수율과 방사능의 관계</h2>
+<p>독립된 총계수와 배경계수를 <code>N_g</code>, <code>N_b</code>, 각각 계수시간을 <code>t_g</code>, <code>t_b</code>라고 하면</p>
+<pre><code class="language-text">r_g = N_g / t_g                   [cps]
+r_b = N_b / t_b                   [cps]
+r_net = r_g − r_b                [cps]
+A_hat = r_net / K                [Bq]
+a_s,hat = A_hat / S              [Bq/cm²]
+</code></pre>
+<ul>
+<li><code>K</code>는 cps/Bq 단위의 <strong>유효응답</strong>이다. 별도의 기기효율과 선원효율의 곱으로 산출했으면 그 조건과 교정의 유효성을 확인해야 한다.</li>
+<li><code>S</code>는 산출 대상 오염 <strong>평가면적</strong>이고 <code>15.5 cm²</code>의 검출기 창 면적을 무조건 대입할 수 없다.</li>
+<li><strong>음의 순계수</strong>는 측정통계상 가능하므로 보존해야 한다. 표현상 물리 방사능 0 이상 표시와 음의 통계 추정치를 혼동하지 않는다.</li>
+<li>총계수율 <code>3.0 cps</code>가 순계수율 <code>2.0 cps</code>로 바뀌려면 배경 <code>1.0 cps</code>를 차감해야 한다.</li>
+</ul>
+<h3>효율 중복 보정을 피하려면</h3>
+<p><code>ε_i</code>와 <code>ε_s</code>가 서로 구분된 적절한 독립 성분이며 단일 방출률에 대한 모델을 적용하는 경우 <code>K ≈ ε_i ε_s × 방출확률 등</code>을 사용할 수 있다. <strong>이미 직접 교정된 <code>K</code>에 별도로 효율을 다시 곱하지 않는다.</strong> 실제 베타/알파 검출효율은 핵종, 방출강도, 표면상태, 거리, 검출창, 감도변화에 좌우된다.</p>
+<p><a id="countstats"></a></p>
+<h2>3. 계수통계와 실제 측정시간</h2>
+<p>Poisson 계수 <code>N ∼ Poisson(λt)</code>는 평균과 분산이 동일한 모형이다. 독립 계수를 가정하면</p>
+<pre><code class="language-text">Var(r_net) = Var(N_g/t_g) + Var(N_b/t_b)
+           ≈ N_g/t_g² + N_b/t_b²
+u_stat(A_hat) = sqrt(N_g/t_g² + N_b/t_b²) / K
+</code></pre>
+<p>예를 들어 <code>N_g=180</code>, <code>N_b=60</code>, <code>t_g=t_b=60 s</code>이면</p>
+<pre><code class="language-text">u(r_net) = sqrt(180/60² + 60/60²) = 0.258199 cps
+u_stat(A) = 0.258199 / 0.2 = 1.2910 Bq
+u_stat(a_s) = 1.2910 / 15.5 = 0.08329 Bq/cm²
+</code></pre>
+<p>기기에 표시된 <code>cpm</code>이 실제 원시계수와 반드시 일치하지는 않는다. 계기시정수·평활화·롤링 평균·dead time·오버로드 등이 있으면 위 Poisson 모델 적용성이 제한된다. <strong>원시 계수와 실제 시간, 독립적인 배경계수</strong>를 확보하는 것이 바람직하다.</p>
+<p><a id="mda"></a></p>
+<h2>4. Lc, Ld, MDA, MDC: 서로 다른 통계 개념</h2>
+<table>
+<thead>
+<tr>
+  <th>항목</th>
+  <th>표기</th>
+  <th>의미</th>
+  <th>사용 시점</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td>결정임계값</td>
+  <td>Lc 또는 y*</td>
+  <td>현재 관측 계수가 배경 가설을 초과한다고 판단하는 기준</td>
+  <td>관측 후 <strong>검출 판정</strong></td>
+</tr>
+<tr>
+  <td>검출한계</td>
+  <td>Ld 또는 y#</td>
+  <td>미검출 위험 β를 통제하며 탐지할 수 있는 참 신호 수준</td>
+  <td>방법 <strong>사전 설계·능력</strong></td>
+</tr>
+<tr>
+  <td>최소검출가능방사능</td>
+  <td>MDA</td>
+  <td>Ld를 유효응답과 시간으로 나눈 방사능</td>
+  <td>방법 민감도</td>
+</tr>
+<tr>
+  <td>최소검출가능오염도</td>
+  <td>MDC</td>
+  <td>MDA를 타당한 평가면적으로 나눈 평균 표면오염도</td>
+  <td>면적별 민감도</td>
+</tr>
+</tbody>
+</table>
+<pre><code class="language-text">MDA = Ld / (K t_g)                 [Bq]
+MDC = MDA / S                      [Bq/cm²]
+</code></pre>
+<p><strong>MDA는 개별 관측값의 검출 판정선이 아니다.</strong> 계수 판정은 Lc 또는 해당 모델의 정확 검정 p값으로 한다. 또한 MDA보다 낮은 실제 방사능도 일정 확률로 검출될 수 있다. ISO 11929는 결정임계값·검출한계·포함구간의 체계를 다루지만, 여기 제시한 모든 근사 수식이 ISO의 정식 계산절차와 동일하다는 의미는 아니다.</p>
+<h2>5. 정지계측 MDA 대표 근사: Currie/NUREG와 일반화</h2>
+<p>총·배경 계수시간이 <strong>같고</strong>, 평균 배경 계수 <code>B = r_b × t</code>일 때 자주 쓰는 5%/5% 근사:</p>
+<pre><code class="language-text">Lc ≈ 1.645 sqrt(2B)                 [net counts, approx]
+Ld ≈ 3 + 4.65 sqrt(B)               [net counts, approximate NUREG/Currie convention]
+MDA ≈ [3 + 4.65 sqrt(B)] / (K t)     [Bq]
+</code></pre>
+<p>입력 예제에서는 <code>B=1 cps × 60 s=60 counts</code>이므로</p>
+<pre><code class="language-text">Ld = 3 + 4.65 sqrt(60) ≈ 39.019 counts
+MDA = 39.019 / (0.2 × 60) ≈ 3.2516 Bq
+MDC = 3.2516 / 15.5 ≈ 0.2098 Bq/cm²
+</code></pre>
+<p>서로 다른 계수시간에서 배경 변동을 반영하는 근사의 기초분산은</p>
+<pre><code class="language-text">V0 = (r_b t_g) [1 + (t_g/t_b)]          [counts²]
+Lc ≈ z_(1−α) sqrt(V0)                  [net counts]
+</code></pre>
+<p>v1.3의 <code>3+3.29√V0</code> 방식 및 신호분산을 반영한 정규모델은 서로 다른 근사이므로 반드시 모델명을 확인한다. 본 프로그램의 5%/5% 고정 근사 선택 시 α·β 사용자 입력을 적용하지 않는다. 특히 배경 계수가 작으면 이산 Poisson 접근과 차이가 커진다.</p>
+<h2>6. 저계수율 — 두 종류의 Poisson 계산을 구분하기</h2>
+<h3>6.1 배경 <strong>평균을 완벽히 아는</strong> 1표본 Poisson 모델</h3>
+<p>미리 정확히 알려진 배경 기대계수 <code>B</code>에 대해 정수 검출 경계 <code>c</code>를 설정한다.</p>
+<pre><code class="language-text">c = smallest integer such that P(N_g &gt;= c | mean=B) &lt;= α
+Find signal Ld such that P(N_g &gt;= c | mean=B+Ld) &gt;= 1−β
+MDA = Ld / (K t_g)
+</code></pre>
+<p>배경 평균이 독립 계수측정으로 추정됐다면 이 근사는 그 불확도를 누락한다.</p>
+<h3>6.2 배경을 독립적으로 측정하는 <strong>2표본 Poisson</strong> 고급 모델</h3>
+<p>총계수 <code>N_g</code>와 배경 <code>N_b</code>를 각각 Poisson으로 가정하고, 배경만 존재하는 귀무가설 <code>H0: λ_g=λ_b</code>에서는 총계수 <code>N=N_g+N_b</code>로 조건부화한다.</p>
+<pre><code class="language-text">N_g | (N_g+N_b=n), H0 ~ Binomial(n, p0)
+p0 = t_g / (t_g + t_b)
+p_value = P[Binomial(N_g+N_b, p0) &gt;= N_g]
+</code></pre>
+<p>각 배경계수 <code>j</code>에서 가장 작은 총계수 임계값 <code>c(j)</code>를 찾고, 사전에 가정한 배경 기대계수 <code>μ_b=r_b t_b</code>의 Poisson 분포를 사용해 탐지확률을 산출한다.</p>
+<pre><code class="language-text">P_detect(A) = Sum_j P(N_b=j | μ_b) × P(N_g&gt;=c(j) | r_b t_g + A K t_g)
+MDA_exact = smallest A ≥ 0 such that P_detect(A) ≥ 1−β
+</code></pre>
+<p>이 경우 α 제어는 조건부 검정을 통해 달성되며 실제 오검출률은 이산성 때문에 α보다 작을 수 있다. 계산은 <strong>배경 기대계수(총·배경) 각각 70 이하</strong>에서만 제공한다. 이 방식은 연구·교육용 구현이며 ISO 11929의 모든 요구조건을 직접 구현한 것으로 주장하지 않는다. 모형은 일정·독립 배경, Poisson 적합성 및 교정 유효성을 가정한다.</p>
+<p><strong>예시:</strong> <code>t_g=t_b=60s</code>, <code>r_b=1cps</code>, <code>K=0.2cps/Bq</code>, <code>α=β=5%</code>일 때 2표본 정확 모델은 약 <strong>3.55 Bq</strong>의 MDA를 줄 수 있으며, 동일 예제의 <code>3.25 Bq</code> 근사와 차이가 생긴다. 정확 결과는 실행한 계산 및 반올림 설정을 따른다.</p>
+<p><a id="scan"></a></p>
+<h2>7. 스캔 MDC — 정지계측과 물리적으로 다른 문제</h2>
+<p>현장에서 프로브를 이동할 때 오염물 위에 머무르는 유효시간, 감도함수, 시정수, 스캔속도, 관찰자의 판단이 중요해진다. v1.4는 <strong>사용자 지정 <code>d′</code>와 <code>K_scan</code>을 사용하는 교육용 민감도 근사</strong>를 제공한다.</p>
+<pre><code class="language-text">τ = scan_width / scan_speed                 [s]
+b_τ = r_b × τ                               [counts]
+MDCR_net ≈ d′ sqrt(b_τ)                    [net counts, normal approximation]
+MDA_scan,approx = MDCR_net / (K_scan τ)     [Bq]
+MDC_scan,approx = MDA_scan,approx / S       [Bq/cm²]
+</code></pre>
+<p>입력 예제 <code>r_b=1cps</code>, <code>scan_width=5 cm</code>, <code>scan_speed=3 cm/s</code>, <code>K_scan=0.2 cps/Bq</code>, <code>d′=2.32</code>, <code>S=15.5 cm²</code>이면 <code>τ=1.667s</code>, <code>b_τ=1.667counts</code>, <code>MDA≈8.99Bq</code>, <code>MDC≈0.580Bq/cm²</code>이다. <strong>배경 기대계수가 5 미만인 이 예제는 정규 근사의 정확성이 떨어진다.</strong> 결과는 교육용 민감도 설명에 한정한다.</p>
+<p>이 프로그램은 다음을 <strong>모형화하지 않는다:</strong> 실제 기기 시정수, 경보로직, 관찰자 피로/인지, 모션 블러, 프로브-표면 간 거리의 공간변화, 여러 핵종의 비율과 차폐, 정확한 NUREG-1507 스캔 MDC 절차. NUREG-1507과 ORISE 계산기의 상세 스캔 모델을 참조해 별도 현장 검증해야 한다.</p>
+<p><a id="spatial"></a></p>
+<h2>8. 오염형상·표면재질·검출기의 정방향 모델</h2>
+<p>실제 오염이 연속적이면 검출기 응답의 정방향모델은 다음 적분식으로 나타낼 수 있다.</p>
+<pre><code class="language-text">r_net(x_p,y_p) = ∬ a(x,y) × k(x,y ; x_p,y_p,E,material,d) dx dy
+</code></pre>
+<ul>
+<li><code>a(x,y)</code>: 실제 방사능 면밀도 Bq/cm²</li>
+<li><code>k(...)</code>: 해당 위치의 단위 방사능에 대한 검출 감도, 표면효율·핵종·거리·각도·검출창을 포함한 응답함수</li>
+<li><code>x_p,y_p</code>: 검출기 중심 위치</li>
+</ul>
+<p>v1.4의 교육용 장에서는 감도커널을</p>
+<pre><code class="language-text">k_rel(Δx,Δy) = exp( −(Δx² + Δy²) / (2σ_k²) )
+r_net,pred = K × F × Sum_j [ A_j × k_rel(x_j−x_p,y_j−y_p) ]
+</code></pre>
+<p>와 같이 단순화한다. <strong>이 커널은 임의의 가정</strong>이며 실제 판케이크 GM 검출기의 물리학적 응답함수를 대체하지 않는다. <code>F</code>는 사용자가 정의한 상대응답 보정값이며, 철재·플라스틱·피부·의류라고 선택해도 프로그램이 신뢰 가능한 보정값을 자동 생성하지 않는다.</p>
+<p>사용자가 바꿀 수 있는 시나리오는 점오염, 균일 면오염, 중심이 집중된 가우시안 hotspot, 2개 오염원의 혼합이다. 2D 지도의 활동도 분포는 정규화되어 총 방사능이 입력값과 일치하도록 구성한다. 지도에서 위치를 선택하거나 x방향 횡단 프로파일을 보면 오염 위치와 최대계수 위치가 반드시 일치하지 않을 수 있음을 확인할 수 있다.</p>
+<h3>피부·의류 주의</h3>
+<p><strong>ISO 7503-1:2016은 피부·의류·이동성 물질을 적용범위에서 제외한다.</strong> 피부의 땀·피지, 의류 섬유 사이 오염, 랩핑, 창 앞 공기층 등의 영향을 고려하지 않은 효율을 그대로 적용하는 것은 부적절하다. 피부·의류 시나리오는 통상적인 표면오염 교정값의 타당성을 검토하는 <strong>교육용 비교</strong>다.</p>
+<p><a id="inversion"></a></p>
+<h2>9. 다지점 공간 역산, 식별성, 잔차</h2>
+<p>측정위치가 <code>i=1,…,m</code>, 격자 오염변수가 <code>j=1,…,n</code>이면 다음 선형 방정식을 생각할 수 있다.</p>
+<pre><code class="language-text">y_i = r_i,gross − r_i,background = Sum_j H_ij A_j + ε_i
+H_ij = K F × kernel(source cell j, probe location i)
+</code></pre>
+<p>기존 엔진의 두 옵션은 <strong>단일 hotspot 모델</strong>(위치 x,y와 A 추정) 또는 <strong>36셀 비음수 정규화 모델</strong>이다.</p>
+<pre><code class="language-text">Minimize_A&gt;=0 [ ||H A − y||² + λ ||A||² ]
+</code></pre>
+<p>이는 엄밀한 Poisson 최대우도 추정과 다르며 가정한 정규화 λ와 커널σ에 민감하다. 관측점 9개로 36개 격자 활동도를 유일하게 복원할 수 없다는 사실은 잔차가 낮더라도 변하지 않는다. 시뮬레이터는 다음 진단을 제공한다.</p>
+<pre><code class="language-text">Residual_i = measured_gross_cpm_i − predicted_gross_cpm_i
+RMSE = sqrt[ Sum_i Residual_i² / m ]
+MAE  = Sum_i |Residual_i| / m
+R²   = 1 − SSE / SST   (SST&gt;0인 경우)
+</code></pre>
+<p><strong>주의:</strong> R²는 학습자료에 대한 기술통계이며 위치·활동도 추정의 신뢰수준 또는 불확도를 뜻하지 않는다. 교정커널 오차·위치 측정오차·스캔시간 누락·비균일 배경을 반영하지 않는다. 모의점은 단순 격자 기대값 또는 Poisson 모의 계수로 생성하며, 실제 측정값으로 위장하지 않는다.</p>
+<p><a id="uncertainty"></a></p>
+<h2>10. 측정불확도 예산: GUM 선형화 모델</h2>
+<p>오염도 <code>a = (r_g−r_b)/(K S)</code>에 대해, 오차요인의 독립성을 일부 완화하고 응답 <code>K</code>와 면적 <code>S</code>의 상대 표준불확도에 상관계수 <code>ρ</code>를 적용한다.</p>
+<pre><code class="language-text">u_count(a) = sqrt(r_g/t_g + r_b/t_b) / (K S)
+u_K(a)     = |a| × u_rel(K)
+u_S(a)     = |a| × u_rel(S)
+u_drift(a) = u_drift,cpm / (60 K S)
+
+u_c²(a) ≈ u_count² + u_K² + u_S² + u_drift² + 2ρ u_K u_S
+U_95,normal ≈ 1.96 × u_c(a)
+</code></pre>
+<p><code>K</code>와 <code>S</code> 모두 분모로 존재하므로 두 민감도계수는 음수이며, <strong>ρ가 양수이면 분산 공분산항은 양수</strong>다. <code>ρ&lt;0</code>인 경우 일부 변동이 상쇄될 수 있지만 실제 공분산에 대한 교정 근거가 필요하다.</p>
+<p>기존 독립모델에서 표면오염도의 계수통계 표준불확도는 약 <code>0.08329 Bq/cm²</code>이며, <code>u_rel(K)=15%</code>, <code>u_rel(S)=0%</code>라면</p>
+<pre><code class="language-text">u_K(a) = 0.645161 × 0.15 = 0.096774 Bq/cm²
+u_c(a) ≈ sqrt(0.08329² + 0.096774²) = 0.1277 Bq/cm²
+95% 정규근사 ≈ 0.6452 ± 1.96×0.1277 Bq/cm²
+</code></pre>
+<p>95% <em>정규근사 구간</em>이 실제 규제기준 적합성의 95% 확률을 의미하지는 않는다. 편의상 산출한 k=1.96 근사는 소계수·높은 상대 불확도·경계값 근처에서는 적절하지 않을 수 있다.</p>
+<h2>11. 독립 Poisson 원시계수의 보수적 구간</h2>
+<p>확인된 원시계수에 한하여, 각각의 Poisson 평균을 Garwood 신뢰구간으로 평가하고 보수적인 동시구간을 적용한다.</p>
+<pre><code class="language-text">Poisson mean lower(N) = 0.5 χ²_(2N, α_each/2), if N&gt;0; else 0
+Poisson mean upper(N) = 0.5 χ²_(2(N+1), 1−α_each/2)
+</code></pre>
+<p>전체 약 95% 커버리지를 보장하려면 두 계수 평균에 대해 각각 97.5% 양측 구간을 사용하고 Bonferroni 하한을 적용한다(독립성은 Poisson 모델에 포함). 총/배경의 단위시간 평균 구간을 뺀 뒤 K로 나눈다. 이 방법은 <strong>K와 S를 정확히 안다는 조건부</strong>이며, 교정·거리·재질오차를 포함하지 않는다. 배경 추정치가 상대적으로 크면 하한이 음수일 수 있다.</p>
+<h2>12. Monte Carlo 분포전파 — 사후확률과의 구분</h2>
+<ol>
+<li>관찰된 총/배경계수율을 각각 Poisson 평균의 plug-in 추정값으로 사용하여 반복 계수자료를 생성한다.</li>
+<li>유효응답 <code>K</code>와 면적 <code>S</code>는 <strong>양수 로그정규 분포</strong>로 변동시킨다. 두 로그정규 변수의 정상표준 잠재변수에 지정한 상관 <code>ρ</code>를 적용한다.</li>
+<li>배경변동을 정규분포로 추가하고 음수 배경은 0으로 제한한다.</li>
+<li>반복마다 <code>a=(N_g/t_g−N_b/t_b)/(K S)</code>를 계산하여 2.5%, 50%, 97.5% 분위수를 표시한다.</li>
+</ol>
+<p><strong>중요:</strong> 이는 관측계수를 평균으로 대입한 <strong>모수적 재표집/모형 반복 분포</strong>이지, 방사능 참값의 베이지안 사후분포가 아니다. 기준 초과 표본의 비율은 <strong>모형 반복 초과분율</strong>이며 실제 <code>P(오염도 &gt; 기준 | 측정)</code> 또는 규제상 합격/불합격 확률이 아니다. <code>N_g &gt;30</code> 등의 큰 평균에서는 경량 Poisson 샘플러가 정규근사 난수를 사용하는 것을 유의한다.</p>
+<p><a id="units"></a></p>
+<h2>13. 핵종·단위 변환과 모델의 분리</h2>
+<p>SI/비SI 예제:</p>
+<pre><code class="language-text">1 Bq = 1 disintegration/s
+1 Ci = 3.7×10¹⁰ Bq (exact conventional conversion)
+1 Gy = 100 rad
+1 Sv = 100 rem
+1 cps = 60 cpm
+1 Bq/cm² = 10000 Bq/m²
+1 Bq/cm² = 6000 dpm/100cm²
+</code></pre>
+<p>Gy와 Sv는 정의가 서로 다른 물리량이다. <code>Sv=Gy×상수</code>라는 무조건 변환은 성립하지 않으며 입자 종류·조직가중치 등 모델이 필요하다. <code>cpm→Bq</code> 역시 핵종·방출률·계기·효율·기하조건에 따라 별도의 교정 응답이 필요하다.</p>
+<p><a id="validation"></a></p>
+<h2>14. 내장 검증과 실제 검증의 차이</h2>
+<ul>
+<li><strong>수학적 단위시험:</strong> 기본 계수환산, MDA 계산, Poisson 꼬리확률, 정확 2표본 검출력, 보수적 계수구간, 모의 공간역산, 단위 환산을 검사한다.</li>
+<li><strong>브라우저 기능시험:</strong> 비밀번호 확인, 360/390px 모바일 메뉴, 계산값 갱신, 가상격자·잔차표, 가이드 링크, 데이터 내보내기를 검사한다.</li>
+<li><strong>미완료 검증:</strong> 실제 GM 팬케이크 교정표와의 비교, 핵종·재질·거리·검출기 시정수별 검증, 현장별 스캔 검출한계 확증, 공식 ISO 11929/7503 조항별 검증, 인체피부 측정 효율의 실험 평가.</li>
+</ul>
+<h3>실무 QA 체크리스트</h3>
+<ul>
+<li>사용자가 입력한 <code>K</code>는 실제 핵종/에너지/기하조건에서 확인되었는가?</li>
+<li>배경 계수율과 총계수율은 동일한 검출기 조건이고 각 원시계수 및 시간이 확인되는가?</li>
+<li>배경 변동, 검출기 시정수, dead time, 계측기 경보 설정은 평가되었는가?</li>
+<li><code>S</code>가 실제 평가면적인가, 검출기 창 면적과 혼동되지 않았는가?</li>
+<li>점·면·피부·의류 조건에 따라 검출효율 변화가 보정되었는가?</li>
+<li>정지계측 MDA와 스캔 MDC를 올바로 구분했는가?</li>
+<li>기준값의 법규 출처·적용대상·면적 평균화 규칙이 확인되었는가?</li>
+<li>시뮬레이션 결과에 <strong>교육용</strong>/교정기록 상태를 명시했는가?</li>
+</ul>
+<h2>15. 주요 용어집</h2>
+<table>
+<thead>
+<tr>
+  <th>용어</th>
+  <th>설명</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td>Gross count</td>
+  <td>배경을 포함한 전체 계수</td>
+</tr>
+<tr>
+  <td>Net count rate</td>
+  <td>총계수율에서 배경계수율을 뺀 값</td>
+</tr>
+<tr>
+  <td>Bq</td>
+  <td>매초 붕괴 수로 정의한 방사능 단위</td>
+</tr>
+<tr>
+  <td>cps / cpm</td>
+  <td>초/분당 검출 계수율. Bq와 자동으로 동일하지 않음</td>
+</tr>
+<tr>
+  <td>K</td>
+  <td>해당 조건에서의 유효검출응답(cps/Bq)</td>
+</tr>
+<tr>
+  <td>Lc</td>
+  <td>배경가설을 기각할 관측 경계(결정임계값)</td>
+</tr>
+<tr>
+  <td>Ld</td>
+  <td>목표 검출력을 달성하기 위한 신호 검출한계</td>
+</tr>
+<tr>
+  <td>MDA / MDC</td>
+  <td>최소검출가능방사능 / 최소검출가능농도·오염도</td>
+</tr>
+<tr>
+  <td>d′</td>
+  <td>정한 오검출·검출성능에서 사용하는 검출성능 지수</td>
+</tr>
+<tr>
+  <td>Poisson</td>
+  <td>독립 사건 계수에 많이 사용하는 이산확률 모형</td>
+</tr>
+<tr>
+  <td>GUM</td>
+  <td>측정불확도 표현에 관한 국제 지침</td>
+</tr>
+<tr>
+  <td>Monte Carlo</td>
+  <td>난수 모의로 입력 분포를 결과에 전파하는 방법</td>
+</tr>
+<tr>
+  <td>NNLS</td>
+  <td>비음수 제약 최소제곱 적합</td>
+</tr>
+<tr>
+  <td>Regularization</td>
+  <td>적합의 불안정성을 줄이기 위한 추가 제약/벌점</td>
+</tr>
+<tr>
+  <td>RMSE</td>
+  <td>측정값과 모형예측값 사이 잔차의 제곱평균제곱근</td>
+</tr>
+<tr>
+  <td>식별성</td>
+  <td>서로 다른 오염분포를 관측자료로 구별할 수 있는 정도</td>
+</tr>
+</tbody>
+</table>
+<h2>16. 참고문헌 (공식·원문 링크)</h2>
+<ol>
+<li>U.S. NRC, <em>NUREG-1507 Revision 1</em> (2020), Minimum Detectable Concentrations with Typical Radiation Survey Instruments for Various Contaminants and Field Conditions. <a href="https://www.nrc.gov/regulations-legislation/nureg-series-publications/publications-prepared-by-nrc-staff/sr1507">https://www.nrc.gov/regulations-legislation/nureg-series-publications/publications-prepared-by-nrc-staff/sr1507</a></li>
+<li>ORISE / ORAU, <em>Structural Surface Scans — A Priori Scan MDC Calculator</em>. <a href="https://oriseapps.orau.gov/hpcalculator/Structure?action=Calculate&amp;controller=Home">https://oriseapps.orau.gov/hpcalculator/Structure?action=Calculate&amp;controller=Home</a></li>
+<li>ISO, <em>ISO 11929-1:2025</em>, Determination of characteristic limits — Elementary applications. <a href="https://www.iso.org/standard/90839.html">https://www.iso.org/standard/90839.html</a></li>
+<li>ISO, <em>ISO 7503-1:2016</em>, Measurement of radioactivity — Measurement and evaluation of surface contamination — General principles. <a href="https://www.iso.org/standard/60522.html">https://www.iso.org/standard/60522.html</a></li>
+<li>ISO, <em>ISO 7503-3:2016</em>, Apparatus calibration. <a href="https://www.iso.org/standard/61532.html">https://www.iso.org/standard/61532.html</a></li>
+<li>BIPM/JCGM, <em>JCGM 100:2008</em>, Guide to the expression of uncertainty in measurement (GUM). <a href="https://www.bipm.org/en/publications/guides">https://www.bipm.org/en/publications/guides</a></li>
+<li>BIPM/JCGM, <em>JCGM 101:2008</em>, Supplement 1: Propagation of distributions using a Monte Carlo method. <a href="https://www.bipm.org/en/doi/10.59161/jcgm101-2008">https://www.bipm.org/en/doi/10.59161/jcgm101-2008</a></li>
+<li>NIST, <em>Guide for the Use of the International System of Units (SI)</em>. <a href="https://www.nist.gov/pml/special-publication-811">https://www.nist.gov/pml/special-publication-811</a></li>
+</ol>
+<p><strong>주의:</strong> 표준 원문 유료 조항이나 특정 계산 조건을 프로그램이 임의로 재현했다고 주장하지 않는다. 출처는 방법론적 근거이며 본 프로그램은 연구·교육용 독립 구현이다.</p>
+</div><footer>교육·연구용. 실측 계측기 교정·규격 적합성·법규 판정을 보증하지 않습니다.</footer></main></div><script>
+(function(){const ids=['quick','counts','countstats','mda','scan','spatial','inversion','uncertainty','units','validation'];const digest='888fa60f08bc9df572f798f423de3e823f6f0413c70e8dec0bbcdf3b84df7fff';const key='gm-frisker-mobile-auth-session-v12',remember='gm-frisker-mobile-auth-remember-v12';const off='4350f871';function fallback(str){let n=2166136261>>>0;for(let i=0;i<str.length;i++)n=Math.imul(n^str.charCodeAt(i),16777619)>>>0;return n.toString(16).padStart(8,'0')}async function hash(p){const txt='gm-frisker-mobile-v12|'+p;if(!crypto?.subtle||!window.TextEncoder)return 'offline:'+fallback(txt);const data=await crypto.subtle.digest('SHA-256',new TextEncoder().encode(txt));return [...new Uint8Array(data)].map(x=>x.toString(16).padStart(2,'0')).join('')}function valid(){try{if(sessionStorage.getItem(key)===digest)return true;const r=JSON.parse(localStorage.getItem(remember)||'null');return r&&r.digest===digest&&r.until>Date.now()}catch(e){return false}}function unlock(){document.body.classList.remove('locked');document.getElementById('manualGate').hidden=true}if(valid())unlock();document.getElementById('manualLogin').addEventListener('submit',async(e)=>{e.preventDefault();const p=document.getElementById('manualPassword').value;const h=await hash(p);if(h===digest||h==='offline:'+off){try{sessionStorage.setItem(key,digest)}catch(e){}unlock()}else{document.getElementById('manualError').textContent='비밀번호를 다시 확인하십시오.'}});const css=document.documentElement.style;let size=17;document.getElementById('guideTheme').onclick=()=>document.body.classList.toggle('dark');document.getElementById('textMinus').onclick=()=>{size=Math.max(13,size-1);css.setProperty('--fontsize',size+'px')};document.getElementById('textPlus').onclick=()=>{size=Math.min(28,size+1);css.setProperty('--fontsize',size+'px')};document.getElementById('printGuide').onclick=()=>window.print();let t;document.getElementById('guideSearch').addEventListener('input',e=>{clearTimeout(t);t=setTimeout(()=>{let q=e.target.value.toLowerCase().trim(),txt=document.getElementById('guideContent').innerText.toLowerCase();let matches=q?txt.split(q).length-1:0;document.getElementById('searchResult').textContent=q?`“${e.target.value}” 약 ${matches}회 등장 · 브라우저의 페이지 찾기(Ctrl/⌘+F)도 사용할 수 있습니다.`:'검색어를 입력하면 등장 횟수를 표시합니다.'},150)});
+})();
+</script></body></html>
